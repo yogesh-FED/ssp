@@ -1,0 +1,34 @@
+@import '../../Style/variable';
+
+.details {
+	.detailsRows {
+		padding: 1rem;
+		h6 {
+			margin-bottom: 0;
+			position: relative;
+			color: $purpleFontColor;
+			img {
+				position: absolute;
+			}
+			.certificateNo {
+				font-size: 1rem;
+				color: $purpleFontColor;
+			}
+		}
+	}
+	.detailsDesc {
+		span {
+			color: #666666;
+			font-size: 14px;
+		}
+	}
+}
+.criteria {
+	margin-bottom: 1rem;
+	box-shadow: $boxShadow3;
+	h5 {
+		background: $purpleFontColor;
+		color: $white;
+		padding: 0.5rem 1rem;
+	}
+}

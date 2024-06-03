@@ -1,0 +1,195 @@
+@import '../../Style/variable';
+
+.instituteApproveRejectFragment {
+  .instituteApproveRejectForm {
+    span {
+      color: $fontColor;
+    }
+  }
+  .filterSec {
+    box-shadow: $boxShadow;
+    background: $lightBg;
+  }
+  .formFiltrSec {
+    padding: 1rem;
+    border-radius: 15px;
+    background: $lightBg;
+    margin-bottom: 1rem;
+  }
+  .select__menu {
+    z-index: 999;
+    padding: 1rem;
+  }
+}
+.dashboardSec {
+  padding: 1rem;
+  .dashCards {
+    padding: 2rem 1rem;
+    border-radius: 15px;
+    color: $white;
+    height: 160px;
+    transition: transform 0.9s ease-in-out;
+    cursor: pointer;
+    &:hover {
+      animation: zoomIn 0.9s forwards ease-in-out;
+    }
+    p {
+      text-transform: uppercase;
+      margin: 0;
+      font-weight: bold;
+    }
+    &.approve {
+      background: rgb(143,199,249);
+      background: linear-gradient(9deg, rgba(143,199,249,1) 0%, rgba(4,135,253,1) 100%);
+    }
+    &.pending {
+      background: rgb(255,212,143);
+      background: linear-gradient(9deg, rgba(255,212,143,1) 0%, rgba(241,150,1,1) 100%);
+    }
+    &.rejected {
+      background: linear-gradient(9deg, rgba(255, 130, 130, 1) 0%, rgba(255, 0, 0, 1) 100%);
+    }
+    &.fee {
+      background: $feeDetails;
+    }
+    &.schemeRep {
+      background: $schemeReport;
+    }
+  }
+}
+.defSty {
+  font-weight: 500;
+}
+.approved {
+  color: $approved;
+}
+.rejected {
+  color: $rejected;
+}
+.pending {
+  color: $pending;
+}
+.total {
+  background: rgb(189,250,109);
+background: linear-gradient(9deg, rgba(189,250,109,1) 0%, rgba(139,197,63,1) 100%);
+}
+.viewIcon {
+  border: none;
+  background: transparent;
+}
+.instBtn {
+  margin-left: auto;
+  width: max-content;
+  span {
+    width: 100px;
+    display: inline-block;
+    text-align: center;
+    padding: 0.5rem;
+    margin-right: 1rem;
+    border-radius: 15px;
+    color: $white;
+    cursor: pointer;
+    &.Inst_approve {
+      background: $approved;
+    }
+    &.Inst_reject {
+      background: $rejected;
+    }
+  }
+  &.mt-3 {
+    margin-top: 2rem;
+    span {
+      width: 130px;
+    }
+  }
+}
+.approveRejDetails {
+  .borMar {
+    border: 1px solid #eee;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+  }
+  p.head {
+    background: $lightBg;
+    padding: 0.5rem;
+  }
+  span {
+    padding: 0.5rem;
+  }
+  p.fieldVal {
+    padding: 0 0.5rem 0.5rem;
+  }
+}
+.instituteTableSec {
+  margin-bottom: 2rem;
+}
+.formSubmit span {
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  display: inline-block;
+  border-radius: 15px;
+  color: $white;
+  width: 100px;
+  text-align: center;
+  cursor: pointer;
+  &.save {
+    background: $darkGreen;
+  }
+  &.cancel {
+    background: $rejected;
+  }
+}
+.stuDetails {
+  margin-bottom: 0.5rem;
+}
+.feeDtCTA {
+  width: auto;
+  margin: auto;
+  border: none;
+  padding: 0.5rem 2rem;
+  border-radius: 15px;
+  margin-top: 1rem;
+  background: $darkGreen;
+  color: $white;
+}
+.feeForm {
+  margin-top: 2rem;
+  .select__control {
+    border-radius: 0;
+  }
+}
+.feeDisplay {
+  box-shadow: $boxShadow3;
+  margin-top: 3rem;
+  padding: 1rem 2rem;
+  text-align: center;
+  border-radius: 15px;
+}
+.schemeReportList {
+  padding: 3rem;
+  .accordion-button:focus {
+    box-shadow: none;
+  }
+  .accordion-button:not(.collapsed) {
+    background: $darkGreen;
+    color: $white;
+  }
+  .accordion-body {
+    padding: 3rem;
+  }
+  .schemeListInnerSection {
+    border-radius: 15PX;
+    text-align: center;
+    padding: 1rem;
+    box-shadow: $boxShadow3;
+  }
+}
+@keyframes zoomIn {
+  0% {
+      transform: scale(1);
+  }
+  100% {
+      transform: scale(1.2);
+  }
+}

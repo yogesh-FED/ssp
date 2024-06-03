@@ -1,0 +1,170 @@
+@import '../../Style/variable';
+
+// .studentDetailsList {
+//   .detailsSection {
+//     padding: 2rem;
+//     width: 75%;
+//     border: 1px solid #eee;
+//     .studentList {
+//       margin-bottom: 1rem;
+//       .innerListDiv {
+//         padding: 1rem;
+//         background: #eee;
+//       }
+//       p {
+//         font-weight: 700;
+//         color: $fieldName;
+//         margin: 0;
+//       }
+//       span {
+//         color: $fontColor;
+//       }
+//     }
+//   }
+// }
+.selectAllSchemes {
+  font-size: 16px;
+  padding: 0.5rem;
+  margin: 0;
+  text-align: right;
+}
+.approveBtn {
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+  margin-left: auto;
+  background: $purpleFontColor;
+  color: $mildGreen;
+  cursor: pointer;
+  &.appliedBtn {
+    background: #eee;
+    cursor: not-allowed;
+    z-index: -1;
+    color: $darkGreen;
+  }
+}
+.studentBasicDetails {
+  background: $mildGreen;
+  border-radius: 15px;
+  //width: 60%;
+  padding: 1rem;
+  table {
+    margin: 0;
+    td {
+      border-bottom: none;
+      background: $mildGreen;
+      b {
+        color: $purpleFontColor;
+      }
+    }
+  }
+}
+.errHead {
+  color: $rejected;
+}
+.studentScreen {
+  //border: 1px solid $mildblue;
+  border-radius: 15px;
+  margin-top: 2rem;
+  ul {
+    border: 1px solid $purpleFontColor;
+    width: 75%;
+    //margin: auto;
+    margin-top: 2rem;
+    li{
+      &:last-child {
+        button {
+          border-right: none;
+        }
+      }
+      &.nav-item {
+        button {
+          &:hover {
+            border: none;
+            border-right: 1px solid $purpleFontColor;
+          }
+          padding: 1rem;
+          color: $purpleFontColor;
+          border-radius: 0;
+          font-weight: bold;
+          border: 0;
+          border-right: 1px solid $purpleFontColor;
+          text-transform: uppercase;
+          position: relative;
+          &.active {
+            background-color: $purpleFontColor;
+            color: $mildGreen;
+            // &::after {
+            //   content: "";
+            //   position: absolute;
+            //   width: 20px;
+            //   height: 30px;
+            //   border-left: 20px solid transparent;
+            //   border-right: 20px solid transparent;
+            //   border-bottom: 20px solid $headerBg;
+            //   z-index: 99;
+            //   bottom: -24px;
+            //   transform: rotate(180deg);
+            //   left: 0;
+            //   right: 0;
+            //   margin: auto;
+            //   animation: fadeInOut 1s alternate;
+            // }
+          }
+        }
+      }
+    }
+  }
+  .tab-content {
+    padding: 2rem 1rem;
+    border-radius: 15px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background: $mildGreen;
+  }
+  .availSchemes {
+    padding: 1rem;
+    width: max-content;
+    margin: auto;
+    margin-top: 2rem;
+    background-color: $marqueeBg;
+    color: $darkGreen;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    &:hover {
+      background-color: $darkGreen;
+      color: $white;
+      transform: scale(1.1);
+    }
+    &.zIndx {
+      z-index: -1;
+    }
+  }
+}
+.schemeCard {
+    p {
+      &.card-header {
+        text-align: center;
+        line-height: 30px;
+        font-size: 16px;
+        font-weight: 700;
+        background-color: $headerBg;
+        color: $white;
+      }
+    }
+  .col-lg-4 {
+    margin-bottom: 2rem;
+  }
+}
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

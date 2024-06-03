@@ -1,0 +1,92 @@
+@import '../../Style/variable';
+
+.eliglibleSch {
+  .eligibleSchemeParent {
+    .card-header {
+      &:first-child {
+        padding-top: 1rem;
+      }
+    }
+    .chkForm {
+      label {
+        text-decoration: underline;
+      }
+      input {
+        cursor: pointer;
+      }
+    }
+    margin-bottom: 2rem;
+    .applyScheme {
+      margin: 0;
+      padding: 0.5rem;
+      width: fit-content;
+      cursor: pointer;
+      font-size: 14px;
+      background-color: $darkGreen;
+      color: $white;
+      border-radius: 5px;
+      margin-left: auto;
+    }
+    .active {
+      background: #00c1b2;
+      color: #000;
+    }    
+  }
+  .sendForApproval {
+    width: auto;
+    margin: auto;
+    border: 0;
+    background-color: $darkGreen;
+    color: $white;
+    padding: 1rem;
+    text-transform: uppercase;
+    border-radius: 5px;
+    &.PendingBg {
+      background: $marqueeBg;
+      color: $darkGreen;
+      cursor: not-allowed;
+      z-index: -1;
+    }
+  }
+  .totalSelection {
+    margin-bottom: 2rem;
+    .statusDiv {
+      margin: 0;
+      padding: 1rem;
+      border-radius: 5px;
+      box-shadow: $boxShadow2;
+      //background: rgb(99,245,94);
+      //background: linear-gradient(9deg, rgba(99,245,94,1) 0%, rgba(0,255,244,1) 100%);
+      background: $darkGreen;
+      color: $white;
+    }
+  }
+  .searchSchemeStyle {
+    padding: 3rem;
+    background: #f5f5f5;
+  }
+  .fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    background: $white;
+    box-shadow: $boxShadow;
+    padding: 1rem 1rem;
+    .totalSelection {
+      width: 50%;
+      margin: 0;
+    }
+    .statusDiv {
+      padding: 0.5rem;
+      p {
+        margin: 0;
+        font-size: 14px;
+      }
+      h3 {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+.dark body,
+.dark #contact,
+.dark #services,
+.dark #counts,
+.dark #featured-services,
+.dark #about,
+.dark #faq,
+.dark footer,
+.dark #footer .footer-top,
+.dark #topbar {
+  background-image: linear-gradient(147deg, #000000 0%, #2c3e50 74%) !important;
+}
+.dark header#header {
+  opacity: 1;
+  box-shadow: 0px 4px 4px rgb(0 0 0 / 9%);
+  background-image: linear-gradient(147deg, #000000 0%, #2c3e50 74%);
+}
+.dark .featured-services .icon-box {
+  background: #212e3c;
+  color: #fcfcfc;
+}
+.dark .featured-services .title a,
+.dark .section-title p,
+.dark .section-title h3,
+.dark .services .details p,
+.dark .counts .count-box p,
+.dark .about .content p,
+.dark .about .content ul h5,
+.dark .faq .faq-list p,
+.dark #footer .footer-top .footer-links ul a,
+.dark .footer-links p,
+.dark #footer .footer-top .footer-contact p,
+.dark .tab-pane h4 {
+  color: #fcfcfc;
+}
+.dark .counts .count-box span,
+.dark .faq .faq-list .collapsed,
+.dark #footer .footer-top .footer-contact h3,
+.dark #footer .footer-top h4,
+.dark .vCount span,
+.dark #footer .copyright,
+.dark .txt-green {
+  color: #7dadeb;
+}
+.dark .contact .info-box,
+.dark .contact .contact-email-form {
+  color: #fcfcfc;
+  box-shadow: 0 0 30px rgb(55 60 65 / 30%);
+}
+.dark .contact .info-box h3 {
+  font-size: 20px;
+  color: #3f4a9f;
+}
+.dark .services .details,
+.dark .counts .count-box {
+  background: rgb(44 62 80);
+}

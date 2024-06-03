@@ -1,0 +1,288 @@
+/*login css*/
+      .login-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      /* background: #f1f3f5; */
+      background: linear-gradient(to right, rgb(80 43 88), rgb(56 25 111)) !important;
+  }
+  .boxCenter {
+      max-width: 350px;
+      margin: 0px auto;
+      background: white;
+      padding: 14px;
+      border-radius: 7px 15px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px; 
+  }
+  .customPad{
+        padding: 0.3rem 2.45rem;
+      font-size: 14px;
+  }
+  .login-logo {
+    width: 150px;
+  } 
+  .footerInfo {
+      position: absolute;
+      bottom: 0;
+      z-index: 9999; 
+  }
+  .footerInfo p {
+      color: #003562;
+  }
+  .logoTitle p {
+      font-weight: bold;
+      /*color: #9b0a2c;*/
+     color: #012970;
+  }
+  .bg-success {
+      background-color: #25b271 !important;
+  }
+  @media (max-width: 768px){
+    .no-mob {
+      display: none;
+    }
+  }
+  .txt-green {
+        color: #1e971e;
+  }
+  .tn_logo {
+      width: 82px;
+      position: relative;
+      top: 1rem;
+      left: 5px;
+  }
+  .logoBanner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      text-align: center;
+  }
+  .bb-0 {
+    border-bottom: 0 !important;
+  }
+  .b-shadow {
+    box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+    transform: scale(1); 
+      animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+      0% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+      }
+  
+      70% {
+          transform: scale(1);
+          box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+      }
+  
+      100% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+      }
+  }
+  
+  
+  .login-banner img {
+    width: 340px; 
+  } 
+  
+  @media(max-width: 768px) {
+    .header-nav .nav-icon {
+      font-size: 14px !important;
+  }
+  }
+  
+  /*waves css*/
+  .wavescss{ 
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    /* background: radial-gradient(ellipse at bottom, #330da4 0%, #771e7a 100%) !important; */
+    background: radial-gradient(ellipse at bottom, #1d185b 0%, #822f85 100%) !important; 
+    overflow: hidden;
+  }
+
+  img.logoImg {
+    width: 74px;
+}
+
+.font32 {
+    font-size: 32px;
+}
+  .wavescss .air{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    /* background: url("../../assets/img/wave.png"); */
+    background-size: 1000px 100px
+  }
+  .wavescss .air.air1{
+    animation: wave 30s linear infinite;
+    z-index: 1000;
+    opacity: 1;
+    animation-delay: 0s;
+    bottom: 0;
+  }
+  .wavescss .air.air2{
+    animation: wave2 15s linear infinite;
+    z-index: 999;
+    opacity: 0.5;
+    animation-delay: -5s;
+    bottom: 10px;
+  }
+  .wavescss .air.air3{
+    animation: wave 30s linear infinite;
+    z-index: 998;
+    opacity: 0.2;
+    animation-delay: -2s;
+    bottom: 15px;
+  }
+  .wavescss .air.air4{
+    animation: wave2 5s linear infinite;
+    z-index: 997;
+    opacity: 0.7;
+    animation-delay: -5s;
+    bottom: 20px;
+  }
+  @keyframes wave{
+    0%{
+      background-position-x: 0px; 
+    }
+    100%{
+      background-position-x: 1000px; 
+    }
+  }
+  @keyframes wave2{
+    0%{
+      background-position-x: 0px; 
+    }
+    100%{
+      background-position-x: -1000px; 
+    }
+  }
+  
+  .pos-relative {
+  position: relative;
+  } 
+  
+  /*.header a.nav-link.active {
+      background: #012970;
+      color: #fff;
+      padding: 1px 8px;
+      border-radius: 4px 11px;
+  } */
+  
+  
+  .header a.nav-link.active {
+      border-bottom: 1.45px solid #00ff84;
+      color: #00ff84;
+      }
+  
+      .submitData label.form-label {
+      color: #182970;
+      font-weight: 600;
+  } 
+  #nav-tab {
+      border: 0;
+  } 
+  
+  .tabDatas .nav-link.active {
+      border: 0;
+      background: #012979;
+      color: #fff !important;
+      padding: 4px 9px; 
+      font-size: 14px;
+      border-radius: 4px 11px;
+  }
+  .tabDatas .nav-link, .tabDatas .nav-link:hover {
+      border: 1px solid #012979;
+      color: #012979;
+      font-size: 14px;
+      border-radius: 4px 11px;
+  }
+  .j-end{
+    display: flex;
+      justify-content: end;
+      align-items: center;
+  }
+  
+  .updateProject {
+      width: 85% !important;
+  }
+  
+  @media(max-width: 768px) {
+    .updateProject {
+      width: 100% !important;
+  }
+  .header a.nav-link.nav-icon { 
+      font-size: 13px;
+  } 
+  }
+  
+  
+  img.rounded.logo2 {
+      width: 72px;
+  }
+  img.rounded.logo3 {
+      width: 160px;
+  }
+  
+  .mauto {
+      margin: 0px auto;
+      max-width: 360px;
+  }
+  
+  .bg-signup h2.logo-txt1 {
+      font-size: 16px;
+      font-weight: 600;
+          color: #251f68; 
+  } 
+  .logo-section img.img-fluid.logo {
+      width: 75px;
+      margin-bottom: 10px;
+  }
+  .tn-govt-text
+  {
+    font-weight: 600;
+      color: black;
+  }
+  @media (max-width: 768px) {
+    .mauto {
+      position: relative !important;
+      z-index: 999999 !important;
+  }
+  }
+  
+  .btn-otp {
+      font-size: 14px;
+      padding: 4px 17px;
+  }
+  
+  ul#myTab, #myTab2, #myTab3 {
+      border: 0 !important;
+  } 
+  
+
+  .box-color {
+    background: #dd26eb;
+    color: #fff;
+  }
+  
+ 
+  
+  .font14 {
+    font-size: 14px;
+}
+  .cboth{
+    clear: both;
+  } 
+  
+  .registerUsers {
+      z-index: 999999999;
+  }
+  
