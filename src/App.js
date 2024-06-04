@@ -32,7 +32,7 @@ import Sample from "./pages/Sample.js";
 const App = () => {
   return (
     <div>
-      <BrowserRouter>
+      <BrowserRouter basename="/ssp_frontend">
         {/* <Header />  */}
         <Routes>
           <Route path="/" element={<Login />} />
