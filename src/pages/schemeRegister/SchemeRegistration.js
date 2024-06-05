@@ -1,5 +1,185 @@
-import React, { useState } from 'react' ; 
+import axios from 'axios';
+import React, { useEffect, useState } from 'react' ; 
+import Select from 'react-select';
+import Form from 'react-bootstrap/Form';
+import SelectComp from '../SelectComp';
 const SchemeRegistration = () => { 
+  const [departmentData, setDepartmentData] = useState([]);
+  const [subDepartmentData, setSubDepartmentData] = useState([]);
+  const [community, setCommunity] = useState([]);
+  const [course, setCourse] = useState([]);
+  const [stream, setStream] = useState([]);
+  const [institutionCat, setInstitutionCat] = useState([]);
+  const [caste, setCaste] = useState([]);
+  const [gender, setGender] = useState([]);
+  const [education, setEducation] = useState([]);
+  const [instTyp, setInstTyp] = useState([]);
+  const [deptData, setDeptData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        
+        
+        const courseResponse = await axios.get('workingJson/get_courseType.json');
+        const streamResponse = await axios.get('workingJson/get_stream.json');
+        const casteResponse = await axios.get('workingJson/get_caste.json');
+        const instCtgResponse = await axios.get('workingJson/get_institution_category.json');
+        const genderResponse = await axios.get('workingJson/get_gender.json');
+        const eduRes = await axios.get('workingJson/get_education.json');
+        setEducation(eduRes.data);
+        setGender(genderResponse.data);
+        setCaste(casteResponse.data);
+        setInstitutionCat(instCtgResponse.data);
+        setStream(streamResponse.data);
+        //setDepartmentData(deptResponse.data);
+        
+        
+        setCourse(courseResponse.data);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+
+    const postDataToApi = async () => {
+      const deptUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_department';
+      const subDeptUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department';
+      const communityUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_community';
+      const casteUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_caste';
+      const eduUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values';
+      const instCtUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_institute_category';
+      const streamUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_streams';
+      const courseUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_course_types';
+      const instTypeUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_institutetypes';
+      const genderUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values';
+      const headers = {
+        "Content-Type": "application/x-www-form-urlencoded",
+        'X-APP-KEY': 'te$t',
+      }
+      const body = { user_id: 1 }
+      const subbody = { user_id: 1, department_id: 0 }
+      const castebody = { user_id: 1, community_id: 2 }
+      const edubody = { user_id: 1, category: 'EducationType' }
+      const genbody = { user_id: 1, category: 'Gender' }
+      try {
+        const Deptresponse = await axios.post(deptUrl, body, { headers: headers });
+        const subDeptresponse = await axios.post(subDeptUrl, subbody, { headers: headers });
+        const communityRes = await axios.post(communityUrl, body, { headers: headers });
+        const casteRes = await axios.post(casteUrl, castebody, { headers: headers });
+        const eduRes = await axios.post(eduUrl, edubody, { headers: headers });
+        const instctRes = await axios.post(instCtUrl, body, { headers: headers });
+        const streamRes = await axios.post(streamUrl, body, { headers: headers });
+        const courseRes = await axios.post(courseUrl, body, { headers: headers });
+        const instTypRes = await axios.post(instTypeUrl, body, { headers: headers });
+        const genRes = await axios.post(genderUrl, genbody, { headers: headers });
+        setGender(genRes.data.data);
+        setInstTyp(instTypRes.data.data);
+        setCaste(casteRes.data.data);
+        setDepartmentData(Deptresponse.data.data);
+        setSubDepartmentData(subDeptresponse.data.data);
+        setCommunity(communityRes.data.data);
+        setEducation(eduRes.data.data);
+        setInstitutionCat(instctRes.data.data);
+        setStream(streamRes.data.data);
+        setCourse(courseRes.data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+   fetchData();
+   postDataToApi();
+  }, []);
+  const deptOptions = Object.entries(departmentData).map(([key, val]) => {
+    return(
+      {
+        value: val.department_name,
+        label: val.department_name
+      }
+    )
+  })
+  const genderOptions = Object.entries(gender).map(([key, val]) => {
+    return(
+      {
+        value: val.display_text,
+        label: val.display_text
+      }
+    )
+  })
+  const instTypOptions = Object.entries(instTyp).map(([key, val]) => {
+    return(
+      {
+        value: val.institute_type,
+        label: val.institute_type
+      }
+    )
+  })
+  const courseOptions = Object.entries(course).map(([key, val]) => {
+    return(
+      {
+        value: val.course_type,
+        label: val.course_type
+      }
+    )
+  })
+  const subdeptOptions = Object.entries(subDepartmentData).map(([key, val]) => {
+    return(
+      {
+        value: val.subdepartment_name,
+        label: val.subdepartment_name
+      }
+    )
+  })
+  
+  const communityOptions = Object.entries(community).map(([key, val]) => {
+    return(
+      {
+        value: val.community_name,
+        label: val.community_name
+      }
+    )
+  })
+  const casteOptions = Object.entries(caste).map(([key, val]) => {
+    return(
+      {
+        value: val.caste_name,
+        label: val.caste_name
+      }
+    )
+  })
+  const eduOptions = Object.entries(education).map(([key, val]) => {
+    return(
+      {
+        value: val.display_text,
+        label: val.display_text
+      }
+    )
+  })
+  const insCtOptions = Object.entries(institutionCat).map(([key, val]) => {
+    return(
+      {
+        value: val.institute_category,
+        label: val.institute_category
+      }
+    )
+  })
+  const streamOptions = Object.entries(stream).map(([key, val]) => {
+    return(
+      {
+        value: val.stream_name,
+        label: val.stream_name
+      }
+    )
+  })
+  const [schoolHide, setSchoolHide] = useState('true');
+  const handleEducationChange = (e) => { debugger;
+    const selVal = e.target.value;
+    if(selVal === 'School') {
+      setSchoolHide(false);
+    }
+    else {
+      setSchoolHide(true);
+    }
+    
+  }
   const [showMore, setShowMore] = useState(false); 
   const [selectedFeesType, setSelectedFeesType] = useState(''); 
   const handleSelectChange = (event) => { setSelectedFeesType(event.target.value); }; 
@@ -32,164 +212,419 @@ const SchemeRegistration = () => {
         <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
           <form className="row">
             <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Department</label>
+              <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="instituteApproveRejectFormFilters">
+                  <span className="form-label lbl-font lbl-color">Department</span>
+                  <Select
+                    //defaultValue={selectedOptions}
+                    isMulti
+                    options={[{ value: 'all', label: 'All' }, ...deptOptions]}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    //onChange={handleCommunityChange}
+                  />
+                </div>
+              </Form.Group>
+              {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Department</label>
               <select className="form-select" name="department">
-                <option value="">Select Department</option>
-                <option value="India">Department A</option>
-              </select>
+              <option value="">Select Department</option>
+              <option value="all">ALL</option>
+                {
+                  Object.entries(departmentData).map(([key,val]) => {
+                    return (
+                      <option key={key} value={val.department_name}>{val.department_name}</option>
+                    )
+                  })
+                }
+              </select> */}
             </div>
             <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Department</label>
+              {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Department</label>
               <select className="form-select" name="SubDepartment">
                 <option value="">Select Sub Department</option>
-                <option value="India">Sub Department A</option>
-              </select>
+                <option value="all">ALL</option>
+                {
+                  Object.entries(subDepartmentData).map(([key,val]) => { debugger;
+                    return (
+                      <option key={key} value={val.subdepartment_name}>{val.subdepartment_name}</option>
+                    )
+                  })
+                }
+              </select> */}
+              <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="instituteApproveRejectFormFilters">
+                  <span className="form-label lbl-font lbl-color">Sub Department</span>
+                  <Select
+                    //defaultValue={selectedOptions}
+                    isMulti
+                    options={[{ value: 'all', label: 'All' }, ...subdeptOptions]}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    //onChange={handleCommunityChange}
+                  />
+                </div>
+              </Form.Group>
             </div>
             <div className="col-md-4 mb-2">
               <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Name</label>
               <input type="text" className="form-control removespecialchar" placeholder="Enter Scheme Name" />
             </div>
-            <div className="col-md-12 mb-2 mt-2">
-              <h4 className="page-title txt-red">
-                <i class="bi bi-file-earmark-text"></i> General Components
-              </h4>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Category</label>
-              <select className="form-select" name="InstituteCategory">
-                <option value="">Select Institute Category</option>
-                <option value="India">Institute Category A</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Type</label>
-              <select className="form-select" name="InstituteType">
-                <option value="">Select Institute Type</option>
-                <option value="India">Institute Type A</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Name</label>
-              <select className="form-select" name="InstituteName">
-                <option value="">Select Institute Name</option>
-                <option value="India">Institute Name A</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Community</label>
-              <select className="form-select" name="Community">
-                <option value="">Select Community</option>
-                <option value="India">Community A</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Caste</label>
-              <select className="form-select" name="Caste">
-                <option value="">Select Caste</option>
-                <option value="India">Caste A</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Category</label>
-              <select className="form-select" name="StudentCategory">
-                <option value="">Select Student Category</option>
-                <option value="India">Student Category A</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Stream</label>
-              <select className="form-select" name="Stream">
-                <option value="">Select Stream</option>
-                <option value="India">Stream A</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Course</label>
-              <select className="form-select" name="Course">
-                <option value="">Select Course</option>
-                <option value="India">Course A</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Code</label>
-              <input type="text" class="form-control removespecialchar" placeholder="Enter Scheme Code" />
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Medium of Instruction</label>
-              <select className="form-select" name="Course">
-                <option value="">Select Medium</option>
-                <option value="1">English</option>
-                <option value="1">Tamil</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Religion</label>
-              <select className="form-select" name="Course">
-                <option value="">Select Religion</option>
-                <option value="1">Religion A</option>
-                <option value="1">Religion B</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Course Type</label>
-              <select className="form-select" name="Course">
-                <option value="">Select Course Type</option>
-                <option value="1">Accredited</option>
-                <option value="1">Non Accredited</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font w-100 lbl-color">Gender</label>
-              <select className="form-select" name="Course">
-                <option value="">Select Gender</option>
-                <option value="1">Male</option>
-                <option value="2">Female</option>
-                <option value="3">Transgender</option>
-              </select> {/* <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions22" id="inlineRadio111" value="option1" />
-                <label class="form-check-label" for="inlineRadio111">Male</label>
+            <div className='separateComp row'>
+              <div className="col-md-12 mb-2 mt-2">
+                <h4 className="page-title txt-red">
+                  <i class="bi bi-file-earmark-text"></i> General Components
+                </h4>
               </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions22" id="inlineRadio2222" value="option2" />
-                <label class="form-check-label" for="inlineRadio2222">Female</label>
+              <div className="col-md-4 mb-2">
+                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Education Type</label>
+                <select className="form-select" name="Education" onChange={(e) => handleEducationChange(e)}>
+                  <option value="">Select Education Type</option>
+                  {
+                  Object.entries(education).map(([key,val]) => {
+                    return (
+                      Object.entries(val).map(([dataKey,dataVal]) => {
+                        return (
+                          <option key={dataKey} value={dataVal.display_text}>{dataVal.display_text}</option>
+                        )
+                      })
+                    )
+                  })
+                }
+                </select> */}
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="instituteApproveRejectFormFilters">
+                  <span className="form-label lbl-font lbl-color">Education</span>
+                  <Select
+                    //defaultValue={selectedOptions}
+                    //isMulti
+                    options={eduOptions}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    //onChange={handleCommunityChange}
+                  />
+                </div>
+              </Form.Group>
               </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions22" id="inlineRadio22222" value="option2" />
-                <label class="form-check-label" for="inlineRadio22222">Transgender</label>
-              </div> */}
+              <div className="col-md-4 mb-2">
+                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Type</label>
+                <select className="form-select" name="InstituteType">
+                  <option value="">Select Institute Type</option>
+                  <option value="India">Institute Type A</option>
+                </select> */}
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="instituteApproveRejectFormFilters">
+                  <span className="form-label lbl-font lbl-color">Institute Type</span>
+                  <Select
+                    //defaultValue={selectedOptions}
+                    isMulti
+                    options={[{ value: 'all', label: 'All' }, ...instTypOptions]}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    //onChange={handleCommunityChange}
+                  />
+                </div>
+              </Form.Group>
+              </div>
+              {
+                schoolHide && (
+                  <>
+                    <div className="col-md-4 mb-2">
+                      <label for="inputEmail4" className="form-label lbl-font lbl-color">University</label>
+                      <select className="form-select" name="university">
+                        <option value="">Select University</option>
+                        <option value="India">University A</option>
+                      </select>
+                    </div>
+                    <div className="col-md-4 mb-2">
+                      {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Category</label>
+                      <select className="form-select" name="InstituteCategory">
+                        <option value="">Select Institute Category</option>
+                        <option value="all">ALL</option>
+                        {
+                          Object.entries(institutionCat).map(([key,val]) => { debugger;
+                            return (
+                              Object.entries(val).map(([dataKey,dataVal]) => {
+                                return (
+                                  <option key={dataKey} value={dataVal.institute_category}>{dataVal.institute_category}</option>
+                                )
+                              })
+                            )
+                          })
+                        }
+                      </select> */}
+                      <Form.Group className="mb-3 instituteApproveRejectForm">
+                        <div className="instituteApproveRejectFormFilters">
+                          <span className="form-label lbl-font lbl-color">Institute Category</span>
+                          <Select
+                            //defaultValue={selectedOptions}
+                            isMulti
+                            options={[{ value: 'all', label: 'All' }, ...insCtOptions]}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            //onChange={handleCommunityChange}
+                          />
+                        </div>
+                      </Form.Group>
+                    </div>
+                  </>
+                )
+              }
+              <div className="col-md-4 mb-2">
+                <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Name</label>
+                <select className="form-select" name="InstituteName">
+                  <option value="">Select Institute Name</option>
+                  <option value="India">Institute Name A</option>
+                </select>
+              </div>
+              <div className="col-md-4 mb-2">
+                <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Category</label>
+                <select className="form-select" name="StudentCategory">
+                  <option value="">Select Student Category</option>
+                  <option value="India">Student Category A</option>
+                </select>
+              </div>
+              <div className="col-md-4 mb-2">
+                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Stream</label>
+                <select className="form-select" name="Stream">
+                  <option value="">Select Stream</option>
+                  <option value="all">ALL</option>
+                  {
+                  Object.entries(stream).map(([key,val]) => {
+                    return (
+                      Object.entries(val).map(([dataKey,dataVal]) => {
+                        return (
+                          <option key={dataKey} value={dataVal.stream_name}>{dataVal.stream_name}</option>
+                        )
+                      })
+                    )
+                  })
+                }
+                </select> */}
+                    <Form.Group className="mb-3 instituteApproveRejectForm">
+                        <div className="instituteApproveRejectFormFilters">
+                          <span className="form-label lbl-font lbl-color">Stream</span>
+                          <Select
+                            //defaultValue={selectedOptions}
+                            isMulti
+                            options={[{ value: 'all', label: 'All' }, ...streamOptions]}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            //onChange={handleCommunityChange}
+                          />
+                        </div>
+                      </Form.Group>
+              </div>
+              <div className="col-md-4 mb-2">
+                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Course</label>
+                <select className="form-select" name="Course">
+                  <option value="">Select Course</option>
+                  <option value="all">ALL</option>
+                  {
+                    Object.entries(course).map(([key,val]) => { debugger;
+                      return (
+                        Object.entries(val).map(([dataKey,dataVal]) => {
+                          return (
+                            <option key={dataKey} value={dataVal.course_type}>{dataVal.course_type}</option>
+                          )
+                        })
+                      )
+                    })
+                  }
+                </select> */}
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="instituteApproveRejectFormFilters">
+                  <span className="form-label lbl-font lbl-color">Course</span>
+                  <Select
+                    //defaultValue={selectedOptions}
+                    isMulti
+                    options={[{ value: 'all', label: 'All' }, ...courseOptions]}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    //onChange={handleCommunityChange}
+                  />
+                </div>
+              </Form.Group>
+              </div>
+              <div className="col-md-4 mb-2">
+                <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Code</label>
+                <input type="text" class="form-control removespecialchar" placeholder="Enter Scheme Code" />
+              </div>
+              <div className="col-md-4 mb-2">
+                <label for="inputEmail4" className="form-label lbl-font lbl-color">Income</label>
+                <select className="form-select" name="InstituteCategory">
+                  <option value="">Select Income</option>
+                  <option value="a2l">Income above 2L</option>
+                  <option value="b2l">Income below 2L</option>
+                </select>
+              </div>
+              <div className="col-md-4 mb-2">
+                <label for="inputEmail4" className="form-label lbl-font lbl-color">Medium of Instruction</label>
+                <select className="form-select" name="Course">
+                  <option value="">Select Medium</option>
+                  <option value="1">English</option>
+                  <option value="1">Tamil</option>
+                </select>
+              </div>
+              
+              <div className="col-md-4 mb-2">
+                <label for="inputEmail4" className="form-label lbl-font lbl-color">Course Type</label>
+                <select className="form-select" name="Course">
+                  <option value="">Select Course Type</option>
+                  <option value="1">Accredited</option>
+                  <option value="1">Non Accredited</option>
+                </select>
+              </div>
             </div>
-            <div className="col-md-12 mb-2 mt-2">
-              <h4 className="page-title txt-red">
-                <i class="bi bi-file-earmark-text"></i> Maintenance Components
-              </h4>
+            <div className='separateComp row'>
+              <div className="col-md-12 mb-2 mt-2">
+                <h4 className="page-title txt-red">
+                  <i class="bi bi-file-earmark-text"></i> Socio Economic Components
+                </h4>
+              </div>
+              <div className="col-md-4 mb-2">
+                <label for="inputEmail4" className="form-label lbl-font lbl-color">Religion</label>
+                <select className="form-select" name="Course">
+                  <option value="">Select Religion</option>
+                  <option value="1">Religion A</option>
+                  <option value="1">Religion B</option>
+                </select>
+              </div>
+              <div className="col-md-4 mb-2">
+                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Community</label>
+                <select className="form-select" name="Community">
+                  <option value="">Select Community</option>
+                  <option value="all">community</option>
+                  {
+                  Object.entries(community).map(([key,val]) => {
+                    return (
+                      <option key={key} value={val.community_name}>{val.community_name}</option>
+                    )
+                  })
+                }
+                </select> */}
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="instituteApproveRejectFormFilters">
+                  <span className="form-label lbl-font lbl-color">Community</span>
+                  <Select
+                    //defaultValue={selectedOptions}
+                    isMulti
+                    options={[{ value: 'all', label: 'All' }, ...communityOptions]}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    //onChange={handleCommunityChange}
+                  />
+                </div>
+              </Form.Group>
+              </div>
+              <div className="col-md-4 mb-2">
+                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Caste</label>
+                <select className="form-select" name="Caste">
+                  <option value="">Select Caste</option>
+                  <option value="all">ALL</option>
+                  {
+                  Object.entries(caste).map(([key,val]) => {
+                    return (
+                      Object.entries(val).map(([dataKey,dataVal]) => {
+                        return (
+                          <option key={dataKey} value={dataVal.caste_name}>{dataVal.caste_name}</option>
+                        )
+                      })
+                    )
+                  })
+                }
+                </select> */}
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="instituteApproveRejectFormFilters">
+                  <span className="form-label lbl-font lbl-color">Caste</span>
+                  <Select
+                    //defaultValue={selectedOptions}
+                    isMulti
+                    options={[{ value: 'all', label: 'All' }, ...casteOptions]}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    //onChange={handleCommunityChange}
+                  />
+                </div>
+              </Form.Group>
+              </div>
+              <div className="col-md-4 mb-2">
+              <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="instituteApproveRejectFormFilters">
+                  <span className="form-label lbl-font lbl-color">Gender</span>
+                  <Select
+                    //defaultValue={selectedOptions}
+                    isMulti
+                    options={[{ value: 'all', label: 'All' }, ...genderOptions]}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    //onChange={handleCommunityChange}
+                  />
+                </div>
+              </Form.Group>
+                {/* <label for="inputEmail4" className="form-label lbl-font w-100 lbl-color">Gender</label>
+                <select className="form-select" name="Course">
+                  <option value="">Select Gender</option>
+                  <option value="all">ALL</option>
+                  {
+                  Object.entries(gender).map(([key,val]) => {
+                    return (
+                      Object.entries(val).map(([dataKey,dataVal]) => {
+                        return (
+                          <option key={dataKey} value={dataVal.display_text}>{dataVal.display_text}</option>
+                        )
+                      })
+                    )
+                  })
+                }  
+                </select> */}
+                 {/* <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="inlineRadioOptions22" id="inlineRadio111" value="option1" />
+                  <label class="form-check-label" for="inlineRadio111">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="inlineRadioOptions22" id="inlineRadio2222" value="option2" />
+                  <label class="form-check-label" for="inlineRadio2222">Female</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="inlineRadioOptions22" id="inlineRadio22222" value="option2" />
+                  <label class="form-check-label" for="inlineRadio22222">Transgender</label>
+                </div> */}
+              </div>
             </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Residential Status</label>
-              <select className="form-select" name="StudentResidentialStatus">
-                <option value="">Select Student Residential Status</option>
-                <option value="1">Hosteller</option>
-                <option value="1">Day Scholar</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Physically Challenged</label>
-              <select className="form-select" name="PhysicallyChallenged">
-                <option value="">Select Physically Challenged</option>
-                <option value="1">Yes</option>
-                <option value="1">No</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2">
-              <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Category Physically Challenged</label>
-              <select className="form-select" name="SubCategoryPhysicallyChallenged">
-                <option value="">Select Sub Category Physically Challenged</option>
-                <option value="1">Sub Category A</option>
-                <option value="1">Sub Category B</option>
-              </select>
-            </div>
-            <div className="col-md-4 mb-2 mt-2">
-              <a href="#" className="btn btn-success cus-btn">
-                <i className="bi bi-send-check"></i> Save </a>
+            <div className='separateComp row'>
+              <div className="col-md-12 mb-2 mt-2">
+                <h4 className="page-title txt-red">
+                  <i class="bi bi-file-earmark-text"></i> Maintenance Components
+                </h4>
+              </div>
+              <div className="col-md-4 mb-2">
+                <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Residential Status</label>
+                <select className="form-select" name="StudentResidentialStatus">
+                  <option value="">Select Student Residential Status</option>
+                  <option value="1">Hosteller</option>
+                  <option value="1">Day Scholar</option>
+                </select>
+              </div>
+              <div className="col-md-4 mb-2">
+                <label for="inputEmail4" className="form-label lbl-font lbl-color">Physically Challenged</label>
+                <select className="form-select" name="PhysicallyChallenged">
+                  <option value="">Select Physically Challenged</option>
+                  <option value="1">Yes</option>
+                  <option value="1">No</option>
+                </select>
+              </div>
+              <div className="col-md-4 mb-2">
+                <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Category Physically Challenged</label>
+                <select className="form-select" name="SubCategoryPhysicallyChallenged">
+                  <option value="">Select Sub Category Physically Challenged</option>
+                  <option value="1">Sub Category A</option>
+                  <option value="1">Sub Category B</option>
+                </select>
+              </div>
+              <div className="col-md-4 mb-2 mt-2">
+                <a href="#" className="btn btn-success cus-btn">
+                  <i className="bi bi-send-check"></i> Save </a>
+              </div>
             </div>
           </form>
         </div>

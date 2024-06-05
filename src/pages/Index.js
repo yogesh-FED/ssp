@@ -25,6 +25,8 @@ const Index = (props) => { debugger;
       case '/department':
         setComp('department');
         break;
+      case '/scheme-register':
+        setComp('department');
       default:
         setComp('Page Not Found');
     }
@@ -37,7 +39,15 @@ const Index = (props) => { debugger;
           <ul className="nav">
             <li className="nav-item active">
               <a className="nav-link">
-                <span className="menu-title">Dashboard</span>
+                <span className="menu-title">
+                  {
+                    props.compName === 'departmentComponent'
+                    ?
+                    'Scheme Registeration'
+                    :
+                    'Dashboard'
+                  }
+                </span>
                 <i className="bi bi-speedometer2 menu-icon"></i>
               </a>
             </li>

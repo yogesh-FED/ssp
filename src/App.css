@@ -1454,6 +1454,7 @@ h4,
 .lbl-color {
   color: #465f9f;
   font-weight: 500;
+  display: inline-block;
 }
 
 /* .range-slider-container {
@@ -1821,4 +1822,10 @@ ul#myTab {
 .viewmore,
 .lessmore {
   cursor: pointer;
+}
+
+.separateComp {
+  padding: 2rem;
+  background: #eee;
+  margin-bottom: 1rem;
 }
