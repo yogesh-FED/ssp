@@ -37,13 +37,27 @@ const Index = (props) => { debugger;
       <main id="main">
         <nav className="sidebar sidebar-offcanvas" id="sidebar">
           <ul className="nav">
+            {
+              props.compName === 'departmentComponent'
+              ?
+              <li className="nav-item">
+                <a className="nav-link">
+                  <span className="menu-title">
+                    Dashboard
+                  </span>
+                  <i className="bi bi-speedometer2 menu-icon"></i>
+                </a>
+              </li>
+              :
+              ''
+            }
             <li className="nav-item active">
               <a className="nav-link">
                 <span className="menu-title">
                   {
                     props.compName === 'departmentComponent'
                     ?
-                    'Scheme Registeration'
+                    'Scheme Registration'
                     :
                     'Dashboard'
                   }

@@ -135,6 +135,11 @@ const Header = (props) => {
                 <i className="bi bi-circle-half txt-green"></i>
               </a>
             </li> */}
+             <li className="nav-item nav-logout d-none d-lg-block">
+              <a className="txt-green">
+              தமிழ்
+              </a>
+            </li>
             <li className="nav-item nav-logout d-none d-lg-block">
               <a className="txt-green">
                 <i className="bi bi-person-circle px-1"></i> Welcome {props.sendingProps === 'instituteComponent' ? 'Institute' : props.sendingProps === 'studentComponent' ? 'Student Name' :  props.sendingProps === 'departmentComponent' ? 'Department' : ''}
@@ -145,11 +150,6 @@ const Header = (props) => {
               <i className="bi bi-box-arrow-in-right px-1"></i> Logout
               </a>
             </li>
-            {/*  <li className="nav-item nav-logout d-none d-lg-block">
-              <a href="/#" className="txt-green" onClick={(e) => Increase(e)}>
-                A+
-              </a>
-            </li> */}
           </ul>
           <button
             className="navbar-toggler navbar-toggler-right d-lg-none align-self-center"

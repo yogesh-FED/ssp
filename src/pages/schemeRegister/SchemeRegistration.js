@@ -4,6 +4,33 @@ import Select from 'react-select';
 import Form from 'react-bootstrap/Form';
 import SelectComp from '../SelectComp';
 const SchemeRegistration = () => { 
+  const [formData, setFormData] = useState({
+    department: [],
+    subDepartment: [],
+    schemeName: '',
+    schemeCode: '',
+    education: [],
+    instituteType: [],
+    instituteCategory: [],
+    universityType: [],
+    university: [],
+    instituteName: [],
+    studentCategory: [],
+    class: [],
+    schoolCategory: [],
+    schoolType: [],
+    schoolName: [],
+    schoolClass: [],
+    stream: [],
+    course: [],
+    courseType: [],
+    medium: [],
+    religion: [],
+    community: [],
+    caste: [],
+    gender: [],
+    income: [],
+  });
   const [departmentData, setDepartmentData] = useState([]);
   const [subDepartmentData, setSubDepartmentData] = useState([]);
   const [community, setCommunity] = useState([]);
@@ -14,84 +41,190 @@ const SchemeRegistration = () => {
   const [gender, setGender] = useState([]);
   const [education, setEducation] = useState([]);
   const [instTyp, setInstTyp] = useState([]);
+  const [univ, setUniv] = useState([]);
+  const [univTyp, setUnivTyp] = useState([]);
+  const [religion, setReligion] = useState([]);
+  const [income, setIncome] = useState([]);
+  const [disability, setDisability] = useState([]);
+  const [courseTyp, setCourseTyp] = useState([]);
   const [deptData, setDeptData] = useState([]);
+  const headers = {
+    "Content-Type": "application/x-www-form-urlencoded",
+    'X-APP-KEY': 'te$t',
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        
-        
-        const courseResponse = await axios.get('workingJson/get_courseType.json');
-        const streamResponse = await axios.get('workingJson/get_stream.json');
-        const casteResponse = await axios.get('workingJson/get_caste.json');
-        const instCtgResponse = await axios.get('workingJson/get_institution_category.json');
-        const genderResponse = await axios.get('workingJson/get_gender.json');
-        const eduRes = await axios.get('workingJson/get_education.json');
-        setEducation(eduRes.data);
-        setGender(genderResponse.data);
-        setCaste(casteResponse.data);
-        setInstitutionCat(instCtgResponse.data);
-        setStream(streamResponse.data);
-        //setDepartmentData(deptResponse.data);
-        
-        
-        setCourse(courseResponse.data);
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      }
+    const fetchData = async () => { debugger;
+        try {
+            // Fetch department data
+            const departmentResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
+            setDepartmentData(departmentResponse.data?.data || []);
+        } catch (error) {
+            console.log('Error fetching department data:', error);
+        }
     };
 
+    fetchData();
+}, []);
+const [selectedDepartment, setSelectedDepartment] = useState(null);
+
+// const handleDepartmentChange = async (selectedOption) => { debugger;
+//   try {
+//       // Fetch sub department data based on selected department's ID
+//       const subDepartmentResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department', { user_id: 1, department_id: selectedOption[0].value }, {headers: headers});
+//       setSubDepartmentData(subDepartmentResponse.data?.data || []);
+//       selectedOption = [selectedOption];
+//       latestSelectedOption = selectedOption;
+//   } catch (error) {
+//       console.log('Error fetching sub department data:', error);
+//   }
+// };
+const handleSave = (e) => { debugger;
+  e.preventDefault();
+  console.log('Form Data:', formData);
+};
+const handleCommunityChange = (e) => {
+  debugger
+  setFormData({ ...formData, community: e });
+}
+const handleDepartmentChange = async (selectedOption) => {
+  debugger;
+  try {
+    //const latestSelectedOption = selectedOption[selectedOption.length - 1];
+    const subDepartmentResponse = await axios.post(
+      'https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department',
+      { user_id: 1, department_id: selectedOption.value },
+      { headers: headers }
+    );
+    setSubDepartmentData(subDepartmentResponse.data?.data || []);
+    //selectedOption = [latestSelectedOption];
+    setFormData({ ...formData, department: selectedOption.label });
+  } catch (error) {
+    console.log('Error fetching sub department data:', error);
+  }
+};
+  useEffect(() => {
     const postDataToApi = async () => {
-      const deptUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_department';
-      const subDeptUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department';
-      const communityUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_community';
-      const casteUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_caste';
-      const eduUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values';
-      const instCtUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_institute_category';
-      const streamUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_streams';
-      const courseUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_course_types';
-      const instTypeUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_institutetypes';
-      const genderUrl = 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values';
-      const headers = {
-        "Content-Type": "application/x-www-form-urlencoded",
-        'X-APP-KEY': 'te$t',
-      }
-      const body = { user_id: 1 }
-      const subbody = { user_id: 1, department_id: 0 }
-      const castebody = { user_id: 1, community_id: 2 }
-      const edubody = { user_id: 1, category: 'EducationType' }
-      const genbody = { user_id: 1, category: 'Gender' }
-      try {
-        const Deptresponse = await axios.post(deptUrl, body, { headers: headers });
-        const subDeptresponse = await axios.post(subDeptUrl, subbody, { headers: headers });
-        const communityRes = await axios.post(communityUrl, body, { headers: headers });
-        const casteRes = await axios.post(casteUrl, castebody, { headers: headers });
-        const eduRes = await axios.post(eduUrl, edubody, { headers: headers });
-        const instctRes = await axios.post(instCtUrl, body, { headers: headers });
-        const streamRes = await axios.post(streamUrl, body, { headers: headers });
-        const courseRes = await axios.post(courseUrl, body, { headers: headers });
-        const instTypRes = await axios.post(instTypeUrl, body, { headers: headers });
-        const genRes = await axios.post(genderUrl, genbody, { headers: headers });
-        setGender(genRes.data.data);
-        setInstTyp(instTypRes.data.data);
-        setCaste(casteRes.data.data);
-        setDepartmentData(Deptresponse.data.data);
-        setSubDepartmentData(subDeptresponse.data.data);
-        setCommunity(communityRes.data.data);
-        setEducation(eduRes.data.data);
-        setInstitutionCat(instctRes.data.data);
-        setStream(streamRes.data.data);
-        setCourse(courseRes.data.data);
-      } catch (err) {
-        console.log(err);
-      }
+        const urls = [
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_department', body: { user_id: 1 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department', body: { user_id: 1, department_id: 0 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_community', body: { user_id: 1 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_caste', body: { user_id: 1, community_id: 2 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'EducationType' } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_institute_category', body: { user_id: 1 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_streams', body: { user_id: 1 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_courses', body: { user_id: 1, stream_id: 0, course_type_id: 0 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_institutetypes', body: { user_id: 1 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'Gender' } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_universities', body: { user_id: 1, university_type_id: 0 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_university_types', body: { user_id: 1, ownership_id: 1 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'Religion' } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_income_ranges', body: { user_id: 1 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_differentlyabled', body: { user_id: 1 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_course_types', body: { user_id: 1 } }
+        ];
+        const headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            'X-APP-KEY': 'te$t',
+        };
+        try {
+            const requests = urls.map(({ url, body }) => axios.post(url, body, { headers }));
+            const responses = await axios.all(requests);
+            responses.forEach((response, index) => {
+                switch (index) {
+                    // case 0:
+                    //     setDepartmentData(response.data?.data || []);
+                    //     break;
+                    // case 1:
+                    //     setSubDepartmentData(response.data?.data || []);
+                    //     break;
+                    case 2:
+                        setCommunity(response.data?.data || []);
+                        break;
+                    case 3:
+                        setCaste(response.data?.data || []);
+                        break;
+                    case 4:
+                        setEducation(response.data?.data || []);
+                        break;
+                    case 5:
+                        setInstitutionCat(response.data?.data || []);
+                        break;
+                    case 6:
+                        setStream(response.data?.data || []);
+                        break;
+                    case 7:
+                        setCourse(response.data?.data || []);
+                        break;
+                    case 8:
+                        setInstTyp(response.data?.data || []);
+                        break;
+                    case 9:
+                        setGender(response.data?.data || []);
+                        break;
+                    case 10:
+                        setUniv(response.data?.data || []);
+                        break;
+                    case 11:
+                        setUnivTyp(response.data?.data || []);
+                        break;
+                    case 12:
+                      setReligion(response.data?.data || []);
+                      break;
+                    case 13:
+                        setIncome(response.data?.data || []);
+                        break;
+                    case 14:
+                        setDisability(response.data?.data || []);
+                        break;
+                    case 15:
+                        setCourseTyp(response.data?.data || []);
+                        break;
+                    default:
+                        break;
+                }
+            });
+        } catch (error) {
+            console.log('Error fetching data:', error);
+        }
     };
-   fetchData();
-   postDataToApi();
-  }, []);
+    postDataToApi();
+}, []);
+  const univOptions = Object.entries(univ).map(([key, val]) => {
+    return(
+      {
+        value: val.university_name,
+        label: val.university_name
+      }
+    )
+  })
+  const courseTypOption = Object.entries(courseTyp).map(([key, val]) => {
+    return(
+      {
+        value: val.course_type,
+        label: val.course_type
+      }
+    )
+  })
+  const incomeOptions = Object.entries(income).map(([key, val]) => {
+    return(
+      {
+        value: val.income_range,
+        label: val.income_range
+      }
+    )
+  })
+  const religionOptions = Object.entries(religion).map(([key, val]) => {
+    return(
+      {
+        value: val.display_text,
+        label: val.display_text
+      }
+    )
+  })
   const deptOptions = Object.entries(departmentData).map(([key, val]) => {
     return(
       {
-        value: val.department_name,
+        value: val.id,
         label: val.department_name
       }
     )
@@ -115,8 +248,8 @@ const SchemeRegistration = () => {
   const courseOptions = Object.entries(course).map(([key, val]) => {
     return(
       {
-        value: val.course_type,
-        label: val.course_type
+        value: val.id,
+        label: val.course_name
       }
     )
   })
@@ -169,21 +302,52 @@ const SchemeRegistration = () => {
       }
     )
   })
-  const [schoolHide, setSchoolHide] = useState('true');
+  const univTypOptions = Object.entries(univTyp).map(([key, val]) => {
+    return(
+      {
+        value: val.university_type,
+        label: val.university_type
+      }
+    )
+  })
+  const disabilityOptions = Object.entries(disability).map(([key, val]) => {
+    return(
+      {
+        value: val.disability_name,
+        label: val.disability_name
+      }
+    )
+  })
+  const [school, setSchool] = useState(false);
+  const [college, setCollege] = useState(false);
   const handleEducationChange = (e) => { debugger;
-    const selVal = e.target.value;
-    if(selVal === 'School') {
-      setSchoolHide(false);
+    if(e.value === 'School') {
+      setSchool(true);
+      setCollege(false);
     }
     else {
-      setSchoolHide(true);
+      setCollege(true);
+      setSchool(false);
+    }
+    if(e.value === 0) {
+      setCollege(false);
+      setSchool(false);
     }
     
   }
   const [showMore, setShowMore] = useState(false); 
   const [selectedFeesType, setSelectedFeesType] = useState(''); 
   const handleSelectChange = (event) => { setSelectedFeesType(event.target.value); }; 
+  const [disStatus, setDisStatus] = useState(false);
+  const handledisabilityStatus = (e) => {
+    if(e.value === 'Yes') {
+      setDisStatus(true);
+    } else {
+      setDisStatus(false);
+    }
+  }
   return ( 
+  <>
   <div className="row mb-2 mt-2">
   <div className="col-lg-12">
     <h3 className="page-title mb-2">
@@ -213,46 +377,22 @@ const SchemeRegistration = () => {
           <form className="row">
             <div className="col-md-4 mb-2">
               <Form.Group className="mb-3 instituteApproveRejectForm">
-                <div className="instituteApproveRejectFormFilters">
+                <div className="">
                   <span className="form-label lbl-font lbl-color">Department</span>
                   <Select
                     //defaultValue={selectedOptions}
-                    isMulti
+                    //isMulti
                     options={[{ value: 'all', label: 'All' }, ...deptOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    //onChange={handleCommunityChange}
+                    onChange={handleDepartmentChange}
                   />
                 </div>
               </Form.Group>
-              {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Department</label>
-              <select className="form-select" name="department">
-              <option value="">Select Department</option>
-              <option value="all">ALL</option>
-                {
-                  Object.entries(departmentData).map(([key,val]) => {
-                    return (
-                      <option key={key} value={val.department_name}>{val.department_name}</option>
-                    )
-                  })
-                }
-              </select> */}
             </div>
             <div className="col-md-4 mb-2">
-              {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Department</label>
-              <select className="form-select" name="SubDepartment">
-                <option value="">Select Sub Department</option>
-                <option value="all">ALL</option>
-                {
-                  Object.entries(subDepartmentData).map(([key,val]) => { debugger;
-                    return (
-                      <option key={key} value={val.subdepartment_name}>{val.subdepartment_name}</option>
-                    )
-                  })
-                }
-              </select> */}
               <Form.Group className="mb-3 instituteApproveRejectForm">
-                <div className="instituteApproveRejectFormFilters">
+                <div className="">
                   <span className="form-label lbl-font lbl-color">Sub Department</span>
                   <Select
                     //defaultValue={selectedOptions}
@@ -269,91 +409,103 @@ const SchemeRegistration = () => {
               <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Name</label>
               <input type="text" className="form-control removespecialchar" placeholder="Enter Scheme Name" />
             </div>
+            <div className="col-md-4 mb-2">
+                <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Code</label>
+                <input type="text" class="form-control removespecialchar" placeholder="Enter Scheme Code" />
+              </div>
             <div className='separateComp row'>
               <div className="col-md-12 mb-2 mt-2">
                 <h4 className="page-title txt-red">
-                  <i class="bi bi-file-earmark-text"></i> General Components
+                  <i class="bi bi-file-earmark-text"></i> Institute Components
                 </h4>
               </div>
               <div className="col-md-4 mb-2">
-                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Education Type</label>
-                <select className="form-select" name="Education" onChange={(e) => handleEducationChange(e)}>
-                  <option value="">Select Education Type</option>
-                  {
-                  Object.entries(education).map(([key,val]) => {
-                    return (
-                      Object.entries(val).map(([dataKey,dataVal]) => {
-                        return (
-                          <option key={dataKey} value={dataVal.display_text}>{dataVal.display_text}</option>
-                        )
-                      })
-                    )
-                  })
-                }
-                </select> */}
                 <Form.Group className="mb-3 instituteApproveRejectForm">
-                <div className="instituteApproveRejectFormFilters">
+                <div className="">
                   <span className="form-label lbl-font lbl-color">Education</span>
                   <Select
                     //defaultValue={selectedOptions}
                     //isMulti
-                    options={eduOptions}
+                    options={[{ value: 0, label: 'None' }, ...eduOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    //onChange={handleCommunityChange}
-                  />
-                </div>
-              </Form.Group>
-              </div>
-              <div className="col-md-4 mb-2">
-                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Type</label>
-                <select className="form-select" name="InstituteType">
-                  <option value="">Select Institute Type</option>
-                  <option value="India">Institute Type A</option>
-                </select> */}
-                <Form.Group className="mb-3 instituteApproveRejectForm">
-                <div className="instituteApproveRejectFormFilters">
-                  <span className="form-label lbl-font lbl-color">Institute Type</span>
-                  <Select
-                    //defaultValue={selectedOptions}
-                    isMulti
-                    options={[{ value: 'all', label: 'All' }, ...instTypOptions]}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    //onChange={handleCommunityChange}
+                    onChange={(e) => handleEducationChange(e)}
                   />
                 </div>
               </Form.Group>
               </div>
               {
-                schoolHide && (
+                school && (
                   <>
                     <div className="col-md-4 mb-2">
-                      <label for="inputEmail4" className="form-label lbl-font lbl-color">University</label>
-                      <select className="form-select" name="university">
-                        <option value="">Select University</option>
-                        <option value="India">University A</option>
-                      </select>
+                      <Form.Group className="mb-3 instituteApproveRejectForm">
+                        <div className="">
+                          <span className="form-label lbl-font lbl-color">School Category</span>
+                          <Select
+                            //defaultValue={selectedOptions}
+                            isMulti
+                            options={[{ value: 'all', label: 'All' }]}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            //onChange={handleCommunityChange}
+                          />
+                        </div>
+                      </Form.Group>
                     </div>
                     <div className="col-md-4 mb-2">
-                      {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Category</label>
-                      <select className="form-select" name="InstituteCategory">
-                        <option value="">Select Institute Category</option>
-                        <option value="all">ALL</option>
-                        {
-                          Object.entries(institutionCat).map(([key,val]) => { debugger;
-                            return (
-                              Object.entries(val).map(([dataKey,dataVal]) => {
-                                return (
-                                  <option key={dataKey} value={dataVal.institute_category}>{dataVal.institute_category}</option>
-                                )
-                              })
-                            )
-                          })
-                        }
-                      </select> */}
                       <Form.Group className="mb-3 instituteApproveRejectForm">
-                        <div className="instituteApproveRejectFormFilters">
+                        <div className="">
+                          <span className="form-label lbl-font lbl-color">School Type</span>
+                          <Select
+                            //defaultValue={selectedOptions}
+                            isMulti
+                            options={[{ value: 'all', label: 'All' }]}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            //onChange={handleCommunityChange}
+                          />
+                        </div>
+                      </Form.Group>
+                    </div>
+                  <div className="col-md-4 mb-2">
+                    <Form.Group className="mb-3 instituteApproveRejectForm">
+                      <div className="">
+                        <span className="form-label lbl-font lbl-color">School Name</span>
+                        <Select
+                          //defaultValue={selectedOptions}
+                          isMulti
+                          options={[{ value: 'all', label: 'All' }]}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          //onChange={handleCommunityChange}
+                        />
+                      </div>
+                    </Form.Group>
+                  </div>
+                </>
+                )
+              }
+              {
+                college && (
+                  <>
+                    <div className="col-md-4 mb-2">
+                      <Form.Group className="mb-3 instituteApproveRejectForm">
+                        <div className="">
+                          <span className="form-label lbl-font lbl-color">Institute Type</span>
+                          <Select
+                            //defaultValue={selectedOptions}
+                            isMulti
+                            options={[{ value: 'all', label: 'All' }, ...instTypOptions]}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            //onChange={handleCommunityChange}
+                          />
+                        </div>
+                      </Form.Group>
+                    </div>
+                    <div className="col-md-4 mb-2">
+                      <Form.Group className="mb-3 instituteApproveRejectForm">
+                        <div className="">
                           <span className="form-label lbl-font lbl-color">Institute Category</span>
                           <Select
                             //defaultValue={selectedOptions}
@@ -366,22 +518,75 @@ const SchemeRegistration = () => {
                         </div>
                       </Form.Group>
                     </div>
-                  </>
+                    <div className="col-md-4 mb-2">
+                      <Form.Group className="mb-3 instituteApproveRejectForm">
+                        <div className="">
+                          <span className="form-label lbl-font lbl-color">University Type</span>
+                          <Select
+                            //defaultValue={selectedOptions}
+                            isMulti
+                            options={[{ value: 'all', label: 'All' }, ...univTypOptions]}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            //onChange={handleCommunityChange}
+                          />
+                        </div>
+                      </Form.Group>
+                    </div>
+                    <div className="col-md-4 mb-2">
+                      <Form.Group className="mb-3 instituteApproveRejectForm">
+                        <div className="">
+                          <span className="form-label lbl-font lbl-color">University</span>
+                          <Select
+                            //defaultValue={selectedOptions}
+                            isMulti
+                            options={[{ value: 'all', label: 'All' }, ...univOptions]}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            //onChange={handleCommunityChange}
+                          />
+                        </div>
+                      </Form.Group>
+                    </div>
+                  <div className="col-md-4 mb-2">
+                    <Form.Group className="mb-3 instituteApproveRejectForm">
+                      <div className="">
+                        <span className="form-label lbl-font lbl-color">Institute Name</span>
+                        <Select
+                          //defaultValue={selectedOptions}
+                          isMulti
+                          options={[{ value: 'all', label: 'All' }]}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          //onChange={handleCommunityChange}
+                        />
+                      </div>
+                    </Form.Group>
+                  </div>
+                  <div className="col-md-4 mb-2">
+                    <Form.Group className="mb-3 instituteApproveRejectForm">
+                      <div className="">
+                        <span className="form-label lbl-font lbl-color">Student Category</span>
+                        <Select
+                          //defaultValue={selectedOptions}
+                          isMulti
+                          options={[{ value: 'all', label: 'All' }]}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          //onChange={handleCommunityChange}
+                        />
+                      </div>
+                    </Form.Group>
+                  </div>
+                </>
                 )
               }
-              <div className="col-md-4 mb-2">
-                <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Name</label>
-                <select className="form-select" name="InstituteName">
-                  <option value="">Select Institute Name</option>
-                  <option value="India">Institute Name A</option>
-                </select>
-              </div>
-              <div className="col-md-4 mb-2">
-                <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Category</label>
-                <select className="form-select" name="StudentCategory">
-                  <option value="">Select Student Category</option>
-                  <option value="India">Student Category A</option>
-                </select>
+            </div>
+            <div className='separateComp row'>
+              <div className="col-md-12 mb-2 mt-2">
+                <h4 className="page-title txt-red">
+                  <i class="bi bi-file-earmark-text"></i> Course Components
+                </h4>
               </div>
               <div className="col-md-4 mb-2">
                 {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Stream</label>
@@ -401,7 +606,7 @@ const SchemeRegistration = () => {
                 }
                 </select> */}
                     <Form.Group className="mb-3 instituteApproveRejectForm">
-                        <div className="instituteApproveRejectFormFilters">
+                        <div className="">
                           <span className="form-label lbl-font lbl-color">Stream</span>
                           <Select
                             //defaultValue={selectedOptions}
@@ -413,6 +618,21 @@ const SchemeRegistration = () => {
                           />
                         </div>
                       </Form.Group>
+              </div>
+              <div className="col-md-4 mb-2">
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                  <div className="">
+                    <span className="form-label lbl-font lbl-color">Course Type</span>
+                    <Select
+                      //defaultValue={selectedOptions}
+                      isMulti
+                      options={[{ value: 'all', label: 'All' }, ...courseTypOption]}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      //onChange={handleCommunityChange}
+                    />
+                  </div>
+                </Form.Group>
               </div>
               <div className="col-md-4 mb-2">
                 {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Course</label>
@@ -432,7 +652,7 @@ const SchemeRegistration = () => {
                   }
                 </select> */}
                 <Form.Group className="mb-3 instituteApproveRejectForm">
-                <div className="instituteApproveRejectFormFilters">
+                <div className="">
                   <span className="form-label lbl-font lbl-color">Course</span>
                   <Select
                     //defaultValue={selectedOptions}
@@ -445,36 +665,32 @@ const SchemeRegistration = () => {
                 </div>
               </Form.Group>
               </div>
+              
+              
               <div className="col-md-4 mb-2">
-                <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Code</label>
-                <input type="text" class="form-control removespecialchar" placeholder="Enter Scheme Code" />
-              </div>
-              <div className="col-md-4 mb-2">
-                <label for="inputEmail4" className="form-label lbl-font lbl-color">Income</label>
-                <select className="form-select" name="InstituteCategory">
-                  <option value="">Select Income</option>
-                  <option value="a2l">Income above 2L</option>
-                  <option value="b2l">Income below 2L</option>
-                </select>
-              </div>
-              <div className="col-md-4 mb-2">
-                <label for="inputEmail4" className="form-label lbl-font lbl-color">Medium of Instruction</label>
+                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Medium of Instruction</label>
                 <select className="form-select" name="Course">
                   <option value="">Select Medium</option>
                   <option value="1">English</option>
                   <option value="1">Tamil</option>
-                </select>
+                </select> */}
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                  <div className="">
+                    <span className="form-label lbl-font lbl-color">Medium of Instruction</span>
+                    <Select
+                      //defaultValue={selectedOptions}
+                      isMulti
+                      options={[{ value: 'all', label: 'All' },{ value: 'English', label: 'English' },{ value: 'Tamil', label: 'Tamil' },]}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      //onChange={handleCommunityChange}
+                    />
+                  </div>
+                </Form.Group>
               </div>
               
-              <div className="col-md-4 mb-2">
-                <label for="inputEmail4" className="form-label lbl-font lbl-color">Course Type</label>
-                <select className="form-select" name="Course">
-                  <option value="">Select Course Type</option>
-                  <option value="1">Accredited</option>
-                  <option value="1">Non Accredited</option>
-                </select>
+              
               </div>
-            </div>
             <div className='separateComp row'>
               <div className="col-md-12 mb-2 mt-2">
                 <h4 className="page-title txt-red">
@@ -482,33 +698,13 @@ const SchemeRegistration = () => {
                 </h4>
               </div>
               <div className="col-md-4 mb-2">
-                <label for="inputEmail4" className="form-label lbl-font lbl-color">Religion</label>
-                <select className="form-select" name="Course">
-                  <option value="">Select Religion</option>
-                  <option value="1">Religion A</option>
-                  <option value="1">Religion B</option>
-                </select>
-              </div>
-              <div className="col-md-4 mb-2">
-                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Community</label>
-                <select className="form-select" name="Community">
-                  <option value="">Select Community</option>
-                  <option value="all">community</option>
-                  {
-                  Object.entries(community).map(([key,val]) => {
-                    return (
-                      <option key={key} value={val.community_name}>{val.community_name}</option>
-                    )
-                  })
-                }
-                </select> */}
-                <Form.Group className="mb-3 instituteApproveRejectForm">
-                <div className="instituteApproveRejectFormFilters">
-                  <span className="form-label lbl-font lbl-color">Community</span>
+              <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="">
+                  <span className="form-label lbl-font lbl-color">Religion</span>
                   <Select
                     //defaultValue={selectedOptions}
                     isMulti
-                    options={[{ value: 'all', label: 'All' }, ...communityOptions]}
+                    options={[{ value: 'all', label: 'All' }, ...religionOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     //onChange={handleCommunityChange}
@@ -517,24 +713,23 @@ const SchemeRegistration = () => {
               </Form.Group>
               </div>
               <div className="col-md-4 mb-2">
-                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Caste</label>
-                <select className="form-select" name="Caste">
-                  <option value="">Select Caste</option>
-                  <option value="all">ALL</option>
-                  {
-                  Object.entries(caste).map(([key,val]) => {
-                    return (
-                      Object.entries(val).map(([dataKey,dataVal]) => {
-                        return (
-                          <option key={dataKey} value={dataVal.caste_name}>{dataVal.caste_name}</option>
-                        )
-                      })
-                    )
-                  })
-                }
-                </select> */}
                 <Form.Group className="mb-3 instituteApproveRejectForm">
-                <div className="instituteApproveRejectFormFilters">
+                <div className="">
+                  <span className="form-label lbl-font lbl-color">Community</span>
+                  <Select
+                    //defaultValue={selectedOptions}
+                    isMulti
+                    options={[{ value: 'all', label: 'All' }, ...communityOptions]}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    onChange={handleCommunityChange}
+                  />
+                </div>
+              </Form.Group>
+              </div>
+              <div className="col-md-4 mb-2">
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="">
                   <span className="form-label lbl-font lbl-color">Caste</span>
                   <Select
                     //defaultValue={selectedOptions}
@@ -549,7 +744,7 @@ const SchemeRegistration = () => {
               </div>
               <div className="col-md-4 mb-2">
               <Form.Group className="mb-3 instituteApproveRejectForm">
-                <div className="instituteApproveRejectFormFilters">
+                <div className="">
                   <span className="form-label lbl-font lbl-color">Gender</span>
                   <Select
                     //defaultValue={selectedOptions}
@@ -561,34 +756,21 @@ const SchemeRegistration = () => {
                   />
                 </div>
               </Form.Group>
-                {/* <label for="inputEmail4" className="form-label lbl-font w-100 lbl-color">Gender</label>
-                <select className="form-select" name="Course">
-                  <option value="">Select Gender</option>
-                  <option value="all">ALL</option>
-                  {
-                  Object.entries(gender).map(([key,val]) => {
-                    return (
-                      Object.entries(val).map(([dataKey,dataVal]) => {
-                        return (
-                          <option key={dataKey} value={dataVal.display_text}>{dataVal.display_text}</option>
-                        )
-                      })
-                    )
-                  })
-                }  
-                </select> */}
-                 {/* <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions22" id="inlineRadio111" value="option1" />
-                  <label class="form-check-label" for="inlineRadio111">Male</label>
+              </div>
+              <div className="col-md-4 mb-2">
+              <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="">
+                  <span className="form-label lbl-font lbl-color">Income</span>
+                  <Select
+                    //defaultValue={selectedOptions}
+                    isMulti
+                    options={[{ value: 'all', label: 'All' }, ...incomeOptions]}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    //onChange={handleCommunityChange}
+                  />
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions22" id="inlineRadio2222" value="option2" />
-                  <label class="form-check-label" for="inlineRadio2222">Female</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions22" id="inlineRadio22222" value="option2" />
-                  <label class="form-check-label" for="inlineRadio22222">Transgender</label>
-                </div> */}
+              </Form.Group>
               </div>
             </div>
             <div className='separateComp row'>
@@ -598,32 +780,58 @@ const SchemeRegistration = () => {
                 </h4>
               </div>
               <div className="col-md-4 mb-2">
-                <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Residential Status</label>
-                <select className="form-select" name="StudentResidentialStatus">
-                  <option value="">Select Student Residential Status</option>
-                  <option value="1">Hosteller</option>
-                  <option value="1">Day Scholar</option>
-                </select>
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                  <div className="">
+                    <span className="form-label lbl-font lbl-color">Residential Status</span>
+                    <Select
+                      //defaultValue={selectedOptions}
+                      isMulti
+                      options={[{ value: 'all', label: 'All' },{ value: 'Hosteller', label: 'Hosteller' },{ value: 'Day Scholar', label: 'Day Scholar' },]}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      //onChange={handleCommunityChange}
+                    />
+                  </div>
+                </Form.Group>
               </div>
               <div className="col-md-4 mb-2">
-                <label for="inputEmail4" className="form-label lbl-font lbl-color">Physically Challenged</label>
-                <select className="form-select" name="PhysicallyChallenged">
-                  <option value="">Select Physically Challenged</option>
-                  <option value="1">Yes</option>
-                  <option value="1">No</option>
-                </select>
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                  <div className="">
+                    <span className="form-label lbl-font lbl-color">Disability Status</span>
+                    <Select
+                      //defaultValue={selectedOptions}
+                      //isMulti
+                      options={[{ value: 'Select', label: 'Select' },{ value: 'Yes', label: 'Yes' },{ value: 'No', label: 'No' },]}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      onChange={handledisabilityStatus}
+                    />
+                  </div>
+                </Form.Group>
               </div>
-              <div className="col-md-4 mb-2">
-                <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Category Physically Challenged</label>
-                <select className="form-select" name="SubCategoryPhysicallyChallenged">
-                  <option value="">Select Sub Category Physically Challenged</option>
-                  <option value="1">Sub Category A</option>
-                  <option value="1">Sub Category B</option>
-                </select>
+              {
+                disStatus && 
+                <div className="col-md-4 mb-2">
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                  <div className="">
+                    <span className="form-label lbl-font lbl-color">Disability Category</span>
+                    <Select
+                      //defaultValue={selectedOptions}
+                      //isMulti
+                      options={[ ...disabilityOptions]}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      //onChange={handleCommunityChange}
+                    />
+                  </div>
+                </Form.Group>
               </div>
-              <div className="col-md-4 mb-2 mt-2">
-                <a href="#" className="btn btn-success cus-btn">
-                  <i className="bi bi-send-check"></i> Save </a>
+              }
+              <div className='row'>
+                <div className="col-md-4 mb-2 mt-2">
+                  <a onClick={(e) => handleSave(e)} className="btn btn-success cus-btn">
+                    <i className="bi bi-send-check"></i> Save </a>
+                </div>
               </div>
             </div>
           </form>
@@ -1302,5 +1510,6 @@ const SchemeRegistration = () => {
     </div>
   </div>
 </div> 
+  </>
 )} 
 export default SchemeRegistration
