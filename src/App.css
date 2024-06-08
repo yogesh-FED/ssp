@@ -1830,3 +1830,6 @@ ul#myTab {
   background: #eee;
   margin-bottom: 1rem;
 }
+.form-check-label {
+  font-size: 14px;
+}

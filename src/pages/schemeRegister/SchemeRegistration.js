@@ -2,34 +2,14 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react' ; 
 import Select from 'react-select';
 import Form from 'react-bootstrap/Form';
-import SelectComp from '../SelectComp';
 const SchemeRegistration = () => { 
   const [formData, setFormData] = useState({
-    department: [],
-    subDepartment: [],
-    schemeName: '',
-    schemeCode: '',
-    education: [],
-    instituteType: [],
-    instituteCategory: [],
-    universityType: [],
-    university: [],
-    instituteName: [],
-    studentCategory: [],
-    class: [],
-    schoolCategory: [],
-    schoolType: [],
-    schoolName: [],
-    schoolClass: [],
-    stream: [],
-    course: [],
-    courseType: [],
-    medium: [],
-    religion: [],
-    community: [],
-    caste: [],
-    gender: [],
-    income: [],
+    department: [],subDepartment: [],schemeName: '',schemeCode: '',education: [],
+    instituteType: [],instituteCategory: [],universityType: [],university: [],
+    instituteName: [],studentCategory: [],class: [],schoolCategory: [],
+    schoolType: [],schoolName: [],schoolClass: [],stream: [],course: [],
+    courseType: [],medium: [],religion: [],community: [],caste: [],gender: [],income: [],
+    residentalStatus: [], disabilityStatus:[], disabilityCategory: [], schemeFeeType: []
   });
   const [departmentData, setDepartmentData] = useState([]);
   const [subDepartmentData, setSubDepartmentData] = useState([]);
@@ -47,49 +27,175 @@ const SchemeRegistration = () => {
   const [income, setIncome] = useState([]);
   const [disability, setDisability] = useState([]);
   const [courseTyp, setCourseTyp] = useState([]);
-  const [deptData, setDeptData] = useState([]);
+  const [disable, setDisable] = useState(true);
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded",
     'X-APP-KEY': 'te$t',
   };
   useEffect(() => {
     const fetchData = async () => { debugger;
-        try {
-            // Fetch department data
-            const departmentResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
-            setDepartmentData(departmentResponse.data?.data || []);
-        } catch (error) {
-            console.log('Error fetching department data:', error);
-        }
+      try {
+        const departmentResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
+        const communityResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
+        const religionResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
+        setReligion(religionResponse.data?.data || []);
+        const educationResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
+        const courseResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_courses', {user_id:1, stream_id: 0, course_type_id: 0}, {headers: headers});
+        setCourse(courseResponse.data?.data || []);
+        setEducation(educationResponse.data?.data || []);
+        setReligion(religionResponse.data?.data || []);
+        setDepartmentData(departmentResponse.data?.data || []);
+        setCommunity(communityResponse.data?.data || []);
+      } catch (error) {
+        console.log('Error fetching department data:', error);
+      }
     };
-
     fetchData();
 }, []);
-const [selectedDepartment, setSelectedDepartment] = useState(null);
-
-// const handleDepartmentChange = async (selectedOption) => { debugger;
-//   try {
-//       // Fetch sub department data based on selected department's ID
-//       const subDepartmentResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department', { user_id: 1, department_id: selectedOption[0].value }, {headers: headers});
-//       setSubDepartmentData(subDepartmentResponse.data?.data || []);
-//       selectedOption = [selectedOption];
-//       latestSelectedOption = selectedOption;
-//   } catch (error) {
-//       console.log('Error fetching sub department data:', error);
-//   }
-// };
 const handleSave = (e) => { debugger;
   e.preventDefault();
-  console.log('Form Data:', formData);
+  console.log('Form Data:', formData.department);
+  {
+    formData.instituteType.map((value, index) => {
+      return value
+    })
+  }
 };
-const handleCommunityChange = (e) => {
-  debugger
-  setFormData({ ...formData, community: e });
+// const handleCommunityChange = async (selectedOption) => { debugger;
+  
+// };
+const [forCourse, setForCourse] = useState([]);
+const handleStreamChange = (selectedOption) => {
+  setForCourse(selectedOption);
+};
+const handleCourseTypeChange = async (selectedOption) => {
+  console.log('setForCourseArr', selectedOption);
+}
+const handleSchemeName = (e) => {
+  const name = e.target.value;
+  setFormData({ ...formData, schemeName: name });
+}
+const handleSchemeCode = (e) => {
+  const code = e.target.value;
+  setFormData({ ...formData, schemeName: code });
+}
+const [school, setSchool] = useState(false);
+const [college, setCollege] = useState(false);
+const handleEducationChange = (e) => {
+  setFormData({ ...formData, education: e });
+  if(e.value === 'School') {
+    setSchool(true);
+    setCollege(false);
+  }
+  else {
+    setCollege(true);
+    setSchool(false);
+  }
+  if(e.value === 0) {
+    setCollege(false);
+    setSchool(false);
+  }
+}
+// const handleSchoolCtgChange = (selected) => {
+//   setFormData({ ...formData, schoolCategory: selected });
+// }
+// const handleSchoolTypChange = (selected) => {
+//   setFormData({ ...formData, schoolType: selected });
+// }
+// const handleSclNameChange = (selected) => {
+//   setFormData({ ...formData, schoolName: selected });
+// }
+// const handleInstTypChange = (selected) => {
+//   setFormData({ ...formData, instituteType: selected });
+// }
+// const handleInstCtgChange = (selected) => {
+//   setFormData({ ...formData, instituteCategory: selected });
+// }
+// const handleUnivTypeChange = (selected) => {
+//   setFormData({ ...formData, universityType: selected });
+// }
+// const handleUnivChange = (selected) => {
+//   setFormData({ ...formData, university: selected });
+// }
+// const handleInstNameChange = (selected) => {
+//   setFormData({ ...formData, instituteName: selected });
+// }
+// const handleStdCtgChange = (selected) => {
+//   setFormData({ ...formData, studentCategory: selected });
+// }
+// const handleCourseChange = (selected) => {
+//   setFormData({ ...formData, course: selected });
+// }
+// const handleMediumChange = (selected) => {
+//   setFormData({ ...formData, medium: selected });
+// }
+const [feeType, setFeeType] = useState(false);
+const handleOptionsChange = async (e, name) => { debugger;
+  if(name === 'community') {
+    setFormData({ ...formData, [name]: e });
+    try {
+      const communityIds = e.map(option => option.value);
+      const communityId = communityIds.map((communityId) => {
+        return communityId
+      });
+      const casteResponse = await axios.post(
+        'https://tngis.tnega.org/ssp_backend/api/v1/get_caste',
+        { user_id: 1, community_id: communityId },
+        { headers: headers }
+      );
+      setCaste(casteResponse.data?.data || []);
+    } catch (error) {
+      console.log('Error fetching sub department data:', error);
+    }
+  }
+  else if(name === 'schemeFeeType') {
+    if(e.value === 'Fixed') {
+      setFeeType(true);
+    } else {
+      setFeeType(false);
+    }
+  }
+  else if (name === 'disabilityStatus') {
+    setFormData({ ...formData, [name]: e.value });
+  }
+  else {
+    setFormData({ ...formData, [name]: e });
+  }
+}
+// const handleInstNameChange = (selected) => {
+//   setFormData({ ...formData, instituteName: selected });
+// }
+// const handleInstNameChange = (selected) => {
+//   setFormData({ ...formData, instituteName: selected });
+// }
+// const handleInstNameChange = (selected) => {
+//   setFormData({ ...formData, instituteName: selected });
+// }
+// const handleInstNameChange = (selected) => {
+//   setFormData({ ...formData, instituteName: selected });
+// }
+// const handleInstNameChange = (selected) => {
+//   setFormData({ ...formData, instituteName: selected });
+// }
+// const handleInstNameChange = (selected) => {
+//   setFormData({ ...formData, instituteName: selected });
+// }
+const [selectedOptions, setSelectedOptions] = useState([]);
+const handleSubDeptChange = (selected) => {
+  setSelectedOptions(selected);
+    const allOptionSelected = selected.some(option => option.value === 'all');
+    if (allOptionSelected) {
+      setSelectedOptions(subdeptOptions);
+      setFormData({ ...formData, subDepartment: subdeptOptions });
+    }
+    else {
+      setFormData({ ...formData, subDepartment: selected });
+    }
 }
 const handleDepartmentChange = async (selectedOption) => {
-  debugger;
+  setDisable(false);
   try {
-    //const latestSelectedOption = selectedOption[selectedOption.length - 1];
+    const latestSelectedOption = selectedOption[selectedOption.length - 1];
     const subDepartmentResponse = await axios.post(
       'https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department',
       { user_id: 1, department_id: selectedOption.value },
@@ -98,6 +204,9 @@ const handleDepartmentChange = async (selectedOption) => {
     setSubDepartmentData(subDepartmentResponse.data?.data || []);
     //selectedOption = [latestSelectedOption];
     setFormData({ ...formData, department: selectedOption.label });
+    if(selectedOption.length === 0) {
+      setDisable(true);
+    }
   } catch (error) {
     console.log('Error fetching sub department data:', error);
   }
@@ -108,7 +217,7 @@ const handleDepartmentChange = async (selectedOption) => {
             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_department', body: { user_id: 1 } },
             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department', body: { user_id: 1, department_id: 0 } },
             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_community', body: { user_id: 1 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_caste', body: { user_id: 1, community_id: 2 } },
+            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_caste', body: { user_id: 1, community_id: [6,2] } },
             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'EducationType' } },
             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_institute_category', body: { user_id: 1 } },
             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_streams', body: { user_id: 1 } },
@@ -137,15 +246,15 @@ const handleDepartmentChange = async (selectedOption) => {
                     // case 1:
                     //     setSubDepartmentData(response.data?.data || []);
                     //     break;
-                    case 2:
-                        setCommunity(response.data?.data || []);
-                        break;
-                    case 3:
-                        setCaste(response.data?.data || []);
-                        break;
-                    case 4:
-                        setEducation(response.data?.data || []);
-                        break;
+                    // case 2:
+                    //     setCommunity(response.data?.data || []);
+                    //     break;
+                    // case 3:
+                    //     setCaste(response.data?.data || []);
+                    //     break;
+                    // case 4:
+                    //     setEducation(response.data?.data || []);
+                    //     break;
                     case 5:
                         setInstitutionCat(response.data?.data || []);
                         break;
@@ -167,9 +276,9 @@ const handleDepartmentChange = async (selectedOption) => {
                     case 11:
                         setUnivTyp(response.data?.data || []);
                         break;
-                    case 12:
-                      setReligion(response.data?.data || []);
-                      break;
+                    // case 12:
+                    //   setReligion(response.data?.data || []);
+                    //   break;
                     case 13:
                         setIncome(response.data?.data || []);
                         break;
@@ -189,152 +298,135 @@ const handleDepartmentChange = async (selectedOption) => {
     };
     postDataToApi();
 }, []);
-  const univOptions = Object.entries(univ).map(([key, val]) => {
-    return(
-      {
-        value: val.university_name,
-        label: val.university_name
-      }
-    )
-  })
-  const courseTypOption = Object.entries(courseTyp).map(([key, val]) => {
-    return(
-      {
-        value: val.course_type,
-        label: val.course_type
-      }
-    )
-  })
-  const incomeOptions = Object.entries(income).map(([key, val]) => {
-    return(
-      {
-        value: val.income_range,
-        label: val.income_range
-      }
-    )
-  })
-  const religionOptions = Object.entries(religion).map(([key, val]) => {
-    return(
-      {
-        value: val.display_text,
-        label: val.display_text
-      }
-    )
-  })
-  const deptOptions = Object.entries(departmentData).map(([key, val]) => {
-    return(
-      {
-        value: val.id,
-        label: val.department_name
-      }
-    )
-  })
-  const genderOptions = Object.entries(gender).map(([key, val]) => {
-    return(
-      {
-        value: val.display_text,
-        label: val.display_text
-      }
-    )
-  })
-  const instTypOptions = Object.entries(instTyp).map(([key, val]) => {
-    return(
-      {
-        value: val.institute_type,
-        label: val.institute_type
-      }
-    )
-  })
-  const courseOptions = Object.entries(course).map(([key, val]) => {
-    return(
-      {
-        value: val.id,
-        label: val.course_name
-      }
-    )
-  })
-  const subdeptOptions = Object.entries(subDepartmentData).map(([key, val]) => {
-    return(
-      {
-        value: val.subdepartment_name,
-        label: val.subdepartment_name
-      }
-    )
-  })
-  
-  const communityOptions = Object.entries(community).map(([key, val]) => {
-    return(
-      {
-        value: val.community_name,
-        label: val.community_name
-      }
-    )
-  })
-  const casteOptions = Object.entries(caste).map(([key, val]) => {
-    return(
-      {
-        value: val.caste_name,
-        label: val.caste_name
-      }
-    )
-  })
-  const eduOptions = Object.entries(education).map(([key, val]) => {
-    return(
-      {
-        value: val.display_text,
-        label: val.display_text
-      }
-    )
-  })
-  const insCtOptions = Object.entries(institutionCat).map(([key, val]) => {
-    return(
-      {
-        value: val.institute_category,
-        label: val.institute_category
-      }
-    )
-  })
-  const streamOptions = Object.entries(stream).map(([key, val]) => {
-    return(
-      {
-        value: val.stream_name,
-        label: val.stream_name
-      }
-    )
-  })
-  const univTypOptions = Object.entries(univTyp).map(([key, val]) => {
-    return(
-      {
-        value: val.university_type,
-        label: val.university_type
-      }
-    )
-  })
-  const disabilityOptions = Object.entries(disability).map(([key, val]) => {
-    return(
-      {
-        value: val.disability_name,
-        label: val.disability_name
-      }
-    )
-  })
-  const [school, setSchool] = useState(false);
-  const [college, setCollege] = useState(false);
-  const handleEducationChange = (e) => { debugger;
-    if(e.value === 'School') {
-      setSchool(true);
-      setCollege(false);
+const univOptions = Object.entries(univ).map(([key, val]) => {
+  return(
+    {
+      value: val.university_name,
+      label: val.university_name
     }
-    else {
-      setCollege(true);
-      setSchool(false);
+  )
+})
+const courseTypOption = Object.entries(courseTyp).map(([key, val]) => {
+  return(
+    {
+      value: val.course_type,
+      label: val.course_type
     }
-    if(e.value === 0) {
-      setCollege(false);
-      setSchool(false);
+  )
+})
+const incomeOptions = Object.entries(income).map(([key, val]) => {
+  return(
+    {
+      value: val.income_range,
+      label: val.income_range
     }
-    
-  }
+  )
+})
+const religionOptions = Object.entries(religion).map(([key, val]) => {
+  return(
+    {
+      value: val.display_text,
+      label: val.display_text
+    }
+  )
+})
+const deptOptions = Object.entries(departmentData).map(([key, val]) => {
+  return(
+    {
+      value: val.id,
+      label: val.department_name
+    }
+  )
+})
+const genderOptions = Object.entries(gender).map(([key, val]) => {
+  return(
+    {
+      value: val.display_text,
+      label: val.display_text
+    }
+  )
+})
+const instTypOptions = Object.entries(instTyp).map(([key, val]) => {
+  return(
+    {
+      value: val.institute_type,
+      label: val.institute_type
+    }
+  )
+})
+const courseOptions = Object.entries(course).map(([key, val]) => {
+  return(
+    {
+      value: val.id,
+      label: val.course_name
+    }
+  )
+})
+const subdeptOptions = Object.entries(subDepartmentData).map(([key, val]) => {
+  return(
+    {
+      value: val.subdepartment_name,
+      label: val.subdepartment_name
+    }
+  )
+})
+
+const communityOptions = Object.entries(community).map(([key, val]) => {
+  return(
+    {
+      value: val.id,
+      label: val.community_name
+    }
+  )
+})
+const casteOptions = Object.entries(caste).map(([key, val]) => {
+  return(
+    {
+      value: val.caste_name,
+      label: val.caste_name
+    }
+  )
+})
+const eduOptions = Object.entries(education).map(([key, val]) => {
+  return(
+    {
+      value: val.display_text,
+      label: val.display_text
+    }
+  )
+})
+const insCtOptions = Object.entries(institutionCat).map(([key, val]) => {
+  return(
+    {
+      value: val.institute_category,
+      label: val.institute_category
+    }
+  )
+})
+const streamOptions = Object.entries(stream).map(([key, val]) => {
+  return(
+    {
+      value: val.stream_name,
+      label: val.stream_name
+    }
+  )
+})
+const univTypOptions = Object.entries(univTyp).map(([key, val]) => {
+  return(
+    {
+      value: val.university_type,
+      label: val.university_type
+    }
+  )
+})
+const disabilityOptions = Object.entries(disability).map(([key, val]) => {
+  return(
+    {
+      value: val.disability_name,
+      label: val.disability_name
+    }
+  )
+})
   const [showMore, setShowMore] = useState(false); 
   const [selectedFeesType, setSelectedFeesType] = useState(''); 
   const handleSelectChange = (event) => { setSelectedFeesType(event.target.value); }; 
@@ -382,7 +474,7 @@ const handleDepartmentChange = async (selectedOption) => {
                   <Select
                     //defaultValue={selectedOptions}
                     //isMulti
-                    options={[{ value: 'all', label: 'All' }, ...deptOptions]}
+                    options={[...deptOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     onChange={handleDepartmentChange}
@@ -400,19 +492,35 @@ const handleDepartmentChange = async (selectedOption) => {
                     options={[{ value: 'all', label: 'All' }, ...subdeptOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    //onChange={handleCommunityChange}
+                    onChange={handleSubDeptChange}
+                    isDisabled = {disable}
                   />
                 </div>
               </Form.Group>
             </div>
             <div className="col-md-4 mb-2">
               <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Name</label>
-              <input type="text" className="form-control removespecialchar" placeholder="Enter Scheme Name" />
+              <input type="text" className="form-control removespecialchar" placeholder="Enter Scheme Name" onChange={(e) => handleSchemeName(e)} />
             </div>
             <div className="col-md-4 mb-2">
                 <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Code</label>
-                <input type="text" class="form-control removespecialchar" placeholder="Enter Scheme Code" />
+                <input type="text" class="form-control removespecialchar" placeholder="Enter Scheme Code" onChange={(e) => handleSchemeCode(e)}/>
               </div>
+              <div className="col-md-4 mb-2">
+                  <Form.Group className="mb-3 instituteApproveRejectForm">
+                  <div className="">
+                    <span className="form-label lbl-font lbl-color">Scheme Fee Type</span>
+                    <Select
+                      //defaultValue={selectedOptions}
+                      //isMulti
+                      options={[{ value: 'Fixed', label: 'Fixed' }, { value: 'Part', label: 'Part' }]}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      onChange={(e) => handleOptionsChange(e, 'schemeFeeType')}
+                    />
+                  </div>
+                  </Form.Group>
+                </div>
             <div className='separateComp row'>
               <div className="col-md-12 mb-2 mt-2">
                 <h4 className="page-title txt-red">
@@ -447,7 +555,7 @@ const handleDepartmentChange = async (selectedOption) => {
                             options={[{ value: 'all', label: 'All' }]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            //onChange={handleCommunityChange}
+                            onChange={(e) => handleOptionsChange(e, 'schoolCategory')}
                           />
                         </div>
                       </Form.Group>
@@ -462,7 +570,7 @@ const handleDepartmentChange = async (selectedOption) => {
                             options={[{ value: 'all', label: 'All' }]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            //onChange={handleCommunityChange}
+                            onChange={(e) => handleOptionsChange(e, 'schoolType')}
                           />
                         </div>
                       </Form.Group>
@@ -477,7 +585,7 @@ const handleDepartmentChange = async (selectedOption) => {
                           options={[{ value: 'all', label: 'All' }]}
                           className="basic-multi-select"
                           classNamePrefix="select"
-                          //onChange={handleCommunityChange}
+                          onChange={(e) => handleOptionsChange(e, 'schoolName')}
                         />
                       </div>
                     </Form.Group>
@@ -498,7 +606,7 @@ const handleDepartmentChange = async (selectedOption) => {
                             options={[{ value: 'all', label: 'All' }, ...instTypOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            //onChange={handleCommunityChange}
+                            onChange={(e) => handleOptionsChange(e, 'instituteType')}
                           />
                         </div>
                       </Form.Group>
@@ -513,7 +621,7 @@ const handleDepartmentChange = async (selectedOption) => {
                             options={[{ value: 'all', label: 'All' }, ...insCtOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            //onChange={handleCommunityChange}
+                            onChange={(e) => handleOptionsChange(e, 'instituteCategory')}
                           />
                         </div>
                       </Form.Group>
@@ -528,7 +636,7 @@ const handleDepartmentChange = async (selectedOption) => {
                             options={[{ value: 'all', label: 'All' }, ...univTypOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            //onChange={handleCommunityChange}
+                            onChange={(e) => handleOptionsChange(e, 'universityType')}
                           />
                         </div>
                       </Form.Group>
@@ -543,7 +651,7 @@ const handleDepartmentChange = async (selectedOption) => {
                             options={[{ value: 'all', label: 'All' }, ...univOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            //onChange={handleCommunityChange}
+                            onChange={(e) => handleOptionsChange(e, 'university')}
                           />
                         </div>
                       </Form.Group>
@@ -558,7 +666,7 @@ const handleDepartmentChange = async (selectedOption) => {
                           options={[{ value: 'all', label: 'All' }]}
                           className="basic-multi-select"
                           classNamePrefix="select"
-                          //onChange={handleCommunityChange}
+                          onChange={(e) => handleOptionsChange(e, 'instituteName')}
                         />
                       </div>
                     </Form.Group>
@@ -573,7 +681,7 @@ const handleDepartmentChange = async (selectedOption) => {
                           options={[{ value: 'all', label: 'All' }]}
                           className="basic-multi-select"
                           classNamePrefix="select"
-                          //onChange={handleCommunityChange}
+                          onChange={(e) => handleOptionsChange(e, 'studentCategory')}
                         />
                       </div>
                     </Form.Group>
@@ -589,22 +697,6 @@ const handleDepartmentChange = async (selectedOption) => {
                 </h4>
               </div>
               <div className="col-md-4 mb-2">
-                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Stream</label>
-                <select className="form-select" name="Stream">
-                  <option value="">Select Stream</option>
-                  <option value="all">ALL</option>
-                  {
-                  Object.entries(stream).map(([key,val]) => {
-                    return (
-                      Object.entries(val).map(([dataKey,dataVal]) => {
-                        return (
-                          <option key={dataKey} value={dataVal.stream_name}>{dataVal.stream_name}</option>
-                        )
-                      })
-                    )
-                  })
-                }
-                </select> */}
                     <Form.Group className="mb-3 instituteApproveRejectForm">
                         <div className="">
                           <span className="form-label lbl-font lbl-color">Stream</span>
@@ -614,7 +706,8 @@ const handleDepartmentChange = async (selectedOption) => {
                             options={[{ value: 'all', label: 'All' }, ...streamOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            //onChange={handleCommunityChange}
+                            //onChange={handleStreamChange}
+                            onChange={(e) => handleOptionsChange(e, 'stream')}
                           />
                         </div>
                       </Form.Group>
@@ -629,28 +722,13 @@ const handleDepartmentChange = async (selectedOption) => {
                       options={[{ value: 'all', label: 'All' }, ...courseTypOption]}
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      //onChange={handleCommunityChange}
+                      //onChange={handleCourseTypeChange}
+                      onChange={(e) => handleOptionsChange(e, 'courseType')}
                     />
                   </div>
                 </Form.Group>
               </div>
               <div className="col-md-4 mb-2">
-                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Course</label>
-                <select className="form-select" name="Course">
-                  <option value="">Select Course</option>
-                  <option value="all">ALL</option>
-                  {
-                    Object.entries(course).map(([key,val]) => { debugger;
-                      return (
-                        Object.entries(val).map(([dataKey,dataVal]) => {
-                          return (
-                            <option key={dataKey} value={dataVal.course_type}>{dataVal.course_type}</option>
-                          )
-                        })
-                      )
-                    })
-                  }
-                </select> */}
                 <Form.Group className="mb-3 instituteApproveRejectForm">
                 <div className="">
                   <span className="form-label lbl-font lbl-color">Course</span>
@@ -660,7 +738,7 @@ const handleDepartmentChange = async (selectedOption) => {
                     options={[{ value: 'all', label: 'All' }, ...courseOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    //onChange={handleCommunityChange}
+                    onChange={(e) => handleOptionsChange(e, 'course')}
                   />
                 </div>
               </Form.Group>
@@ -668,12 +746,6 @@ const handleDepartmentChange = async (selectedOption) => {
               
               
               <div className="col-md-4 mb-2">
-                {/* <label for="inputEmail4" className="form-label lbl-font lbl-color">Medium of Instruction</label>
-                <select className="form-select" name="Course">
-                  <option value="">Select Medium</option>
-                  <option value="1">English</option>
-                  <option value="1">Tamil</option>
-                </select> */}
                 <Form.Group className="mb-3 instituteApproveRejectForm">
                   <div className="">
                     <span className="form-label lbl-font lbl-color">Medium of Instruction</span>
@@ -683,7 +755,7 @@ const handleDepartmentChange = async (selectedOption) => {
                       options={[{ value: 'all', label: 'All' },{ value: 'English', label: 'English' },{ value: 'Tamil', label: 'Tamil' },]}
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      //onChange={handleCommunityChange}
+                      onChange={(e) => handleOptionsChange(e, 'medium')}
                     />
                   </div>
                 </Form.Group>
@@ -707,7 +779,7 @@ const handleDepartmentChange = async (selectedOption) => {
                     options={[{ value: 'all', label: 'All' }, ...religionOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    //onChange={handleCommunityChange}
+                    onChange={(e) => handleOptionsChange(e, 'religion')}
                   />
                 </div>
               </Form.Group>
@@ -722,7 +794,8 @@ const handleDepartmentChange = async (selectedOption) => {
                     options={[{ value: 'all', label: 'All' }, ...communityOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    onChange={handleCommunityChange}
+                    //onChange={handleCommunityChange}
+                    onChange={(e) => handleOptionsChange(e, 'community')}
                   />
                 </div>
               </Form.Group>
@@ -737,7 +810,8 @@ const handleDepartmentChange = async (selectedOption) => {
                     options={[{ value: 'all', label: 'All' }, ...casteOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    //onChange={handleCommunityChange}
+                    //isDisabled = {disable}
+                    onChange={(e) => handleOptionsChange(e, 'caste')}
                   />
                 </div>
               </Form.Group>
@@ -752,7 +826,7 @@ const handleDepartmentChange = async (selectedOption) => {
                     options={[{ value: 'all', label: 'All' }, ...genderOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    //onChange={handleCommunityChange}
+                    onChange={(e) => handleOptionsChange(e, 'gender')}
                   />
                 </div>
               </Form.Group>
@@ -767,7 +841,7 @@ const handleDepartmentChange = async (selectedOption) => {
                     options={[{ value: 'all', label: 'All' }, ...incomeOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    //onChange={handleCommunityChange}
+                    onChange={(e) => handleOptionsChange(e, 'income')}
                   />
                 </div>
               </Form.Group>
@@ -789,7 +863,7 @@ const handleDepartmentChange = async (selectedOption) => {
                       options={[{ value: 'all', label: 'All' },{ value: 'Hosteller', label: 'Hosteller' },{ value: 'Day Scholar', label: 'Day Scholar' },]}
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      //onChange={handleCommunityChange}
+                      onChange={(e) => handleOptionsChange(e, 'residentalStatus')}
                     />
                   </div>
                 </Form.Group>
@@ -804,7 +878,8 @@ const handleDepartmentChange = async (selectedOption) => {
                       options={[{ value: 'Select', label: 'Select' },{ value: 'Yes', label: 'Yes' },{ value: 'No', label: 'No' },]}
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      onChange={handledisabilityStatus}
+                      //onChange={handledisabilityStatus}
+                      onChange={(e) => handleOptionsChange(e, 'disabilityStatus')}
                     />
                   </div>
                 </Form.Group>
@@ -821,7 +896,7 @@ const handleDepartmentChange = async (selectedOption) => {
                       options={[ ...disabilityOptions]}
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      //onChange={handleCommunityChange}
+                      onChange={(e) => handleOptionsChange(e, 'disabilityCategory')}
                     />
                   </div>
                 </Form.Group>
@@ -846,14 +921,12 @@ const handleDepartmentChange = async (selectedOption) => {
                   </h4>
                 </div>
                 <div className="col-md-12 mb-2">
-                  <label for="inputEmail4" className="form-label lbl-font lbl-color">Department</label> {/* <select className="form-select" name="department">
-                    <option value="">Select Department</option>
-                    <option value="1" selected>Department A</option>
-                  </select> */} <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label class="form-check-label" for="flexCheckDefault"> Department A </label>
-                  </div>
+                  <label for="inputEmail4" className="form-label lbl-font lbl-color">Department</label>
                   <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value={formData.department} id="flexCheckDefault" />
+                    <label class="form-check-label" for="flexCheckDefault"> {formData.department} </label>
+                  </div>
+                  {/* <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked />
                     <label class="form-check-label" for="flexCheckChecked"> Department B </label>
                   </div>
@@ -864,13 +937,21 @@ const handleDepartmentChange = async (selectedOption) => {
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2" />
                     <label class="form-check-label" for="flexCheckDefault2"> Department D </label>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="col-md-12 mb-2">
-                  <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Department</label> {/* <select className="form-select" name="SubDepartment">
-                    <option value="">Select Sub Department</option>
-                    <option value="India" selected>Sub Department A</option>
-                  </select> */} <div class="form-check">
+                  <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Department</label>
+                  {
+                    formData.subDepartment.map((value, index) => { debugger;
+                      return (
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault5" />
+                          <label class="form-check-label" for="flexCheckDefault5"> {value.label} </label>
+                        </div>
+                      )
+                    })
+                  }
+                  {/* <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault5" />
                     <label class="form-check-label" for="flexCheckDefault5"> Sub Department A </label>
                   </div>
@@ -885,16 +966,13 @@ const handleDepartmentChange = async (selectedOption) => {
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault28" />
                     <label class="form-check-label" for="flexCheckDefault28"> Sub Department D </label>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="col-md-12 mb-2">
-                  <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Name</label> {/* <input type="text" className="form-control removespecialchar" value="Scheme Name A" /> */} <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11" checked />
-                    <label class="form-check-label" for="flexCheckDefault11"> Scheme Name A </label>
-                  </div>
+                  <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Name</label>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault22" />
-                    <label class="form-check-label" for="flexCheckDefault22"> Scheme Name B </label>
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11" />
+                    <label class="form-check-label" for="flexCheckDefault11"> {formData.schemeName} </label>
                   </div>
                 </div>
                 <div class="accordion" id="accordionExample">
@@ -905,40 +983,43 @@ const handleDepartmentChange = async (selectedOption) => {
                     <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                       <div class="accordion-body">
                         <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Category</label> {/* <select className="form-select" name="InstituteCategory">
-                            <option value="">Select Institute Category</option>
-                            <option value="1" selected>Institute Category A</option>
-                          </select> */} <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault111" checked />
-                            <label class="form-check-label" for="flexCheckDefault111"> Institute Category A </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault112" />
-                            <label class="form-check-label" for="flexCheckDefault112"> Institute Category B </label>
-                          </div>
+                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Category</label> 
+                          {
+                            formData.instituteCategory.map((value, index) => {
+                              return (
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault111" />
+                                  <label class="form-check-label" for="flexCheckDefault111"> {
+                                    value.label} </label>
+                                </div>
+                              )
+                            })
+                          }
                         </div>
                         <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Type</label> {/* <select className="form-select" name="InstituteType">
-                            <option value="">Select Institute Type</option>
-                            <option value="1" selected>Institute Type A</option>
-                          </select> */} <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1112" />
-                            <label class="form-check-label" for="flexCheckDefault1112"> Institute Type A </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1113" checked />
-                            <label class="form-check-label" for="flexCheckDefault1113"> Institute Type B </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1114" />
-                            <label class="form-check-label" for="flexCheckDefault1114"> Institute Type C </label>
-                          </div>
+                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Type</label>
+                          {
+                            formData.instituteType.map((value, index) => {
+                              return (
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault1112" />
+                                  <label class="form-check-label" for="flexCheckDefault1112"> {value.label} </label>
+                                </div>
+                              )
+                            })
+                          }
                         </div>
                         <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Name</label> {/* <select className="form-select" name="InstituteName">
-                            <option value="">Select Institute Name</option>
-                            <option value="1" selected>Institute Name A</option>
-                          </select> */} <div class="form-check">
+                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Name</label>
+                          {/* {
+                            formData.instituteName.map((value, index) => {
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault1112" />
+                                <label class="form-check-label" for="flexCheckDefault1112"> {value.label} </label>
+                              </div>
+                            })
+                          } */}
+                          <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11131" checked />
                             <label class="form-check-label" for="flexCheckDefault11131"> Institute Name A </label>
                           </div>
@@ -948,30 +1029,30 @@ const handleDepartmentChange = async (selectedOption) => {
                           </div>
                         </div>
                         <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Community</label> {/* <select className="form-select" name="Community">
-                            <option value="">Select Community</option>
-                            <option value="1" selected>Community A</option>
-                          </select> */} <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault77" />
-                            <label class="form-check-label" for="flexCheckDefault77"> Community A </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault66" checked />
-                            <label class="form-check-label" for="flexCheckDefault66"> Community B </label>
-                          </div>
+                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Community</label> 
+                          {
+                            formData.community.map((value, i) => {
+                              return (
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value= {value.label} id="flexCheckDefault77" />
+                                  <label class="form-check-label" for="flexCheckDefault77"> {value.label} </label>
+                                </div>
+                              )
+                            })
+                          }
                         </div>
                         <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Caste</label> {/* <select className="form-select" name="Caste">
-                            <option value="">Select Caste</option>
-                            <option value="1" selected>Caste A</option>
-                          </select> */} <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault666" checked />
-                            <label class="form-check-label" for="flexCheckDefault666"> Caste A </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault667" />
-                            <label class="form-check-label" for="flexCheckDefault667"> Caste B </label>
-                          </div>
+                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Caste</label>
+                          {
+                            formData.caste.map((value, i) => {
+                              return (
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault666" checked />
+                                  <label class="form-check-label" for="flexCheckDefault666"> {value.label} </label>
+                                </div>
+                              )
+                            })
+                          }
                         </div>
                         <div className="col-md-12 mb-2">
                           <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Category</label> {/* <select className="form-select" name="StudentCategory">
@@ -987,30 +1068,30 @@ const handleDepartmentChange = async (selectedOption) => {
                           </div>
                         </div>
                         <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Stream</label> {/* <select className="form-select" name="Stream">
-                            <option value="">Select Stream</option>
-                            <option value="1" selected>Stream A</option>
-                          </select> */} <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4561" checked />
-                            <label class="form-check-label" for="flexCheckDefault4561"> Stream A </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4562" />
-                            <label class="form-check-label" for="flexCheckDefault4562"> Stream B </label>
-                          </div>
+                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Stream</label> 
+                            {
+                              formData.stream.map((value, i) => { debugger;
+                                return (
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value={value.label}id="flexCheckDefault4561" />
+                                    <label class="form-check-label" for="flexCheckDefault4561"> {value.label} </label>
+                                  </div>
+                                )
+                              })
+                            }
                         </div>
                         <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Course</label> {/* <select className="form-select" name="Course">
-                            <option value="">Select Course</option>
-                            <option value="1" selected>Course A</option>
-                          </select> */} <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault45612" />
-                            <label class="form-check-label" for="flexCheckDefault45612"> Course A </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault45613" checked />
-                            <label class="form-check-label" for="flexCheckDefault45613"> Course A </label>
-                          </div>
+                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Course</label> 
+                          {
+                            formData.course.map((value, i) => {
+                              return (
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault45612" />
+                                  <label class="form-check-label" for="flexCheckDefault45612"> {value.label} </label>
+                                </div>
+                              )
+                            })
+                          }
                         </div>
                       </div>
                     </div>
@@ -1022,46 +1103,37 @@ const handleDepartmentChange = async (selectedOption) => {
                     <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                       <div class="accordion-body">
                         <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Residential Status</label> {/* <select className="form-select" name="StudentResidentialStatus">
-                            <option value="">Select Student Residential Status</option>
-                            <option value="1">Hosteller</option>
-                            <option value="2" selected>Day Scholar</option>
-                          </select> */} <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault456134" checked />
-                            <label class="form-check-label" for="flexCheckDefault456134"> Hosteller </label>
-                          </div>
+                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Residential Status</label> 
+                          {
+                            formData.residentalStatus.map((value, i) => {
+                              return (
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault456134" />
+                                  <label class="form-check-label" for="flexCheckDefault456134"> {value.label} </label>
+                                </div>
+                              )
+                            })
+                          }
+                        </div>
+                        <div className="col-md-12 mb-2">
+                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Disability Status</label> 
                           <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault456137" />
-                            <label class="form-check-label" for="flexCheckDefault456137"> Day Scholar </label>
+                            <input class="form-check-input" type="checkbox" value={formData.disabilityStatus} id="flexCheckDefault4561341" />
+                            <label class="form-check-label" for="flexCheckDefault4561341"> {formData.disabilityStatus} </label>
                           </div>
                         </div>
                         <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Physically Challenged</label> {/* <select className="form-select" name="PhysicallyChallenged">
-                            <option value="">Select Physically Challenged</option>
-                            <option value="1">Yes</option>
-                            <option value="2" selected>No</option>
-                          </select> */} <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4561341" checked />
-                            <label class="form-check-label" for="flexCheckDefault4561341"> Yes </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4561342" />
-                            <label class="form-check-label" for="flexCheckDefault4561342"> No </label>
-                          </div>
-                        </div>
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Category Physically Challenged</label> {/* <select className="form-select" name="SubCategoryPhysicallyChallenged">
-                            <option value="">Select Sub Category Physically Challenged</option>
-                            <option value="1">Sub Category A</option>
-                            <option value="2" selected>Sub Category B</option>
-                          </select> */} <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault45613412" />
-                            <label class="form-check-label" for="flexCheckDefault45613412"> Sub Category A </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault45613414" checked />
-                            <label class="form-check-label" for="flexCheckDefault45613414"> Sub Category B </label>
-                          </div>
+                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Disability Category</label> 
+                          {
+                            formData.disabilityCategory.map((value, i) => {
+                              return (
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault45613412" />
+                                  <label class="form-check-label" for="flexCheckDefault45613412"> {value.label} </label>
+                                </div>
+                              )
+                            })
+                          }
                         </div>
                       </div>
                     </div>
@@ -1154,7 +1226,7 @@ const handleDepartmentChange = async (selectedOption) => {
                                   <div className="col-lg-6">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" />
+                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
                                     </div>
                                   </div>
                                   <div className="col-lg-5">
@@ -1165,7 +1237,7 @@ const handleDepartmentChange = async (selectedOption) => {
                                         <option value="2">Fixed Ceiling</option>
                                         <option value="3">Partial</option>
                                       </select> */} <div>
-                                        <select className="form-select" aria-label="Default select fees type" onChange={handleSelectChange}>
+                                        <select disabled={feeType} className="form-select" aria-label="Default select fees type" onChange={handleSelectChange}>
                                           <option value="">Select Fees Type</option>
                                           <option value="full">Full</option>
                                           <option value="fixedceiling">Fixed Ceiling</option>
@@ -1189,13 +1261,13 @@ const handleDepartmentChange = async (selectedOption) => {
                                   <div className="col-lg-6">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" />
+                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
                                     </div>
                                   </div>
                                   <div className="col-lg-5">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
-                                      <select class="form-select" aria-label="Default select fees type">
+                                      <select disabled={feeType} class="form-select" aria-label="Default select fees type">
                                         <option selected>select Fees Type</option>
                                         <option value="1">Full</option>
                                         <option value="2">Fixed Ceiling</option>
@@ -1218,13 +1290,13 @@ const handleDepartmentChange = async (selectedOption) => {
                                   <div className="col-lg-6">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" />
+                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
                                     </div>
                                   </div>
                                   <div className="col-lg-5">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
-                                      <select class="form-select" aria-label="Default select fees type">
+                                      <select disabled={feeType} class="form-select" aria-label="Default select fees type">
                                         <option selected>select Fees Type</option>
                                         <option value="1">Full</option>
                                         <option value="2">Fixed Ceiling</option>
@@ -1247,13 +1319,13 @@ const handleDepartmentChange = async (selectedOption) => {
                                   <div className="col-lg-6">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" />
+                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
                                     </div>
                                   </div>
                                   <div className="col-lg-5">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
-                                      <select class="form-select" aria-label="Default select fees type">
+                                      <select disabled={feeType} class="form-select" aria-label="Default select fees type">
                                         <option selected>select Fees Type</option>
                                         <option value="1">Full</option>
                                         <option value="2">Fixed Ceiling</option>
@@ -1276,13 +1348,13 @@ const handleDepartmentChange = async (selectedOption) => {
                                   <div className="col-lg-6">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" />
+                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
                                     </div>
                                   </div>
                                   <div className="col-lg-5">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
-                                      <select class="form-select" aria-label="Default select fees type">
+                                      <select disabled={feeType} class="form-select" aria-label="Default select fees type">
                                         <option selected>select Fees Type</option>
                                         <option value="1">Full</option>
                                         <option value="2">Fixed Ceiling</option>
@@ -1305,13 +1377,13 @@ const handleDepartmentChange = async (selectedOption) => {
                                   <div className="col-lg-6">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" />
+                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
                                     </div>
                                   </div>
                                   <div className="col-lg-5">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
-                                      <select class="form-select" aria-label="Default select fees type">
+                                      <select disabled={feeType} class="form-select" aria-label="Default select fees type">
                                         <option selected>select Fees Type</option>
                                         <option value="1">Full</option>
                                         <option value="2">Fixed Ceiling</option>
