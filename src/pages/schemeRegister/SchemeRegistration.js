@@ -11,6 +11,7 @@ const SchemeRegistration = () => {
     courseType: [],medium: [],religion: [],community: [],caste: [],gender: [],income: [],
     residentalStatus: [], disabilityStatus:[], disabilityCategory: [], schemeFeeType: []
   });
+  console.log(formData.disabilityStatus, 'formData.department');
   const [departmentData, setDepartmentData] = useState([]);
   const [subDepartmentData, setSubDepartmentData] = useState([]);
   const [community, setCommunity] = useState([]);
@@ -52,7 +53,9 @@ const SchemeRegistration = () => {
     };
     fetchData();
 }, []);
-const handleSave = (e) => { debugger;
+const [active, setActive] = useState('home-tab-pane');
+const handleSave = (e, tabId) => { debugger;
+  setActive(tabId)
   e.preventDefault();
   console.log('Form Data:', formData.department);
   {
@@ -180,6 +183,9 @@ const handleOptionsChange = async (e, name) => { debugger;
 // const handleInstNameChange = (selected) => {
 //   setFormData({ ...formData, instituteName: selected });
 // }
+const getCheckedValue = (e) => {
+  const t = e.target.value;
+}
 const [selectedOptions, setSelectedOptions] = useState([]);
 const handleSubDeptChange = (selected) => {
   setSelectedOptions(selected);
@@ -438,6 +444,9 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
       setDisStatus(false);
     }
   }
+  const handleTabClick = (tabId) => {
+    setActive(tabId);
+  };
   return ( 
   <>
   <div className="row mb-2 mt-2">
@@ -452,20 +461,20 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
     <div className="card-body pt-3">
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
+          <button onClick={() => handleTabClick('home-tab-pane')} class={`nav-link ${active === 'home-tab-pane' ? 'active' : ''}`} id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
             <i class="bi bi-file-earmark-text"></i> Scheme Details </button>
         </li>
         <li class="nav-item mx-2" role="presentation">
-          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+          <button onClick={() => handleTabClick('profile-tab-pane')} class={`nav-link mx-2 ${active === 'profile-tab-pane' ? 'active' : ''}`} id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
             <i class="bi bi-award"></i> Scholarship - Fee Details </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
+          <button onClick={() => handleTabClick('contact-tab-pane')} class={`nav-link ${active === 'contact-tab-pane' ? 'active' : ''}`} id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
             <i class="bi bi-check2-circle"></i> Scheme Characteristics </button>
         </li>
       </ul>
       <div class="tab-content my-3" id="myTabContent">
-        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+        <div className={`tab-pane fade ${active === 'home-tab-pane' ? 'show active' : ''}`} id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
           <form className="row">
             <div className="col-md-4 mb-2">
               <Form.Group className="mb-3 instituteApproveRejectForm">
@@ -904,14 +913,14 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
               }
               <div className='row'>
                 <div className="col-md-4 mb-2 mt-2">
-                  <a onClick={(e) => handleSave(e)} className="btn btn-success cus-btn">
+                  <a onClick={(e) => handleSave(e, 'profile-tab-pane')} className="btn btn-success cus-btn">
                     <i className="bi bi-send-check"></i> Save </a>
                 </div>
               </div>
             </div>
           </form>
         </div>
-        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+        <div className={`tab-pane fade ${active === 'profile-tab-pane' ? 'show active' : ''}`} id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
           <div className="row">
             <div className="col-lg-3">
               <div className="alert alert-warning">
@@ -922,22 +931,12 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
                 </div>
                 <div className="col-md-12 mb-2">
                   <label for="inputEmail4" className="form-label lbl-font lbl-color">Department</label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value={formData.department} id="flexCheckDefault" />
-                    <label class="form-check-label" for="flexCheckDefault"> {formData.department} </label>
-                  </div>
-                  {/* <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked />
-                    <label class="form-check-label" for="flexCheckChecked"> Department B </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" />
-                    <label class="form-check-label" for="flexCheckDefault1"> Department C </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2" />
-                    <label class="form-check-label" for="flexCheckDefault2"> Department D </label>
-                  </div> */}
+                  { formData.department.length === 0 ? '' :
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" onClick={(e) => getCheckedValue(e)} value={formData.department} id="flexCheckDefault" />
+                      <label class="form-check-label" for="flexCheckDefault"> {formData.department} </label>
+                    </div>
+                  }
                 </div>
                 <div className="col-md-12 mb-2">
                   <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Department</label>
@@ -951,29 +950,16 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
                       )
                     })
                   }
-                  {/* <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault5" />
-                    <label class="form-check-label" for="flexCheckDefault5"> Sub Department A </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked6" checked />
-                    <label class="form-check-label" for="flexCheckChecked6"> Sub Department B </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault17" />
-                    <label class="form-check-label" for="flexCheckDefault17"> Sub Department C </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault28" />
-                    <label class="form-check-label" for="flexCheckDefault28"> Sub Department D </label>
-                  </div> */}
                 </div>
                 <div className="col-md-12 mb-2">
                   <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Name</label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11" />
-                    <label class="form-check-label" for="flexCheckDefault11"> {formData.schemeName} </label>
-                  </div>
+                  {
+                    formData.schemeName === '' ? '' :
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11" />
+                      <label class="form-check-label" for="flexCheckDefault11"> {formData.schemeName} </label>
+                    </div>
+                  }
                 </div>
                 <div class="accordion" id="accordionExample">
                   <div class="accordion-item">
@@ -1073,7 +1059,7 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
                               formData.stream.map((value, i) => { debugger;
                                 return (
                                   <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value={value.label}id="flexCheckDefault4561" />
+                                    <input class="form-check-input" type="checkbox" value={value.label}id="flexCheckDefault4561" onClick={(e) => getCheckedValue(e)}/>
                                     <label class="form-check-label" for="flexCheckDefault4561"> {value.label} </label>
                                   </div>
                                 )
@@ -1117,10 +1103,13 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
                         </div>
                         <div className="col-md-12 mb-2">
                           <label for="inputEmail4" className="form-label lbl-font lbl-color">Disability Status</label> 
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value={formData.disabilityStatus} id="flexCheckDefault4561341" />
-                            <label class="form-check-label" for="flexCheckDefault4561341"> {formData.disabilityStatus} </label>
-                          </div>
+                          {
+                            formData.disabilityStatus.length === 0 ? '' :
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value={formData.disabilityStatus} id="flexCheckDefault4561341" />
+                              <label class="form-check-label" for="flexCheckDefault4561341"> {formData.disabilityStatus} </label>
+                            </div>
+                          }
                         </div>
                         <div className="col-md-12 mb-2">
                           <label for="inputEmail4" className="form-label lbl-font lbl-color">Disability Category</label> 
@@ -1427,7 +1416,7 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
             </div>
           </div>
         </div>
-        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+        <div className={`tab-pane fade ${active === 'contact-tab-pane' ? 'show active' : ''}`} id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
           <div className="col-lg-12 mb-2">
             <div className="alert alert-success py-1">
               <form className="row">
