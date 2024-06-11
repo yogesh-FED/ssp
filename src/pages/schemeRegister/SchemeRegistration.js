@@ -2,7 +2,9 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react' ; 
 import Select from 'react-select';
 import Form from 'react-bootstrap/Form';
-const SchemeRegistration = () => { 
+const SchemeRegistration = () => {
+  const PRODUCTION_END_POINT_API = 'https://tngis.tnega.org/';
+  const IP_END_POINT_API = 'https://192.168.4.251/';
   const [formData, setFormData] = useState({
     department: [],subDepartment: [],schemeName: '',schemeCode: '',education: [],
     instituteType: [],instituteCategory: [],universityType: [],university: [],
@@ -11,7 +13,6 @@ const SchemeRegistration = () => {
     courseType: [],medium: [],religion: [],community: [],caste: [],gender: [],income: [],
     residentalStatus: [], disabilityStatus:[], disabilityCategory: [], schemeFeeType: []
   });
-  console.log(formData.disabilityStatus, 'formData.department');
   const [departmentData, setDepartmentData] = useState([]);
   const [subDepartmentData, setSubDepartmentData] = useState([]);
   const [community, setCommunity] = useState([]);
@@ -33,26 +34,49 @@ const SchemeRegistration = () => {
     "Content-Type": "application/x-www-form-urlencoded",
     'X-APP-KEY': 'te$t',
   };
-  useEffect(() => {
-    const fetchData = async () => { debugger;
+  useEffect(() => { debugger;
+    const fetchData = async () => {
       try {
-        const departmentResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
-        const communityResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
-        const religionResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
-        setReligion(religionResponse.data?.data || []);
-        const educationResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
-        const courseResponse = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/get_courses', {user_id:1, stream_id: 0, course_type_id: 0}, {headers: headers});
-        setCourse(courseResponse.data?.data || []);
-        setEducation(educationResponse.data?.data || []);
-        setReligion(religionResponse.data?.data || []);
-        setDepartmentData(departmentResponse.data?.data || []);
-        setCommunity(communityResponse.data?.data || []);
+        const INST_CTG_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institute_category', {user_id:1}, {headers: headers});
+        const INST_TYP_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institutetypes', {user_id:1}, {headers: headers});
+        const DEPT_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
+        const COMMUNITY_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
+        const RELIGION_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
+        const EDU_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
+        const COURSE_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_courses', {user_id:1, stream_id: [1], course_type_id: [1]}, {headers: headers});
+        //const UNIVERSITY_TYPE_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_university_types', {user_id:1, ownership_id: [1]}, {headers: headers});
+        const UNIVERSITY_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_universities', {user_id:1, university_type_id: [1]}, {headers: headers});
+        const STREAM_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_streams', {user_id:1}, {headers: headers});
+        const COURSE_TYPE_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_course_types', {user_id:1}, {headers: headers});
+        const GENDER_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Gender'}, {headers: headers});
+        const INCOME_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_income_ranges', {user_id:1, category:'Income'}, {headers: headers});
+        setIncome(INCOME_API.data?.data || []);
+        setGender(GENDER_API.data?.data || []);
+        setCourseTyp(COURSE_TYPE_API.data?.data || []);
+        setStream(STREAM_API.data?.data || []);
+        setUniv(UNIVERSITY_API.data?.data || []);
+        setCourse(COURSE_API.data?.data || []);
+        setEducation(EDU_API.data?.data || []);
+        setDepartmentData(DEPT_API.data?.data || []);
+        setCommunity(COMMUNITY_API.data?.data || []);
+        setReligion(RELIGION_API.data?.data || []);
+        setInstTyp(INST_TYP_API.data?.data || []);
+        setInstitutionCat(INST_CTG_API.data?.data || []);
+        //setUnivTyp(UNIVERSITY_TYPE_API.data?.data || []);
       } catch (error) {
         console.log('Error fetching department data:', error);
       }
     };
     fetchData();
 }, []);
+const [showINEX, setShowINEX] = useState(false);
+const handleINEX = (e) => { debugger;
+  if(e.target.value === "1") {
+    setShowINEX(true)
+  } else {
+    setShowINEX(false)
+  }
+}
 const [active, setActive] = useState('home-tab-pane');
 const handleSave = (e, tabId) => { debugger;
   setActive(tabId)
@@ -64,9 +88,6 @@ const handleSave = (e, tabId) => { debugger;
     })
   }
 };
-// const handleCommunityChange = async (selectedOption) => { debugger;
-  
-// };
 const [forCourse, setForCourse] = useState([]);
 const handleStreamChange = (selectedOption) => {
   setForCourse(selectedOption);
@@ -99,90 +120,6 @@ const handleEducationChange = (e) => {
     setSchool(false);
   }
 }
-// const handleSchoolCtgChange = (selected) => {
-//   setFormData({ ...formData, schoolCategory: selected });
-// }
-// const handleSchoolTypChange = (selected) => {
-//   setFormData({ ...formData, schoolType: selected });
-// }
-// const handleSclNameChange = (selected) => {
-//   setFormData({ ...formData, schoolName: selected });
-// }
-// const handleInstTypChange = (selected) => {
-//   setFormData({ ...formData, instituteType: selected });
-// }
-// const handleInstCtgChange = (selected) => {
-//   setFormData({ ...formData, instituteCategory: selected });
-// }
-// const handleUnivTypeChange = (selected) => {
-//   setFormData({ ...formData, universityType: selected });
-// }
-// const handleUnivChange = (selected) => {
-//   setFormData({ ...formData, university: selected });
-// }
-// const handleInstNameChange = (selected) => {
-//   setFormData({ ...formData, instituteName: selected });
-// }
-// const handleStdCtgChange = (selected) => {
-//   setFormData({ ...formData, studentCategory: selected });
-// }
-// const handleCourseChange = (selected) => {
-//   setFormData({ ...formData, course: selected });
-// }
-// const handleMediumChange = (selected) => {
-//   setFormData({ ...formData, medium: selected });
-// }
-const [feeType, setFeeType] = useState(false);
-const handleOptionsChange = async (e, name) => { debugger;
-  if(name === 'community') {
-    setFormData({ ...formData, [name]: e });
-    try {
-      const communityIds = e.map(option => option.value);
-      const communityId = communityIds.map((communityId) => {
-        return communityId
-      });
-      const casteResponse = await axios.post(
-        'https://tngis.tnega.org/ssp_backend/api/v1/get_caste',
-        { user_id: 1, community_id: communityId },
-        { headers: headers }
-      );
-      setCaste(casteResponse.data?.data || []);
-    } catch (error) {
-      console.log('Error fetching sub department data:', error);
-    }
-  }
-  else if(name === 'schemeFeeType') {
-    if(e.value === 'Fixed') {
-      setFeeType(true);
-    } else {
-      setFeeType(false);
-    }
-  }
-  else if (name === 'disabilityStatus') {
-    setFormData({ ...formData, [name]: e.value });
-  }
-  else {
-    setFormData({ ...formData, [name]: e });
-  }
-}
-// const handleInstNameChange = (selected) => {
-//   setFormData({ ...formData, instituteName: selected });
-// }
-// const handleInstNameChange = (selected) => {
-//   setFormData({ ...formData, instituteName: selected });
-// }
-// const handleInstNameChange = (selected) => {
-//   setFormData({ ...formData, instituteName: selected });
-// }
-// const handleInstNameChange = (selected) => {
-//   setFormData({ ...formData, instituteName: selected });
-// }
-// const handleInstNameChange = (selected) => {
-//   setFormData({ ...formData, instituteName: selected });
-// }
-// const handleInstNameChange = (selected) => {
-//   setFormData({ ...formData, instituteName: selected });
-// }
 const getCheckedValue = (e) => {
   const t = e.target.value;
 }
@@ -217,93 +154,48 @@ const handleDepartmentChange = async (selectedOption) => {
     console.log('Error fetching sub department data:', error);
   }
 };
-  useEffect(() => {
-    const postDataToApi = async () => {
-        const urls = [
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_department', body: { user_id: 1 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department', body: { user_id: 1, department_id: 0 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_community', body: { user_id: 1 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_caste', body: { user_id: 1, community_id: [6,2] } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'EducationType' } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_institute_category', body: { user_id: 1 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_streams', body: { user_id: 1 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_courses', body: { user_id: 1, stream_id: 0, course_type_id: 0 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_institutetypes', body: { user_id: 1 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'Gender' } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_universities', body: { user_id: 1, university_type_id: 0 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_university_types', body: { user_id: 1, ownership_id: 1 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'Religion' } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_income_ranges', body: { user_id: 1 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_differentlyabled', body: { user_id: 1 } },
-            { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_course_types', body: { user_id: 1 } }
-        ];
-        const headers = {
-            "Content-Type": "application/x-www-form-urlencoded",
-            'X-APP-KEY': 'te$t',
-        };
-        try {
-            const requests = urls.map(({ url, body }) => axios.post(url, body, { headers }));
-            const responses = await axios.all(requests);
-            responses.forEach((response, index) => {
-                switch (index) {
-                    // case 0:
-                    //     setDepartmentData(response.data?.data || []);
-                    //     break;
-                    // case 1:
-                    //     setSubDepartmentData(response.data?.data || []);
-                    //     break;
-                    // case 2:
-                    //     setCommunity(response.data?.data || []);
-                    //     break;
-                    // case 3:
-                    //     setCaste(response.data?.data || []);
-                    //     break;
-                    // case 4:
-                    //     setEducation(response.data?.data || []);
-                    //     break;
-                    case 5:
-                        setInstitutionCat(response.data?.data || []);
-                        break;
-                    case 6:
-                        setStream(response.data?.data || []);
-                        break;
-                    case 7:
-                        setCourse(response.data?.data || []);
-                        break;
-                    case 8:
-                        setInstTyp(response.data?.data || []);
-                        break;
-                    case 9:
-                        setGender(response.data?.data || []);
-                        break;
-                    case 10:
-                        setUniv(response.data?.data || []);
-                        break;
-                    case 11:
-                        setUnivTyp(response.data?.data || []);
-                        break;
-                    // case 12:
-                    //   setReligion(response.data?.data || []);
-                    //   break;
-                    case 13:
-                        setIncome(response.data?.data || []);
-                        break;
-                    case 14:
-                        setDisability(response.data?.data || []);
-                        break;
-                    case 15:
-                        setCourseTyp(response.data?.data || []);
-                        break;
-                    default:
-                        break;
-                }
-            });
-        } catch (error) {
-            console.log('Error fetching data:', error);
-        }
-    };
-    postDataToApi();
-}, []);
+//   useEffect(() => {
+//     const postDataToApi = async () => {
+//         const urls = [
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_department', body: { user_id: 1 } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department', body: { user_id: 1, department_id: 0 } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_community', body: { user_id: 1 } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_caste', body: { user_id: 1, community_id: [6,2] } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'EducationType' } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_institute_category', body: { user_id: 1 } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_streams', body: { user_id: 1 } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_courses', body: { user_id: 1, stream_id: 0, course_type_id: 0 } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_institutetypes', body: { user_id: 1 } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'Gender' } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_universities', body: { user_id: 1, university_type_id: 0 } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_university_types', body: { user_id: 1, ownership_id: 1 } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'Religion' } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_income_ranges', body: { user_id: 1 } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_differentlyabled', body: { user_id: 1 } },
+//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_course_types', body: { user_id: 1 } }
+//         ];
+//         const headers = {
+//             "Content-Type": "application/x-www-form-urlencoded",
+//             'X-APP-KEY': 'te$t',
+//         };
+//         try {
+//             const requests = urls.map(({ url, body }) => axios.post(url, body, { headers }));
+//             const responses = await axios.all(requests);
+//             responses.forEach((response, index) => {
+//                 switch (index) {
+//                     case 14:
+//                         setDisability(response.data?.data || []);
+//                         break;
+//                     default:
+//                         break;
+//                 }
+//             });
+//         } catch (error) {
+//             console.log('Error fetching data:', error);
+//         }
+//     };
+//     postDataToApi();
+// }, []);
 const univOptions = Object.entries(univ).map(([key, val]) => {
   return(
     {
@@ -433,6 +325,70 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
     }
   )
 })
+const [feeType, setFeeType] = useState(true);
+const handleOptionsChange = async (e, name) => { debugger;
+  if(name === 'community') {
+    if(e.some(option => option.value === 'all')) {
+      setFormData({ ...formData, [name]: communityOptions});
+    } else {
+      setFormData({ ...formData, [name]: e });
+    }
+    try {
+      const communityIds = e.map(option => option.value);
+      const communityId = communityIds.map((communityId) => {
+        return communityId
+      });
+      const casteResponse = await axios.post(
+        'https://tngis.tnega.org/ssp_backend/api/v1/get_caste',
+        { user_id: 1, community_id: communityId },
+        { headers: headers }
+      );
+      setCaste(casteResponse.data?.data || []);
+    } catch (error) {
+      console.log('Error fetching sub department data:', error);
+    }
+  }
+  if(name === 'department') {
+    if(e.some(option => option.value === 'all')) {
+      setFormData({ ...formData, [name]: deptOptions});
+    } else {
+      setFormData({ ...formData, [name]: e });
+    }
+    try {
+      const deptIds = e.map(option => option.value);
+      const deptId = deptIds.map((deptId) => {
+        return deptId
+      });
+      const casteResponse = await axios.post(
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_sub_department',
+        { user_id: 1, department_id: deptId },
+        { headers: headers }
+      );
+      setCaste(casteResponse.data?.data || []);
+    } catch (error) {
+      console.log('Error fetching sub department data:', error);
+    }
+  }
+  else if(name === 'schemeFeeType') {
+    if(e.value === 'Fixed') {
+      setFeeType(false);
+    } else {
+      setFeeType(true);
+    }
+  }
+  else if (name === 'disabilityStatus') {
+    setFormData({ ...formData, [name]: e.value });
+  }
+  else if (e.some(option => option.value === 'all')) { debugger;
+    setFormData({ ...formData, [name]: name === 'caste' ? casteOptions :
+      name === 'subDepartment' ? subdeptOptions : name === 'instituteType' ? instTypOptions : 
+      name === 'instituteCategory' ? insCtOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'stream' ? streamOptions : name === 'courseType' ? courseTypOption : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : ''
+    });
+  }
+  else {
+    setFormData({ ...formData, [name]: e });
+  }
+}
   const [showMore, setShowMore] = useState(false); 
   const [selectedFeesType, setSelectedFeesType] = useState(''); 
   const handleSelectChange = (event) => { setSelectedFeesType(event.target.value); }; 
@@ -486,7 +442,8 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
                     options={[...deptOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    onChange={handleDepartmentChange}
+                    //onChange={handleDepartmentChange}
+                    onChange={(e) => handleOptionsChange(e, 'department')}
                   />
                 </div>
               </Form.Group>
@@ -922,229 +879,197 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
         </div>
         <div className={`tab-pane fade ${active === 'profile-tab-pane' ? 'show active' : ''}`} id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
           <div className="row">
-            <div className="col-lg-3">
-              <div className="alert alert-warning">
-                <div className="col-md-12 mb-2 mt-2">
-                  <h4 className="page-title txt-red">
-                    <i class="bi bi-funnel"></i> Filters
-                  </h4>
-                </div>
-                <div className="col-md-12 mb-2">
-                  <label for="inputEmail4" className="form-label lbl-font lbl-color">Department</label>
-                  { formData.department.length === 0 ? '' :
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" onClick={(e) => getCheckedValue(e)} value={formData.department} id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault"> {formData.department} </label>
+            {
+              feeType && (
+                <div className="col-lg-3">
+                  <div className="alert alert-warning">
+                    <div className="col-md-12 mb-2 mt-2">
+                      <h4 className="page-title txt-red">
+                        <i class="bi bi-funnel"></i> Filters
+                      </h4>
                     </div>
-                  }
-                </div>
-                <div className="col-md-12 mb-2">
-                  <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Department</label>
-                  {
-                    formData.subDepartment.map((value, index) => { debugger;
-                      return (
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault5" />
-                          <label class="form-check-label" for="flexCheckDefault5"> {value.label} </label>
-                        </div>
-                      )
-                    })
-                  }
-                </div>
-                <div className="col-md-12 mb-2">
-                  <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Name</label>
-                  {
-                    formData.schemeName === '' ? '' :
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11" />
-                      <label class="form-check-label" for="flexCheckDefault11"> {formData.schemeName} </label>
-                    </div>
-                  }
-                </div>
-                <div class="accordion" id="accordionExample">
-                  <div class="accordion-item">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> General Components </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                      <div class="accordion-body">
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Category</label> 
-                          {
-                            formData.instituteCategory.map((value, index) => {
-                              return (
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault111" />
-                                  <label class="form-check-label" for="flexCheckDefault111"> {
-                                    value.label} </label>
-                                </div>
-                              )
-                            })
-                          }
-                        </div>
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Type</label>
-                          {
-                            formData.instituteType.map((value, index) => {
-                              return (
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault1112" />
-                                  <label class="form-check-label" for="flexCheckDefault1112"> {value.label} </label>
-                                </div>
-                              )
-                            })
-                          }
-                        </div>
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Name</label>
-                          {/* {
-                            formData.instituteName.map((value, index) => {
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault1112" />
-                                <label class="form-check-label" for="flexCheckDefault1112"> {value.label} </label>
-                              </div>
-                            })
-                          } */}
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11131" checked />
-                            <label class="form-check-label" for="flexCheckDefault11131"> Institute Name A </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11132" />
-                            <label class="form-check-label" for="flexCheckDefault11132"> Institute Name B </label>
-                          </div>
-                        </div>
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Community</label> 
-                          {
-                            formData.community.map((value, i) => {
-                              return (
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value= {value.label} id="flexCheckDefault77" />
-                                  <label class="form-check-label" for="flexCheckDefault77"> {value.label} </label>
-                                </div>
-                              )
-                            })
-                          }
-                        </div>
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Caste</label>
-                          {
-                            formData.caste.map((value, i) => {
-                              return (
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault666" checked />
-                                  <label class="form-check-label" for="flexCheckDefault666"> {value.label} </label>
-                                </div>
-                              )
-                            })
-                          }
-                        </div>
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Category</label> {/* <select className="form-select" name="StudentCategory">
-                            <option value="">Select Student Category</option>
-                            <option value="1" selected>Student Category A</option>
-                          </select> */} <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault123" />
-                            <label class="form-check-label" for="flexCheckDefault123"> Student Category A </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault456" checked />
-                            <label class="form-check-label" for="flexCheckDefault456"> Student Category B </label>
-                          </div>
-                        </div>
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Stream</label> 
-                            {
-                              formData.stream.map((value, i) => { debugger;
-                                return (
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value={value.label}id="flexCheckDefault4561" onClick={(e) => getCheckedValue(e)}/>
-                                    <label class="form-check-label" for="flexCheckDefault4561"> {value.label} </label>
-                                  </div>
-                                )
-                              })
-                            }
-                        </div>
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Course</label> 
-                          {
-                            formData.course.map((value, i) => {
-                              return (
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault45612" />
-                                  <label class="form-check-label" for="flexCheckDefault45612"> {value.label} </label>
-                                </div>
-                              )
-                            })
-                          }
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="accordion-item">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> Maintenance Components </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                      <div class="accordion-body">
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Residential Status</label> 
-                          {
-                            formData.residentalStatus.map((value, i) => {
-                              return (
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault456134" />
-                                  <label class="form-check-label" for="flexCheckDefault456134"> {value.label} </label>
-                                </div>
-                              )
-                            })
-                          }
-                        </div>
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Disability Status</label> 
-                          {
-                            formData.disabilityStatus.length === 0 ? '' :
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value={formData.disabilityStatus} id="flexCheckDefault4561341" />
-                              <label class="form-check-label" for="flexCheckDefault4561341"> {formData.disabilityStatus} </label>
+                    <div class="accordion" id="accordionExample">
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> General Components </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Category</label> 
+                              {
+                                formData.instituteCategory.map((value, index) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault111" />
+                                      <label class="form-check-label" for="flexCheckDefault111"> {
+                                        value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
                             </div>
-                          }
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Type</label>
+                              {
+                                formData.instituteType.map((value, index) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault1112" />
+                                      <label class="form-check-label" for="flexCheckDefault1112"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Name</label>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11131" checked />
+                                <label class="form-check-label" for="flexCheckDefault11131"> Institute Name A </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11132" />
+                                <label class="form-check-label" for="flexCheckDefault11132"> Institute Name B </label>
+                              </div>
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Community</label> 
+                              {
+                                formData.community.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value= {value.label} id="flexCheckDefault77" />
+                                      <label class="form-check-label" for="flexCheckDefault77"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Caste</label>
+                              {
+                                formData.caste.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault666" checked />
+                                      <label class="form-check-label" for="flexCheckDefault666"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Category</label> 
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault123" />
+                                <label class="form-check-label" for="flexCheckDefault123"> Student Category A </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault456" checked />
+                                <label class="form-check-label" for="flexCheckDefault456"> Student Category B </label>
+                              </div>
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Stream</label> 
+                                {
+                                  formData.stream.map((value, i) => { debugger;
+                                    return (
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value={value.label}id="flexCheckDefault4561" onClick={(e) => getCheckedValue(e)}/>
+                                        <label class="form-check-label" for="flexCheckDefault4561"> {value.label} </label>
+                                      </div>
+                                    )
+                                  })
+                                }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Course</label> 
+                              {
+                                formData.course.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault45612" />
+                                      <label class="form-check-label" for="flexCheckDefault45612"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                          </div>
                         </div>
-                        <div className="col-md-12 mb-2">
-                          <label for="inputEmail4" className="form-label lbl-font lbl-color">Disability Category</label> 
-                          {
-                            formData.disabilityCategory.map((value, i) => {
-                              return (
+                      </div>
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> Maintenance Components </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Residential Status</label> 
+                              {
+                                formData.residentalStatus.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault456134" />
+                                      <label class="form-check-label" for="flexCheckDefault456134"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Disability Status</label> 
+                              {
+                                formData.disabilityStatus.length === 0 ? '' :
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault45613412" />
-                                  <label class="form-check-label" for="flexCheckDefault45613412"> {value.label} </label>
+                                  <input class="form-check-input" type="checkbox" value={formData.disabilityStatus} id="flexCheckDefault4561341" />
+                                  <label class="form-check-label" for="flexCheckDefault4561341"> {formData.disabilityStatus} </label>
                                 </div>
-                              )
-                            })
-                          }
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Disability Category</label> 
+                              {
+                                formData.disabilityCategory.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault45613412"/>
+                                      <label class="form-check-label" for="flexCheckDefault45613412"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              )
+            }
             <div className="col-lg-9">
               <div className="col-lg-12 mb-2">
                 <div className="alert alert-success py-1">
                   <form className="row">
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Department </label>
-                      <label htmlFor="toDate" className="form-label w-100 mb-0"> Department A </label>
+                      <label htmlFor="toDate" className="form-label w-100 mb-0"> {formData.department} </label>
                     </div>
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
-                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Sub Department </label>
-                      <label htmlFor="toDate" className="form-label w-100 mb-0"> Sub Department A </label>
+                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Sub Department </label> 
+                      {
+                        formData.subDepartment.map((value, index) => { debugger;
+                          return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {value.label} </label>
+                          )
+                        })
+                      }
                     </div>
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scheme Name </label>
-                      <label htmlFor="toDate" className="form-label w-100 mb-0"> Scheme Name A </label>
+                      <label htmlFor="toDate" className="form-label w-100 mb-0"> {formData.schemeName} </label>
                     </div>
                     <p className="viewmore mb-0 text-danger" onClick={()=> setShowMore(true)} style={{ display: showMore ? 'none' : 'block' }} > <i class="bi bi-arrows-angle-expand"></i> View More </p>
                     <div className={`viewmore-wrap row ${showMore ? 'show' : '' }`}>
@@ -1203,193 +1128,203 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
                                 <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0 text-danger"> ADW components </label>
                               </td>
                             </tr>
-                            <tr>
-                              <td className="w-25">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                  <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Exam Fees </label>
-                                  <label for="toDate" class="form-label w-100 mb-0">5000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
-                                </div>
-                              </td>
-                              <td className="w-75">
-                                <div className="row m-0">
-                                  <div className="col-lg-6">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
-                                    </div>
-                                  </div>
-                                  <div className="col-lg-5">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label> {/* <select class="form-select" aria-label="Default select fees type">
-                                        <option selected>select Fees Type</option>
-                                        <option value="1">Full</option>
-                                        <option value="2">Fixed Ceiling</option>
-                                        <option value="3">Partial</option>
-                                      </select> */} <div>
-                                        <select disabled={feeType} className="form-select" aria-label="Default select fees type" onChange={handleSelectChange}>
-                                          <option value="">Select Fees Type</option>
-                                          <option value="full">Full</option>
-                                          <option value="fixedceiling">Fixed Ceiling</option>
-                                          <option value="partial">Partial</option>
-                                        </select> {selectedFeesType === 'full' && ( <input type="text" className="form-control fullfees" placeholder="Enter Full Fees" /> )} {selectedFeesType === 'fixedceiling' && ( <input type="text" className="form-control fixedceiling" placeholder="Enter Fixed Ceiling Fees" /> )} {selectedFeesType === 'partial' && ( <input type="text" className="form-control partialfees" placeholder="Enter Partial Fees" /> )}
+                            {
+                              feeType && (
+                                <>
+                                  <tr>
+                                    <td className="w-25">
+                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Exam Fees </label>
+                                        <label for="toDate" class="form-label w-100 mb-0">5000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
                                       </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
+                                    </td>
+                                    <td className="w-75">
+                                      <div className="row m-0">
+                                        <div className="col-lg-6">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
+                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                          </div>
+                                        </div>
+                                        <div className="col-lg-5">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label> {/* <select class="form-select" aria-label="Default select fees type">
+                                              <option selected>select Fees Type</option>
+                                              <option value="1">Full</option>
+                                              <option value="2">Fixed Ceiling</option>
+                                              <option value="3">Partial</option>
+                                            </select> */} <div>
+                                              <select  className="form-select" aria-label="Default select fees type" onChange={handleSelectChange}>
+                                                <option value="">Select Fees Type</option>
+                                                <option value="full">Full</option>
+                                                <option value="fixedceiling">Fixed Ceiling</option>
+                                                <option value="partial">Partial</option>
+                                              </select> {selectedFeesType === 'full' && ( <input type="text" className="form-control fullfees" placeholder="Enter Full Fees" /> )} {selectedFeesType === 'fixedceiling' && ( <input type="text" className="form-control fixedceiling" placeholder="Enter Fixed Ceiling Fees" /> )} {selectedFeesType === 'partial' && ( <input type="text" className="form-control partialfees" placeholder="Enter Partial Fees" /> )}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="w-25">
+                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Tuition Fees </label>
+                                        <label for="toDate" class="form-label w-100 mb-0">8000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
+                                      </div>
+                                    </td>
+                                    <td className="w-75">
+                                      <div className="row m-0">
+                                        <div className="col-lg-6">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
+                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                          </div>
+                                        </div>
+                                        <div className="col-lg-5">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
+                                            <select  class="form-select" aria-label="Default select fees type">
+                                              <option selected>select Fees Type</option>
+                                              <option value="1">Full</option>
+                                              <option value="2">Fixed Ceiling</option>
+                                              <option value="3">Partial</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="w-25">
+                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Special Fees </label>
+                                        <label for="toDate" class="form-label w-100 mb-0">6000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
+                                      </div>
+                                    </td>
+                                    <td className="w-75">
+                                      <div className="row m-0">
+                                        <div className="col-lg-6">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
+                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                          </div>
+                                        </div>
+                                        <div className="col-lg-5">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
+                                            <select  class="form-select" aria-label="Default select fees type">
+                                              <option selected>select Fees Type</option>
+                                              <option value="1">Full</option>
+                                              <option value="2">Fixed Ceiling</option>
+                                              <option value="3">Partial</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="w-25">
+                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Library Fees </label>
+                                        <label for="toDate" class="form-label w-100 mb-0">7000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
+                                      </div>
+                                    </td>
+                                    <td className="w-75">
+                                      <div className="row m-0">
+                                        <div className="col-lg-6">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
+                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                          </div>
+                                        </div>
+                                        <div className="col-lg-5">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
+                                            <select  class="form-select" aria-label="Default select fees type">
+                                              <option selected>select Fees Type</option>
+                                              <option value="1">Full</option>
+                                              <option value="2">Fixed Ceiling</option>
+                                              <option value="3">Partial</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="w-25">
+                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Sports Fees </label>
+                                        <label for="toDate" class="form-label w-100 mb-0">2000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
+                                      </div>
+                                    </td>
+                                    <td className="w-75">
+                                      <div className="row m-0">
+                                        <div className="col-lg-6">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
+                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                          </div>
+                                        </div>
+                                        <div className="col-lg-5">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
+                                            <select  class="form-select" aria-label="Default select fees type">
+                                              <option selected>select Fees Type</option>
+                                              <option value="1">Full</option>
+                                              <option value="2">Fixed Ceiling</option>
+                                              <option value="3">Partial</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="w-25">
+                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Enroll Fees </label>
+                                        <label for="toDate" class="form-label w-100 mb-0">5000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
+                                      </div>
+                                    </td>
+                                    <td className="w-75">
+                                      <div className="row m-0">
+                                        <div className="col-lg-6">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
+                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                          </div>
+                                        </div>
+                                        <div className="col-lg-5">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
+                                            <select  class="form-select" aria-label="Default select fees type">
+                                              <option selected>select Fees Type</option>
+                                              <option value="1">Full</option>
+                                              <option value="2">Fixed Ceiling</option>
+                                              <option value="3">Partial</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </>
+                              )
+                             }
                             <tr>
-                              <td className="w-25">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                  <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Tuition Fees </label>
-                                  <label for="toDate" class="form-label w-100 mb-0">8000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
-                                </div>
-                              </td>
-                              <td className="w-75">
-                                <div className="row m-0">
-                                  <div className="col-lg-6">
+                              {
+                                feeType && (
+                                  <td className="w-25">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
+                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0 text-danger"> Total Fees </label>
+                                      <input type="text" class="form-control removespecialchar" placeholder="Total Exam Fees" />
                                     </div>
-                                  </div>
-                                  <div className="col-lg-5">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
-                                      <select disabled={feeType} class="form-select" aria-label="Default select fees type">
-                                        <option selected>select Fees Type</option>
-                                        <option value="1">Full</option>
-                                        <option value="2">Fixed Ceiling</option>
-                                        <option value="3">Partial</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="w-25">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                  <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Special Fees </label>
-                                  <label for="toDate" class="form-label w-100 mb-0">6000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
-                                </div>
-                              </td>
-                              <td className="w-75">
-                                <div className="row m-0">
-                                  <div className="col-lg-6">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
-                                    </div>
-                                  </div>
-                                  <div className="col-lg-5">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
-                                      <select disabled={feeType} class="form-select" aria-label="Default select fees type">
-                                        <option selected>select Fees Type</option>
-                                        <option value="1">Full</option>
-                                        <option value="2">Fixed Ceiling</option>
-                                        <option value="3">Partial</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="w-25">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                  <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Library Fees </label>
-                                  <label for="toDate" class="form-label w-100 mb-0">7000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
-                                </div>
-                              </td>
-                              <td className="w-75">
-                                <div className="row m-0">
-                                  <div className="col-lg-6">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
-                                    </div>
-                                  </div>
-                                  <div className="col-lg-5">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
-                                      <select disabled={feeType} class="form-select" aria-label="Default select fees type">
-                                        <option selected>select Fees Type</option>
-                                        <option value="1">Full</option>
-                                        <option value="2">Fixed Ceiling</option>
-                                        <option value="3">Partial</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="w-25">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                  <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Sports Fees </label>
-                                  <label for="toDate" class="form-label w-100 mb-0">2000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
-                                </div>
-                              </td>
-                              <td className="w-75">
-                                <div className="row m-0">
-                                  <div className="col-lg-6">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
-                                    </div>
-                                  </div>
-                                  <div className="col-lg-5">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
-                                      <select disabled={feeType} class="form-select" aria-label="Default select fees type">
-                                        <option selected>select Fees Type</option>
-                                        <option value="1">Full</option>
-                                        <option value="2">Fixed Ceiling</option>
-                                        <option value="3">Partial</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="w-25">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                  <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Enroll Fees </label>
-                                  <label for="toDate" class="form-label w-100 mb-0">5000</label> {/* <input type="text" class="form-control removespecialchar" placeholder="Enter Exam Fees" /> */}
-                                </div>
-                              </td>
-                              <td className="w-75">
-                                <div className="row m-0">
-                                  <div className="col-lg-6">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount" disabled={feeType} />
-                                    </div>
-                                  </div>
-                                  <div className="col-lg-5">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                      <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Fees Type </label>
-                                      <select disabled={feeType} class="form-select" aria-label="Default select fees type">
-                                        <option selected>select Fees Type</option>
-                                        <option value="1">Full</option>
-                                        <option value="2">Fixed Ceiling</option>
-                                        <option value="3">Partial</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="w-25">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
-                                  <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0 text-danger"> Total Fees </label>
-                                  <input type="text" class="form-control removespecialchar" placeholder="Total Exam Fees" />
-                                </div>
-                              </td>
+                                  </td>
+                                )
+                              }
                               <td className="w-75">
                                 <div className="row m-0">
                                   <div className="col-lg-5">
@@ -1533,12 +1468,24 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
               </div>
               <div className="col-md-4 mb-2">
                 <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme </label>
-                <select className="form-select" name="InstituteCategory">
+                <select className="form-select" name="InstituteCategory" onChange={(e) => handleINEX(e)}>
                   <option value="">Select Scheme</option>
                   <option value="1">Inclusive</option>
                   <option value="2">Exclusive</option>
                 </select>
               </div>
+              {
+                showINEX && (
+                  <div className="col-md-4 mb-2">
+                    <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Name </label>
+                    <select className="form-select" name="InstituteCategory">
+                      <option value="">Select Scheme</option>
+                      <option value="1">Scheme name 1</option>
+                      <option value="2">Scheme name 2</option>
+                    </select>
+                  </div>
+                )
+              }
               <div className="col-md-4 mb-2">
                 <label for="inputEmail4" className="form-label lbl-font lbl-color"> Frequency</label>
                 <select className="form-select" name="InstituteName">
@@ -1560,7 +1507,7 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
                   <label class="form-check-label" for="inlineRadio2">No</label>
                 </div>
               </div>
-              <div class="col-md-4 mb-2 mt-2">
+              <div class="col-md-12 mb-2 mt-2">
                 <a href="#" class="btn btn-success cus-btn">
                   <i class="bi bi-send-check"></i> Submit </a>
               </div>
