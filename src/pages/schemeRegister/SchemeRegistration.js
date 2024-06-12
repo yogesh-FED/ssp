@@ -4,14 +4,14 @@ import Select from 'react-select';
 import Form from 'react-bootstrap/Form';
 const SchemeRegistration = () => {
   const PRODUCTION_END_POINT_API = 'https://tngis.tnega.org/';
-  const IP_END_POINT_API = 'https://192.168.4.251/';
+  const IP_END_POINT_API = 'http://192.168.4.251/';
   const [formData, setFormData] = useState({
     department: [],subDepartment: [],schemeName: '',schemeCode: '',education: [],
     instituteType: [],instituteCategory: [],universityType: [],university: [],
     instituteName: [],studentCategory: [],class: [],schoolCategory: [],
     schoolType: [],schoolName: [],schoolClass: [],stream: [],course: [],
     courseType: [],medium: [],religion: [],community: [],caste: [],gender: [],income: [],
-    residentalStatus: [], disabilityStatus:[], disabilityCategory: [], schemeFeeType: []
+    residentalStatus: [], disabilityStatus:[], disabilityCategory: [], schemeFeeType: [], instituteOwnership: []
   });
   const [departmentData, setDepartmentData] = useState([]);
   const [subDepartmentData, setSubDepartmentData] = useState([]);
@@ -29,6 +29,7 @@ const SchemeRegistration = () => {
   const [income, setIncome] = useState([]);
   const [disability, setDisability] = useState([]);
   const [courseTyp, setCourseTyp] = useState([]);
+  const [instOwnership, setInstOwnership] = useState([]);
   const [disable, setDisable] = useState(true);
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -37,32 +38,29 @@ const SchemeRegistration = () => {
   useEffect(() => { debugger;
     const fetchData = async () => {
       try {
-        const INST_CTG_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institute_category', {user_id:1}, {headers: headers});
-        const INST_TYP_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institutetypes', {user_id:1}, {headers: headers});
-        const DEPT_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
-        const COMMUNITY_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
-        const RELIGION_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
-        const EDU_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
-        const COURSE_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_courses', {user_id:1, stream_id: [1], course_type_id: [1]}, {headers: headers});
-        //const UNIVERSITY_TYPE_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_university_types', {user_id:1, ownership_id: [1]}, {headers: headers});
-        const UNIVERSITY_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_universities', {user_id:1, university_type_id: [1]}, {headers: headers});
-        const STREAM_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_streams', {user_id:1}, {headers: headers});
-        const COURSE_TYPE_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_course_types', {user_id:1}, {headers: headers});
-        const GENDER_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Gender'}, {headers: headers});
-        const INCOME_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_income_ranges', {user_id:1, category:'Income'}, {headers: headers});
+        const INST_CTG_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institute_category', {user_id:1}, {headers: headers});
+        const INST_TYP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institutetypes', {user_id:1}, {headers: headers});
+        const DEPT_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
+        const COMMUNITY_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
+        const RELIGION_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
+        const EDU_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
+        const UNIVERSITY_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_universities', {user_id:1, university_type_id: [1]}, {headers: headers});
+        const STREAM_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_streams', {user_id:1}, {headers: headers});
+        const COURSE_TYPE_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_course_types', {user_id:1}, {headers: headers});
+        const GENDER_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Gender'}, {headers: headers});
+        const INCOME_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_income_ranges', {user_id: 1, category:'Income'}, {headers: headers});
+        const OWNERSHIP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_ownerships',{id:0}, {headers: headers});
+        setInstOwnership(OWNERSHIP_API.data?.data || []);
         setIncome(INCOME_API.data?.data || []);
         setGender(GENDER_API.data?.data || []);
         setCourseTyp(COURSE_TYPE_API.data?.data || []);
         setStream(STREAM_API.data?.data || []);
-        setUniv(UNIVERSITY_API.data?.data || []);
-        setCourse(COURSE_API.data?.data || []);
         setEducation(EDU_API.data?.data || []);
         setDepartmentData(DEPT_API.data?.data || []);
         setCommunity(COMMUNITY_API.data?.data || []);
         setReligion(RELIGION_API.data?.data || []);
         setInstTyp(INST_TYP_API.data?.data || []);
         setInstitutionCat(INST_CTG_API.data?.data || []);
-        //setUnivTyp(UNIVERSITY_TYPE_API.data?.data || []);
       } catch (error) {
         console.log('Error fetching department data:', error);
       }
@@ -89,12 +87,6 @@ const handleSave = (e, tabId) => { debugger;
   }
 };
 const [forCourse, setForCourse] = useState([]);
-const handleStreamChange = (selectedOption) => {
-  setForCourse(selectedOption);
-};
-const handleCourseTypeChange = async (selectedOption) => {
-  console.log('setForCourseArr', selectedOption);
-}
 const handleSchemeName = (e) => {
   const name = e.target.value;
   setFormData({ ...formData, schemeName: name });
@@ -135,71 +127,18 @@ const handleSubDeptChange = (selected) => {
       setFormData({ ...formData, subDepartment: selected });
     }
 }
-const handleDepartmentChange = async (selectedOption) => {
-  setDisable(false);
-  try {
-    const latestSelectedOption = selectedOption[selectedOption.length - 1];
-    const subDepartmentResponse = await axios.post(
-      'https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department',
-      { user_id: 1, department_id: selectedOption.value },
-      { headers: headers }
-    );
-    setSubDepartmentData(subDepartmentResponse.data?.data || []);
-    //selectedOption = [latestSelectedOption];
-    setFormData({ ...formData, department: selectedOption.label });
-    if(selectedOption.length === 0) {
-      setDisable(true);
+const instOwnershipOptions = Object.entries(instOwnership).map(([key, val]) => {
+  return(
+    {
+      value: val.id,
+      label: val.ownership
     }
-  } catch (error) {
-    console.log('Error fetching sub department data:', error);
-  }
-};
-//   useEffect(() => {
-//     const postDataToApi = async () => {
-//         const urls = [
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_department', body: { user_id: 1 } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_sub_department', body: { user_id: 1, department_id: 0 } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_community', body: { user_id: 1 } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_caste', body: { user_id: 1, community_id: [6,2] } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'EducationType' } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_institute_category', body: { user_id: 1 } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_streams', body: { user_id: 1 } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_courses', body: { user_id: 1, stream_id: 0, course_type_id: 0 } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_institutetypes', body: { user_id: 1 } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'Gender' } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_universities', body: { user_id: 1, university_type_id: 0 } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_university_types', body: { user_id: 1, ownership_id: 1 } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_dropdown_values', body: { user_id: 1, category: 'Religion' } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_income_ranges', body: { user_id: 1 } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_differentlyabled', body: { user_id: 1 } },
-//             { url: 'https://tngis.tnega.org/ssp_backend/api/v1/get_course_types', body: { user_id: 1 } }
-//         ];
-//         const headers = {
-//             "Content-Type": "application/x-www-form-urlencoded",
-//             'X-APP-KEY': 'te$t',
-//         };
-//         try {
-//             const requests = urls.map(({ url, body }) => axios.post(url, body, { headers }));
-//             const responses = await axios.all(requests);
-//             responses.forEach((response, index) => {
-//                 switch (index) {
-//                     case 14:
-//                         setDisability(response.data?.data || []);
-//                         break;
-//                     default:
-//                         break;
-//                 }
-//             });
-//         } catch (error) {
-//             console.log('Error fetching data:', error);
-//         }
-//     };
-//     postDataToApi();
-// }, []);
+  )
+})
 const univOptions = Object.entries(univ).map(([key, val]) => {
   return(
     {
-      value: val.university_name,
+      value: val.id,
       label: val.university_name
     }
   )
@@ -207,7 +146,7 @@ const univOptions = Object.entries(univ).map(([key, val]) => {
 const courseTypOption = Object.entries(courseTyp).map(([key, val]) => {
   return(
     {
-      value: val.course_type,
+      value: val.id,
       label: val.course_type
     }
   )
@@ -215,7 +154,7 @@ const courseTypOption = Object.entries(courseTyp).map(([key, val]) => {
 const incomeOptions = Object.entries(income).map(([key, val]) => {
   return(
     {
-      value: val.income_range,
+      value: val.id,
       label: val.income_range
     }
   )
@@ -223,7 +162,7 @@ const incomeOptions = Object.entries(income).map(([key, val]) => {
 const religionOptions = Object.entries(religion).map(([key, val]) => {
   return(
     {
-      value: val.display_text,
+      value: val.id,
       label: val.display_text
     }
   )
@@ -239,7 +178,7 @@ const deptOptions = Object.entries(departmentData).map(([key, val]) => {
 const genderOptions = Object.entries(gender).map(([key, val]) => {
   return(
     {
-      value: val.display_text,
+      value: val.id,
       label: val.display_text
     }
   )
@@ -247,7 +186,7 @@ const genderOptions = Object.entries(gender).map(([key, val]) => {
 const instTypOptions = Object.entries(instTyp).map(([key, val]) => {
   return(
     {
-      value: val.institute_type,
+      value: val.id,
       label: val.institute_type
     }
   )
@@ -263,7 +202,7 @@ const courseOptions = Object.entries(course).map(([key, val]) => {
 const subdeptOptions = Object.entries(subDepartmentData).map(([key, val]) => {
   return(
     {
-      value: val.subdepartment_name,
+      value: val.id,
       label: val.subdepartment_name
     }
   )
@@ -280,7 +219,7 @@ const communityOptions = Object.entries(community).map(([key, val]) => {
 const casteOptions = Object.entries(caste).map(([key, val]) => {
   return(
     {
-      value: val.caste_name,
+      value: val.id,
       label: val.caste_name
     }
   )
@@ -288,7 +227,7 @@ const casteOptions = Object.entries(caste).map(([key, val]) => {
 const eduOptions = Object.entries(education).map(([key, val]) => {
   return(
     {
-      value: val.display_text,
+      value: val.id,
       label: val.display_text
     }
   )
@@ -296,7 +235,7 @@ const eduOptions = Object.entries(education).map(([key, val]) => {
 const insCtOptions = Object.entries(institutionCat).map(([key, val]) => {
   return(
     {
-      value: val.institute_category,
+      value: val.id,
       label: val.institute_category
     }
   )
@@ -304,7 +243,7 @@ const insCtOptions = Object.entries(institutionCat).map(([key, val]) => {
 const streamOptions = Object.entries(stream).map(([key, val]) => {
   return(
     {
-      value: val.stream_name,
+      value: val.id,
       label: val.stream_name
     }
   )
@@ -312,7 +251,7 @@ const streamOptions = Object.entries(stream).map(([key, val]) => {
 const univTypOptions = Object.entries(univTyp).map(([key, val]) => {
   return(
     {
-      value: val.university_type,
+      value: val.id,
       label: val.university_type
     }
   )
@@ -320,13 +259,59 @@ const univTypOptions = Object.entries(univTyp).map(([key, val]) => {
 const disabilityOptions = Object.entries(disability).map(([key, val]) => {
   return(
     {
-      value: val.disability_name,
+      value: val.id,
       label: val.disability_name
     }
   )
 })
 const [feeType, setFeeType] = useState(true);
+const [streamId, setStreamId] = useState([]);
+const callApiFun = async (courseTypeId, streamId) => {
+  try {
+    const courseResponse = await axios.post(
+      IP_END_POINT_API+'ssp_backend/api/v1/get_courses',
+      { user_id: 1, course_type_id: courseTypeId.length === 0 ? [0] : courseTypeId, stream_id: streamId.length === 0 ? [0] : streamId },
+      { headers: headers }
+    );
+    setCourse(courseResponse.data?.data || []);
+  } catch (error) {
+    console.log('Error', error);
+  }
+}
+const [getCourseTypeId ,setGetCourseTypeId] = useState([]);
 const handleOptionsChange = async (e, name) => { debugger;
+  if (name === 'universityType') {
+    try {
+      const univIds = e.map(option => option.value);
+      const univId = univIds.map((univId) => {
+        return univId
+      });
+      const univResponse = await axios.post(
+        IP_END_POINT_API+'ssp_backend/api/v1/get_universities',
+        { user_id: 1, university_type_id: univId.length === 0 ? [0] : univId },
+        { headers: headers }
+      );
+      setUniv(univResponse.data?.data || []);
+    } catch (error) {
+      console.log('Error', error);
+    }
+  }
+  if(name === 'instituteOwnership') {
+    try {
+      const instOwnIds = e.map(option => option.value);
+      const instOwnId = instOwnIds.map((instOwnId) => {
+        return instOwnId
+      });
+      const instOwnResponse = await axios.post(
+        IP_END_POINT_API+'ssp_backend/api/v1/get_university_types',
+        { user_id: 1, ownership_id: instOwnId.length === 0 ? [0] : instOwnId },
+        { headers: headers }
+      );
+      setUnivTyp(instOwnResponse.data?.data || []);
+    } catch (error) {
+      console.log('Error', error);
+    }
+  }
   if(name === 'community') {
     if(e.some(option => option.value === 'all')) {
       setFormData({ ...formData, [name]: communityOptions});
@@ -339,8 +324,8 @@ const handleOptionsChange = async (e, name) => { debugger;
         return communityId
       });
       const casteResponse = await axios.post(
-        'https://tngis.tnega.org/ssp_backend/api/v1/get_caste',
-        { user_id: 1, community_id: communityId },
+        IP_END_POINT_API+'ssp_backend/api/v1/get_caste',
+        { user_id: 1, community_id: communityId.length === 0 ? [0] : communityId },
         { headers: headers }
       );
       setCaste(casteResponse.data?.data || []);
@@ -348,23 +333,32 @@ const handleOptionsChange = async (e, name) => { debugger;
       console.log('Error fetching sub department data:', error);
     }
   }
-  if(name === 'department') {
-    if(e.some(option => option.value === 'all')) {
-      setFormData({ ...formData, [name]: deptOptions});
-    } else {
-      setFormData({ ...formData, [name]: e });
-    }
-    try {
-      const deptIds = e.map(option => option.value);
-      const deptId = deptIds.map((deptId) => {
-        return deptId
+  else if(name === 'stream') {
+      const streamIds = e.map(option => option.value);
+      const streamId = streamIds.map((streamId) => {
+        return streamId
       });
+      setStreamId(streamId)
+      callApiFun(getCourseTypeId, streamId);
+  }
+  else if(name === 'courseType') {
+    const courseTypeIds = e.map(option => option.value);
+      const courseTypeId = courseTypeIds.map((courseTypeId) => {
+        return courseTypeId
+      });
+      setGetCourseTypeId(courseTypeId)
+      callApiFun(courseTypeId, streamId);
+  }
+  else if(name === 'department') {
+    setDisable(false);
+    setFormData({ ...formData, [name]: e.label });
+    try {
       const casteResponse = await axios.post(
-        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_sub_department',
-        { user_id: 1, department_id: deptId },
+        IP_END_POINT_API+'ssp_backend/api/v1/get_sub_department',
+        { user_id: 1, department_id: [e.value] },
         { headers: headers }
       );
-      setCaste(casteResponse.data?.data || []);
+      setSubDepartmentData(casteResponse.data?.data || []);
     } catch (error) {
       console.log('Error fetching sub department data:', error);
     }
@@ -378,8 +372,23 @@ const handleOptionsChange = async (e, name) => { debugger;
   }
   else if (name === 'disabilityStatus') {
     setFormData({ ...formData, [name]: e.value });
+    if(e.value === 'Yes') {
+      setDisStatus(true);
+      try {
+        const disabilityResponse = await axios.post(
+          IP_END_POINT_API+'ssp_backend/api/v1/get_differentlyabled',
+          { user_id: 1},
+          { headers: headers }
+        );
+        setDisability(disabilityResponse.data?.data || []);
+      } catch (error) {
+        console.log('Error', error);
+      }
+    } else {
+      setDisStatus(false);
+    }
   }
-  else if (e.some(option => option.value === 'all')) { debugger;
+  else if (e.some(option => option.value === 'all')) {
     setFormData({ ...formData, [name]: name === 'caste' ? casteOptions :
       name === 'subDepartment' ? subdeptOptions : name === 'instituteType' ? instTypOptions : 
       name === 'instituteCategory' ? insCtOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'stream' ? streamOptions : name === 'courseType' ? courseTypOption : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : ''
@@ -393,13 +402,6 @@ const handleOptionsChange = async (e, name) => { debugger;
   const [selectedFeesType, setSelectedFeesType] = useState(''); 
   const handleSelectChange = (event) => { setSelectedFeesType(event.target.value); }; 
   const [disStatus, setDisStatus] = useState(false);
-  const handledisabilityStatus = (e) => {
-    if(e.value === 'Yes') {
-      setDisStatus(true);
-    } else {
-      setDisStatus(false);
-    }
-  }
   const handleTabClick = (tabId) => {
     setActive(tabId);
   };
@@ -562,6 +564,21 @@ const handleOptionsChange = async (e, name) => { debugger;
               {
                 college && (
                   <>
+                  <div className="col-md-4 mb-2">
+                      <Form.Group className="mb-3 instituteApproveRejectForm">
+                        <div className="">
+                          <span className="form-label lbl-font lbl-color">Institute Ownership</span>
+                          <Select
+                            //defaultValue={selectedOptions}
+                            isMulti
+                            options={[{ value: 'all', label: 'All' }, ...instOwnershipOptions]}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            onChange={(e) => handleOptionsChange(e, 'instituteOwnership')}
+                          />
+                        </div>
+                      </Form.Group>
+                    </div>
                     <div className="col-md-4 mb-2">
                       <Form.Group className="mb-3 instituteApproveRejectForm">
                         <div className="">
