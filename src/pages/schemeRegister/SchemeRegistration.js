@@ -31,6 +31,7 @@ const SchemeRegistration = () => {
   const [courseTyp, setCourseTyp] = useState([]);
   const [instOwnership, setInstOwnership] = useState([]);
   const [disable, setDisable] = useState(true);
+  const [inst, setInst] = useState([]);
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded",
     'X-APP-KEY': 'te$t',
@@ -38,19 +39,14 @@ const SchemeRegistration = () => {
   useEffect(() => { debugger;
     const fetchData = async () => {
       try {
-        const INST_CTG_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institute_category', {user_id:1}, {headers: headers});
-        const INST_TYP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institutetypes', {user_id:1}, {headers: headers});
         const DEPT_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
         const COMMUNITY_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
         const RELIGION_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
         const EDU_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
-        const UNIVERSITY_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_universities', {user_id:1, university_type_id: [1]}, {headers: headers});
         const STREAM_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_streams', {user_id:1}, {headers: headers});
         const COURSE_TYPE_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_course_types', {user_id:1}, {headers: headers});
         const GENDER_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Gender'}, {headers: headers});
         const INCOME_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_income_ranges', {user_id: 1, category:'Income'}, {headers: headers});
-        const OWNERSHIP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_ownerships',{id:0}, {headers: headers});
-        setInstOwnership(OWNERSHIP_API.data?.data || []);
         setIncome(INCOME_API.data?.data || []);
         setGender(GENDER_API.data?.data || []);
         setCourseTyp(COURSE_TYPE_API.data?.data || []);
@@ -59,8 +55,6 @@ const SchemeRegistration = () => {
         setDepartmentData(DEPT_API.data?.data || []);
         setCommunity(COMMUNITY_API.data?.data || []);
         setReligion(RELIGION_API.data?.data || []);
-        setInstTyp(INST_TYP_API.data?.data || []);
-        setInstitutionCat(INST_CTG_API.data?.data || []);
       } catch (error) {
         console.log('Error fetching department data:', error);
       }
@@ -97,21 +91,9 @@ const handleSchemeCode = (e) => {
 }
 const [school, setSchool] = useState(false);
 const [college, setCollege] = useState(false);
-const handleEducationChange = (e) => {
-  setFormData({ ...formData, education: e });
-  if(e.value === 'School') {
-    setSchool(true);
-    setCollege(false);
-  }
-  else {
-    setCollege(true);
-    setSchool(false);
-  }
-  if(e.value === 0) {
-    setCollege(false);
-    setSchool(false);
-  }
-}
+// const handleEducationChange = (e) => {
+//   setFormData({ ...formData, education: e });
+// }
 const getCheckedValue = (e) => {
   const t = e.target.value;
 }
@@ -264,8 +246,29 @@ const disabilityOptions = Object.entries(disability).map(([key, val]) => {
     }
   )
 })
+const instOptions = Object.entries(inst).map(([key, val]) => {
+  return(
+    {
+      value: val.id,
+      label: val.institution_name
+    }
+  )
+})
 const [feeType, setFeeType] = useState(true);
 const [streamId, setStreamId] = useState([]);
+const callInstApifunc = async (instTypeId, instOId, instCtId, univsId) => { debugger;
+  try {
+    const instResponse = await axios.post(
+      IP_END_POINT_API+'ssp_backend/api/v1/get_institutions',
+      { user_id: 1, education_type_id: 1, institution_type_id: instTypeId.length === 0 ? [0] : instTypeId, institution_ownership_id: instOId.length === 0 ? [0] : instOId, institution_category_id: instCtId.length === 0 ? [0] : instCtId, university_id: univsId.length === 0 ? [0] : univsId},
+      { headers: headers }
+    );
+    setInst(instResponse.data?.data || []);
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 const callApiFun = async (courseTypeId, streamId) => {
   try {
     const courseResponse = await axios.post(
@@ -279,8 +282,45 @@ const callApiFun = async (courseTypeId, streamId) => {
   }
 }
 const [getCourseTypeId ,setGetCourseTypeId] = useState([]);
+const [instTypeId, setInstTypeId] = useState([]);
+const [instCtId, setInstCtId] = useState([]);
+const [instOId, setInstOId] = useState([]);
+const [univsId, setUnivsId] = useState([]);
 const handleOptionsChange = async (e, name) => { debugger;
-  if (name === 'universityType') {
+  if (name === 'university') {
+    const univsIds = e.map(option => option.value);
+    const univsId = univsIds.map((univsId) => {
+      return univsId
+    });
+    setUnivsId(univsId);
+    callInstApifunc(instTypeId, instOId, instCtId, univsId);
+  }
+  else if (name === 'education') {
+    if(e.label === 'School') {
+      setSchool(true);
+      setCollege(false);
+    }
+    else if(e.value === 0) {
+      setCollege(false);
+      setSchool(false);
+    }
+    else {
+      setCollege(true);
+      setSchool(false);
+      try {
+        const INST_CTG_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institute_category', {user_id:1}, {headers: headers});
+        const INST_TYP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institutetypes', {user_id:1}, {headers: headers});
+        const OWNERSHIP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_ownerships',{id:0}, {headers: headers});
+        setInstOwnership(OWNERSHIP_API.data?.data || []);
+        setInstTyp(INST_TYP_API.data?.data || []);
+        setInstitutionCat(INST_CTG_API.data?.data || []);
+      }
+      catch(err) {
+        console.log('err', err);
+      }
+    }
+  }
+  else if (name === 'universityType') {
     try {
       const univIds = e.map(option => option.value);
       const univId = univIds.map((univId) => {
@@ -296,23 +336,41 @@ const handleOptionsChange = async (e, name) => { debugger;
       console.log('Error', error);
     }
   }
-  if(name === 'instituteOwnership') {
+  else if (name === 'instituteType') {
+    const instTypIds = e.map(option => option.value);
+    const instTypId = instTypIds.map((instTypId) => {
+      return instTypId
+    });
+    setInstTypeId(instTypId);
+    callInstApifunc(instTypId, instOId, instCtId, univsId);
+  }
+  else if (name === 'instituteCategory') {
+    const instCtIds = e.map(option => option.value);
+    const instCtId = instCtIds.map((instCtId) => {
+      return instCtId
+    });
+    setInstCtId(instCtId);
+    callInstApifunc(instTypeId, instOId, instCtId, univsId);
+  }
+  else if(name === 'instituteOwnership') {
     try {
       const instOwnIds = e.map(option => option.value);
       const instOwnId = instOwnIds.map((instOwnId) => {
         return instOwnId
       });
+      setInstOId(instOwnId);
       const instOwnResponse = await axios.post(
         IP_END_POINT_API+'ssp_backend/api/v1/get_university_types',
         { user_id: 1, ownership_id: instOwnId.length === 0 ? [0] : instOwnId },
         { headers: headers }
       );
       setUnivTyp(instOwnResponse.data?.data || []);
+      callInstApifunc(instTypeId, instOwnId, instCtId, univsId);
     } catch (error) {
       console.log('Error', error);
     }
   }
-  if(name === 'community') {
+  else if(name === 'community') {
     if(e.some(option => option.value === 'all')) {
       setFormData({ ...formData, [name]: communityOptions});
     } else {
@@ -360,7 +418,7 @@ const handleOptionsChange = async (e, name) => { debugger;
       );
       setSubDepartmentData(casteResponse.data?.data || []);
     } catch (error) {
-      console.log('Error fetching sub department data:', error);
+      console.log('Error', error);
     }
   }
   else if(name === 'schemeFeeType') {
@@ -388,14 +446,16 @@ const handleOptionsChange = async (e, name) => { debugger;
       setDisStatus(false);
     }
   }
-  else if (e.some(option => option.value === 'all')) {
-    setFormData({ ...formData, [name]: name === 'caste' ? casteOptions :
-      name === 'subDepartment' ? subdeptOptions : name === 'instituteType' ? instTypOptions : 
-      name === 'instituteCategory' ? insCtOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'stream' ? streamOptions : name === 'courseType' ? courseTypOption : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : ''
-    });
-  }
   else {
-    setFormData({ ...formData, [name]: e });
+    if (e.some(option => option.value === 'all')) {
+      setFormData({ ...formData, [name]: name === 'caste' ? casteOptions :
+        name === 'subDepartment' ? subdeptOptions : name === 'instituteType' ? instTypOptions : 
+        name === 'instituteCategory' ? insCtOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'stream' ? streamOptions : name === 'courseType' ? courseTypOption : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : ''
+      });
+    }
+    else {
+      setFormData({ ...formData, [name]: e });
+    }
   }
 }
   const [showMore, setShowMore] = useState(false); 
@@ -505,7 +565,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                     options={[{ value: 0, label: 'None' }, ...eduOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    onChange={(e) => handleEducationChange(e)}
+                    onChange={(e) => handleOptionsChange(e, 'education')}
                   />
                 </div>
               </Form.Group>
@@ -646,7 +706,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                         <Select
                           //defaultValue={selectedOptions}
                           isMulti
-                          options={[{ value: 'all', label: 'All' }]}
+                          options={[{ value: 'all', label: 'All' }, ...instOptions]}
                           className="basic-multi-select"
                           classNamePrefix="select"
                           onChange={(e) => handleOptionsChange(e, 'instituteName')}
