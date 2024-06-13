@@ -8,7 +8,7 @@ const SchemeRegistration = () => {
   const [formData, setFormData] = useState({
     department: [],subDepartment: [],schemeName: '',schemeCode: '',education: [],
     instituteType: [],instituteCategory: [],universityType: [],university: [],
-    instituteName: [],studentCategory: [],class: [],schoolCategory: [],
+    instituteText: [],studentCategory: [],class: [],schoolCategory: [],
     schoolType: [],schoolName: [],schoolClass: [],stream: [],course: [],
     courseType: [],medium: [],religion: [],community: [],caste: [],gender: [],income: [],
     residentalStatus: [], disabilityStatus:[], disabilityCategory: [], schemeFeeType: [], instituteOwnership: []
@@ -30,8 +30,16 @@ const SchemeRegistration = () => {
   const [disability, setDisability] = useState([]);
   const [courseTyp, setCourseTyp] = useState([]);
   const [instOwnership, setInstOwnership] = useState([]);
-  const [disable, setDisable] = useState(true);
   const [inst, setInst] = useState([]);
+  const [univIdVal, setUnivIdVal] = useState([]);
+  const [mediumData, setMediumData] = useState([
+    { value: 'English', label: 'English' },
+    { value: 'Tamil', label: 'Tamil' }
+  ])
+  const [resSta, setResSta] = useState([
+    { value: 'Hosteller', label: 'Hosteller' },
+    { value: 'Day Scholar', label: 'Day Scholar' }
+  ])
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded",
     'X-APP-KEY': 'te$t',
@@ -39,14 +47,14 @@ const SchemeRegistration = () => {
   useEffect(() => { debugger;
     const fetchData = async () => {
       try {
-        const DEPT_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
-        const COMMUNITY_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
-        const RELIGION_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
-        const EDU_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
-        const STREAM_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_streams', {user_id:1}, {headers: headers});
-        const COURSE_TYPE_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_course_types', {user_id:1}, {headers: headers});
-        const GENDER_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Gender'}, {headers: headers});
-        const INCOME_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_income_ranges', {user_id: 1, category:'Income'}, {headers: headers});
+        const DEPT_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
+        const COMMUNITY_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
+        const RELIGION_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
+        const EDU_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
+        const STREAM_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_streams', {user_id:1}, {headers: headers});
+        const COURSE_TYPE_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_course_types', {user_id:1}, {headers: headers});
+        const GENDER_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Gender'}, {headers: headers});
+        const INCOME_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_income_ranges', {user_id: 1, category:'Income'}, {headers: headers});
         setIncome(INCOME_API.data?.data || []);
         setGender(GENDER_API.data?.data || []);
         setCourseTyp(COURSE_TYPE_API.data?.data || []);
@@ -138,6 +146,14 @@ const incomeOptions = Object.entries(income).map(([key, val]) => {
     {
       value: val.id,
       label: val.income_range
+    }
+  )
+})
+const resStatusOptions = Object.entries(resSta).map(([key, val]) => {
+  return(
+    {
+      value: val.value,
+      label: val.label
     }
   )
 })
@@ -254,31 +270,77 @@ const instOptions = Object.entries(inst).map(([key, val]) => {
     }
   )
 })
+const mediumOptions = Object.entries(mediumData).map(([key, val]) => {
+  return(
+    {
+      value: val.value,
+      label: val.label
+    }
+  )
+})
 const [feeType, setFeeType] = useState(true);
 const [streamId, setStreamId] = useState([]);
-const callInstApifunc = async (instTypeId, instOId, instCtId, univsId) => { debugger;
-  try {
-    const instResponse = await axios.post(
-      IP_END_POINT_API+'ssp_backend/api/v1/get_institutions',
-      { user_id: 1, education_type_id: 1, institution_type_id: instTypeId.length === 0 ? [0] : instTypeId, institution_ownership_id: instOId.length === 0 ? [0] : instOId, institution_category_id: instCtId.length === 0 ? [0] : instCtId, university_id: univsId.length === 0 ? [0] : univsId},
-      { headers: headers }
-    );
-    setInst(instResponse.data?.data || []);
-  }
-  catch (err) {
-    console.log(err);
+const callInstApifunc = async (instTypeId, instOId, instCtId, univsId) => {
+  if(instTypeId.length !==0 && instOId.length !==0 && instCtId.length !==0 && univsId.length !==0) {
+    try {
+      const instResponse = await axios.post (
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institutions',
+        { user_id: 1, education_type_id: 1, institution_type_id: instTypeId, institution_ownership_id: instOId, institution_category_id: instCtId, university_id: univsId},
+        { headers: headers }
+      );
+      setInst(instResponse.data?.data || []);
+    }
+    catch (err) {}
   }
 }
 const callApiFun = async (courseTypeId, streamId) => {
-  try {
-    const courseResponse = await axios.post(
-      IP_END_POINT_API+'ssp_backend/api/v1/get_courses',
-      { user_id: 1, course_type_id: courseTypeId.length === 0 ? [0] : courseTypeId, stream_id: streamId.length === 0 ? [0] : streamId },
-      { headers: headers }
-    );
-    setCourse(courseResponse.data?.data || []);
-  } catch (error) {
-    console.log('Error', error);
+  if(courseTypeId.length !== 0 && streamId.length !==0 ) {
+    try {
+      const courseResponse = await axios.post(
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_courses',
+        { user_id: 1, course_type_id: courseTypeId[0] === 'all' ? [0] : courseTypeId, stream_id: streamId[0] === 'all' ? [0] : streamId },
+        { headers: headers }
+      );
+      setCourse(courseResponse.data?.data || []);
+    } catch (error) {}
+  }
+}
+
+const [communityAll, setCommunityAll] = useState([]);
+const [streamAll, setStreamAll] = useState([]);
+const [univAll, setUnivAll] = useState([]);
+const [instCtAll, setInstCtAll] = useState([]);
+const [instTyAll, setInstTyAll] = useState([]);
+const [instOwnAll, setInstOwnAll] = useState([]);
+const [univTyAll, setUnivTyAll] = useState([]);
+const [instNameAll, setInstNameAll] = useState([]);
+const [courseTyAll, setCourseTyAll] = useState([]);
+const [courseAll, setCourseAll] = useState([]);
+const [mediumAll, setMediumAll] = useState([]);
+const [religionAll, setReligionAll] = useState([]);
+const [casteAll, setCasteAll] = useState([]);
+const [genderAll, setGenderAll] = useState([]);
+const [incomeAll, setIncomeAll] = useState([]);
+const [resStsAll, setResStsAll] = useState([]);
+const callAllOptionFn = (e, name) => {
+  const hasAllOption = e.some((option) => {
+    return option.value === 'all';
+  });
+  if (hasAllOption) {
+    setFormData({ 
+      ...formData, [name]: name === 'stream' ? streamOptions : name === 'university' ? univOptions : name === 'instituteCategory' ? insCtOptions : name === 'instituteType' ? instTypOptions : name === 'instituteOwnership' ? instOwnershipOptions : name === 'universityType' ? univTypOptions : name === 'instituteText' ? instOptions : name === 'courseType' ? courseTypOption : name === 'course' ? courseOptions : name === 'medium' ? mediumOptions : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : name === 'residentalStatus' ? resStatusOptions :
+      ''
+     });
+    const allOption = e.find((option) => option.value === 'all');
+    if (allOption) {
+      return name === 'stream' ? setStreamAll(allOption.value) : name === 'university' ? setUnivAll(allOption.value) : name === 'instituteCategory' ? setInstCtAll(allOption.value) : name === 'instituteType' ? setInstTyAll(allOption.value) : name === 'instituteOwnership' ? setInstOwnAll(allOption.value) : name === 'universityType' ? setUnivTyAll(allOption.value) : name === 'instituteText' ? setInstNameAll(allOption.value) : name === 'courseType' ? setCourseTyAll(allOption.value) : name === 'course' ? setCourseAll(allOption.value) : name === 'medium' ? setMediumAll(allOption.value) : name === 'religion' ? setReligionAll(allOption.value) : name === 'caste' ? setCasteAll(allOption.value) : name === 'gender' ? setGenderAll(allOption.value) : name === 'income' ? setIncomeAll(allOption.value) : name === 'residentalStatus' ? setResStsAll(allOption.value) :
+      ''
+    }
+  }
+  else {
+    setFormData({ ...formData, [name]: e });
+    return name === 'stream' ? setStreamAll('') : name === 'university' ? setUnivAll('') : name === 'instituteCategory' ? setInstCtAll('') : name === 'instituteType' ? setInstTyAll('') : name === 'instituteOwnership' ? setInstOwnAll('') : name === 'universityType' ? setUnivTyAll('') : name === 'instituteText' ? setInstNameAll('') : name === 'courseType' ? setCourseTyAll('') : name === 'course' ? setCourseAll('') : name === 'medium' ? setMediumAll('') : name === 'religion' ? setReligionAll('') :name === 'caste' ? setCasteAll('') : name === 'gender' ? setGenderAll('') : name === 'income' ? setIncomeAll('') : name === 'residentalStatus' ? setResStsAll('') :
+    ''
   }
 }
 const [getCourseTypeId ,setGetCourseTypeId] = useState([]);
@@ -286,8 +348,10 @@ const [instTypeId, setInstTypeId] = useState([]);
 const [instCtId, setInstCtId] = useState([]);
 const [instOId, setInstOId] = useState([]);
 const [univsId, setUnivsId] = useState([]);
+const [communityId, setCommunityId] = useState([]);
 const handleOptionsChange = async (e, name) => { debugger;
   if (name === 'university') {
+    callAllOptionFn(e, name);
     const univsIds = e.map(option => option.value);
     const univsId = univsIds.map((univsId) => {
       return univsId
@@ -295,7 +359,11 @@ const handleOptionsChange = async (e, name) => { debugger;
     setUnivsId(univsId);
     callInstApifunc(instTypeId, instOId, instCtId, univsId);
   }
+  else if (name === 'instituteText' || name === 'medium' || name === 'religion' || name === 'caste' || name === 'gender' || name === 'income' || name === 'residentalStatus') {
+    callAllOptionFn(e, name);
+  }
   else if (name === 'education') {
+      setFormData({ ...formData, [name]: e.label });
     if(e.label === 'School') {
       setSchool(true);
       setCollege(false);
@@ -308,9 +376,9 @@ const handleOptionsChange = async (e, name) => { debugger;
       setCollege(true);
       setSchool(false);
       try {
-        const INST_CTG_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institute_category', {user_id:1}, {headers: headers});
-        const INST_TYP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institutetypes', {user_id:1}, {headers: headers});
-        const OWNERSHIP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_ownerships',{id:0}, {headers: headers});
+        const INST_CTG_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institute_category', {user_id:1}, {headers: headers});
+        const INST_TYP_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institutetypes', {user_id:1}, {headers: headers});
+        const OWNERSHIP_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_ownerships',{id:0}, {headers: headers});
         setInstOwnership(OWNERSHIP_API.data?.data || []);
         setInstTyp(INST_TYP_API.data?.data || []);
         setInstitutionCat(INST_CTG_API.data?.data || []);
@@ -321,14 +389,16 @@ const handleOptionsChange = async (e, name) => { debugger;
     }
   }
   else if (name === 'universityType') {
+    callAllOptionFn(e, name);
     try {
       const univIds = e.map(option => option.value);
       const univId = univIds.map((univId) => {
         return univId
       });
+      setUnivIdVal(univId);
       const univResponse = await axios.post(
-        IP_END_POINT_API+'ssp_backend/api/v1/get_universities',
-        { user_id: 1, university_type_id: univId.length === 0 ? [0] : univId },
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_universities',
+        { user_id: 1, university_type_id: univId },
         { headers: headers }
       );
       setUniv(univResponse.data?.data || []);
@@ -337,6 +407,12 @@ const handleOptionsChange = async (e, name) => { debugger;
     }
   }
   else if (name === 'instituteType') {
+    // if(e.some(option => option.value === 'all')) {
+    //   setFormData({ ...formData, [name]: instTypOptions});
+    // } else {
+    //   setFormData({ ...formData, [name]: e });
+    // }
+    callAllOptionFn(e, name);
     const instTypIds = e.map(option => option.value);
     const instTypId = instTypIds.map((instTypId) => {
       return instTypId
@@ -345,6 +421,7 @@ const handleOptionsChange = async (e, name) => { debugger;
     callInstApifunc(instTypId, instOId, instCtId, univsId);
   }
   else if (name === 'instituteCategory') {
+    callAllOptionFn(e,name);
     const instCtIds = e.map(option => option.value);
     const instCtId = instCtIds.map((instCtId) => {
       return instCtId
@@ -353,6 +430,7 @@ const handleOptionsChange = async (e, name) => { debugger;
     callInstApifunc(instTypeId, instOId, instCtId, univsId);
   }
   else if(name === 'instituteOwnership') {
+    callAllOptionFn(e, name);
     try {
       const instOwnIds = e.map(option => option.value);
       const instOwnId = instOwnIds.map((instOwnId) => {
@@ -360,8 +438,8 @@ const handleOptionsChange = async (e, name) => { debugger;
       });
       setInstOId(instOwnId);
       const instOwnResponse = await axios.post(
-        IP_END_POINT_API+'ssp_backend/api/v1/get_university_types',
-        { user_id: 1, ownership_id: instOwnId.length === 0 ? [0] : instOwnId },
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_university_types',
+        { user_id: 1, ownership_id: instOwnId },
         { headers: headers }
       );
       setUnivTyp(instOwnResponse.data?.data || []);
@@ -370,20 +448,35 @@ const handleOptionsChange = async (e, name) => { debugger;
       console.log('Error', error);
     }
   }
-  else if(name === 'community') {
-    if(e.some(option => option.value === 'all')) {
+  else if(name === 'community') { debugger;
+    const hasAllOption = e.some((option) => {
+      return option.value === 'all';
+    });
+    if (hasAllOption) {
       setFormData({ ...formData, [name]: communityOptions});
-    } else {
-      setFormData({ ...formData, [name]: e });
+      const allOption = e.find((option) => option.value === 'all');
+      if (allOption) {
+        setCommunityAll(allOption.value);
+      }
     }
+    else {
+      setFormData({ ...formData, [name]: e });
+      setCommunityAll('');
+    }
+    // if(e.some(option => option.value === 'all')) {
+    //   setFormData({ ...formData, [name]: communityOptions});
+    // } else {
+    //   setFormData({ ...formData, [name]: e });
+    // }
     try {
       const communityIds = e.map(option => option.value);
       const communityId = communityIds.map((communityId) => {
         return communityId
       });
+      setCommunityId(communityId);
       const casteResponse = await axios.post(
-        IP_END_POINT_API+'ssp_backend/api/v1/get_caste',
-        { user_id: 1, community_id: communityId.length === 0 ? [0] : communityId },
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_caste',
+        { user_id: 1, community_id: communityId },
         { headers: headers }
       );
       setCaste(casteResponse.data?.data || []);
@@ -392,14 +485,21 @@ const handleOptionsChange = async (e, name) => { debugger;
     }
   }
   else if(name === 'stream') {
-      const streamIds = e.map(option => option.value);
-      const streamId = streamIds.map((streamId) => {
-        return streamId
-      });
-      setStreamId(streamId)
-      callApiFun(getCourseTypeId, streamId);
+    callAllOptionFn(e, name);
+    // if(e.some(option => option.value === 'all')) {
+    //   setFormData({ ...formData, [name]: streamOptions});
+    // } else {
+    //   setFormData({ ...formData, [name]: e });
+    // }
+    const streamIds = e.map(option => option.value);
+    const streamId = streamIds.map((streamId) => {
+      return streamId
+    });
+    setStreamId(streamId)
+    callApiFun(getCourseTypeId, streamId);
   }
   else if(name === 'courseType') {
+    callAllOptionFn(e, name);
     const courseTypeIds = e.map(option => option.value);
       const courseTypeId = courseTypeIds.map((courseTypeId) => {
         return courseTypeId
@@ -407,12 +507,14 @@ const handleOptionsChange = async (e, name) => { debugger;
       setGetCourseTypeId(courseTypeId)
       callApiFun(courseTypeId, streamId);
   }
+  else if(name === 'course') {
+    callAllOptionFn(e, name);
+  }
   else if(name === 'department') {
-    setDisable(false);
     setFormData({ ...formData, [name]: e.label });
     try {
       const casteResponse = await axios.post(
-        IP_END_POINT_API+'ssp_backend/api/v1/get_sub_department',
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_sub_department',
         { user_id: 1, department_id: [e.value] },
         { headers: headers }
       );
@@ -422,6 +524,7 @@ const handleOptionsChange = async (e, name) => { debugger;
     }
   }
   else if(name === 'schemeFeeType') {
+    setFormData({ ...formData, [name]: e.value });
     if(e.value === 'Fixed') {
       setFeeType(false);
     } else {
@@ -434,7 +537,7 @@ const handleOptionsChange = async (e, name) => { debugger;
       setDisStatus(true);
       try {
         const disabilityResponse = await axios.post(
-          IP_END_POINT_API+'ssp_backend/api/v1/get_differentlyabled',
+          PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_differentlyabled',
           { user_id: 1},
           { headers: headers }
         );
@@ -448,9 +551,9 @@ const handleOptionsChange = async (e, name) => { debugger;
   }
   else {
     if (e.some(option => option.value === 'all')) {
-      setFormData({ ...formData, [name]: name === 'caste' ? casteOptions :
+      setFormData({ ...formData, [name]:
         name === 'subDepartment' ? subdeptOptions : name === 'instituteType' ? instTypOptions : 
-        name === 'instituteCategory' ? insCtOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'stream' ? streamOptions : name === 'courseType' ? courseTypOption : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : ''
+        name === 'instituteCategory' ? insCtOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'stream' ? streamOptions : name === 'courseType' ? courseTypOption : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : name === 'course' ? courseOptions : name === 'instituteOwnership' ? instOwnershipOptions : ''
       });
     }
     else {
@@ -517,11 +620,10 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <Select
                     //defaultValue={selectedOptions}
                     isMulti
-                    options={[{ value: 'all', label: 'All' }, ...subdeptOptions]}
+                    options={subdeptOptions.length === 0 ? [] : [{ value: 'all', label: 'All' }, ...subdeptOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     onChange={handleSubDeptChange}
-                    isDisabled = {disable}
                   />
                 </div>
               </Form.Group>
@@ -631,7 +733,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                           <Select
                             //defaultValue={selectedOptions}
                             isMulti
-                            options={[{ value: 'all', label: 'All' }, ...instOwnershipOptions]}
+                            options={ instOwnAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...instOwnershipOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
                             onChange={(e) => handleOptionsChange(e, 'instituteOwnership')}
@@ -646,7 +748,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                           <Select
                             //defaultValue={selectedOptions}
                             isMulti
-                            options={[{ value: 'all', label: 'All' }, ...instTypOptions]}
+                            options={instTyAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...instTypOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
                             onChange={(e) => handleOptionsChange(e, 'instituteType')}
@@ -661,7 +763,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                           <Select
                             //defaultValue={selectedOptions}
                             isMulti
-                            options={[{ value: 'all', label: 'All' }, ...insCtOptions]}
+                            options={instCtAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...insCtOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
                             onChange={(e) => handleOptionsChange(e, 'instituteCategory')}
@@ -676,7 +778,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                           <Select
                             //defaultValue={selectedOptions}
                             isMulti
-                            options={[{ value: 'all', label: 'All' }, ...univTypOptions]}
+                            options={ (instOId.length === 0 || univTyAll === 'all') ? [] : [{ value: 'all', label: 'All' }, ...univTypOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
                             onChange={(e) => handleOptionsChange(e, 'universityType')}
@@ -691,7 +793,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                           <Select
                             //defaultValue={selectedOptions}
                             isMulti
-                            options={[{ value: 'all', label: 'All' }, ...univOptions]}
+                            options={(univIdVal.length === 0 || univAll === 'all') ? [] : [{ value: 'all', label: 'All' }, ...univOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
                             onChange={(e) => handleOptionsChange(e, 'university')}
@@ -706,10 +808,10 @@ const handleOptionsChange = async (e, name) => { debugger;
                         <Select
                           //defaultValue={selectedOptions}
                           isMulti
-                          options={[{ value: 'all', label: 'All' }, ...instOptions]}
+                          options={(instTypeId.length === 0 || instOId.length === 0 || instOId.length === 0 || instCtId.length === 0 || univsId.length === 0 || instNameAll === 'all' ) ? [] : [{ value: 'all', label: 'All' }, ...instOptions]}
                           className="basic-multi-select"
                           classNamePrefix="select"
-                          onChange={(e) => handleOptionsChange(e, 'instituteName')}
+                          onChange={(e) => handleOptionsChange(e, 'instituteText')}
                         />
                       </div>
                     </Form.Group>
@@ -746,7 +848,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                           <Select
                             //defaultValue={selectedOptions}
                             isMulti
-                            options={[{ value: 'all', label: 'All' }, ...streamOptions]}
+                            options={streamAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...streamOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
                             //onChange={handleStreamChange}
@@ -762,7 +864,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                     <Select
                       //defaultValue={selectedOptions}
                       isMulti
-                      options={[{ value: 'all', label: 'All' }, ...courseTypOption]}
+                      options={courseTyAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...courseTypOption]}
                       className="basic-multi-select"
                       classNamePrefix="select"
                       //onChange={handleCourseTypeChange}
@@ -773,18 +875,18 @@ const handleOptionsChange = async (e, name) => { debugger;
               </div>
               <div className="col-md-4 mb-2">
                 <Form.Group className="mb-3 instituteApproveRejectForm">
-                <div className="">
-                  <span className="form-label lbl-font lbl-color">Course</span>
-                  <Select
-                    //defaultValue={selectedOptions}
-                    isMulti
-                    options={[{ value: 'all', label: 'All' }, ...courseOptions]}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    onChange={(e) => handleOptionsChange(e, 'course')}
-                  />
-                </div>
-              </Form.Group>
+                  <div className="">
+                    <span className="form-label lbl-font lbl-color">Course</span>
+                    <Select
+                      //defaultValue={selectedOptions}
+                      isMulti
+                      options={(getCourseTypeId.length === 0 || streamId.length === 0 || courseAll === 'all') ? []  :  [{ value: 'all', label: 'All' }, ...courseOptions]}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      onChange={(e) => handleOptionsChange(e, 'course')}
+                    />
+                  </div>
+                </Form.Group>
               </div>
               
               
@@ -795,7 +897,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                     <Select
                       //defaultValue={selectedOptions}
                       isMulti
-                      options={[{ value: 'all', label: 'All' },{ value: 'English', label: 'English' },{ value: 'Tamil', label: 'Tamil' },]}
+                      options={mediumAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...mediumOptions]}
                       className="basic-multi-select"
                       classNamePrefix="select"
                       onChange={(e) => handleOptionsChange(e, 'medium')}
@@ -819,7 +921,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <Select
                     //defaultValue={selectedOptions}
                     isMulti
-                    options={[{ value: 'all', label: 'All' }, ...religionOptions]}
+                    options={religionAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...religionOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     onChange={(e) => handleOptionsChange(e, 'religion')}
@@ -834,7 +936,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <Select
                     //defaultValue={selectedOptions}
                     isMulti
-                    options={[{ value: 'all', label: 'All' }, ...communityOptions]}
+                    options={communityAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...communityOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     //onChange={handleCommunityChange}
@@ -850,7 +952,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <Select
                     //defaultValue={selectedOptions}
                     isMulti
-                    options={[{ value: 'all', label: 'All' }, ...casteOptions]}
+                    options={(communityId.length === 0 || casteAll === 'all' ) ? [] : [{ value: 'all', label: 'All' }, ...casteOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     //isDisabled = {disable}
@@ -866,7 +968,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <Select
                     //defaultValue={selectedOptions}
                     isMulti
-                    options={[{ value: 'all', label: 'All' }, ...genderOptions]}
+                    options={genderAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...genderOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     onChange={(e) => handleOptionsChange(e, 'gender')}
@@ -880,8 +982,9 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <span className="form-label lbl-font lbl-color">Income</span>
                   <Select
                     //defaultValue={selectedOptions}
+                    //value={formData.income && formData.income[0]?.value === 'all' ? 'All' : formData.income}
                     isMulti
-                    options={[{ value: 'all', label: 'All' }, ...incomeOptions]}
+                    options={incomeAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...incomeOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     onChange={(e) => handleOptionsChange(e, 'income')}
@@ -902,11 +1005,21 @@ const handleOptionsChange = async (e, name) => { debugger;
                     <span className="form-label lbl-font lbl-color">Residential Status</span>
                     <Select
                       //defaultValue={selectedOptions}
+                      //value={formData.residentalStatus && formData.residentalStatus.length > 0 && formData.residentalStatus[0].value === 'all' ? [{ value: 'all', label: 'All' }] : formData.residentalStatus}
+                      value={formData.residentalStatus && formData.residentalStatus.some(option => option.value === 'all') ? [{ value: 'all', label: 'All' }] : formData.residentalStatus}
                       isMulti
-                      options={[{ value: 'all', label: 'All' },{ value: 'Hosteller', label: 'Hosteller' },{ value: 'Day Scholar', label: 'Day Scholar' },]}
+                      options={resStsAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...resStatusOptions]}
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      onChange={(e) => handleOptionsChange(e, 'residentalStatus')}
+                      onChange={(e) => {
+                        if (e.some(option => option.value === 'all')) {
+                            handleOptionsChange([{ value: 'All', label: 'All' }], 'residentalStatus');
+                        } else {
+                            handleOptionsChange(e, 'residentalStatus');
+                        }
+                    }}
+                      //onChange={(e) => handleOptionsChange(e, 'residentalStatus')}
+                      //formatOptionLabel={(option) => option.value === 'all' ? 'All' : option.label}
                     />
                   </div>
                 </Form.Group>
@@ -935,7 +1048,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                     <span className="form-label lbl-font lbl-color">Disability Category</span>
                     <Select
                       //defaultValue={selectedOptions}
-                      //isMulti
+                      isMulti
                       options={[ ...disabilityOptions]}
                       className="basic-multi-select"
                       classNamePrefix="select"
