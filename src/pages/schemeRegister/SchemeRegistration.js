@@ -32,6 +32,29 @@ const SchemeRegistration = () => {
   const [instOwnership, setInstOwnership] = useState([]);
   const [inst, setInst] = useState([]);
   const [univIdVal, setUnivIdVal] = useState([]);
+  const [getCourseTypeId ,setGetCourseTypeId] = useState([]);
+  const [instTypeId, setInstTypeId] = useState([]);
+  const [instCtId, setInstCtId] = useState([]);
+  const [instOId, setInstOId] = useState([]);
+  const [univsId, setUnivsId] = useState([]);
+  const [feeType, setFeeType] = useState(true);
+  const [streamId, setStreamId] = useState([]);
+  const [communityAll, setCommunityAll] = useState([]);
+  const [streamAll, setStreamAll] = useState([]);
+  const [univAll, setUnivAll] = useState([]);
+  const [instCtAll, setInstCtAll] = useState([]);
+  const [instTyAll, setInstTyAll] = useState([]);
+  const [instOwnAll, setInstOwnAll] = useState([]);
+  const [univTyAll, setUnivTyAll] = useState([]);
+  const [instNameAll, setInstNameAll] = useState([]);
+  const [courseTyAll, setCourseTyAll] = useState([]);
+  const [courseAll, setCourseAll] = useState([]);
+  const [mediumAll, setMediumAll] = useState([]);
+  const [religionAll, setReligionAll] = useState([]);
+  const [casteAll, setCasteAll] = useState([]);
+  const [genderAll, setGenderAll] = useState([]);
+  const [incomeAll, setIncomeAll] = useState([]);
+  const [resStsAll, setResStsAll] = useState([]);
   const [mediumData, setMediumData] = useState([
     { value: 'English', label: 'English' },
     { value: 'Tamil', label: 'Tamil' }
@@ -44,17 +67,17 @@ const SchemeRegistration = () => {
     "Content-Type": "application/x-www-form-urlencoded",
     'X-APP-KEY': 'te$t',
   };
-  useEffect(() => { debugger;
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const DEPT_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
-        const COMMUNITY_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
-        const RELIGION_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
-        const EDU_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
-        const STREAM_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_streams', {user_id:1}, {headers: headers});
-        const COURSE_TYPE_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_course_types', {user_id:1}, {headers: headers});
-        const GENDER_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Gender'}, {headers: headers});
-        const INCOME_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_income_ranges', {user_id: 1, category:'Income'}, {headers: headers});
+        const DEPT_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
+        const COMMUNITY_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
+        const RELIGION_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
+        const EDU_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
+        const STREAM_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_streams', {user_id:1}, {headers: headers});
+        const COURSE_TYPE_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_course_types', {user_id:1}, {headers: headers});
+        const GENDER_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Gender'}, {headers: headers});
+        const INCOME_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_income_ranges', {user_id: 1, category:'Income'}, {headers: headers});
         setIncome(INCOME_API.data?.data || []);
         setGender(GENDER_API.data?.data || []);
         setCourseTyp(COURSE_TYPE_API.data?.data || []);
@@ -78,17 +101,19 @@ const handleINEX = (e) => { debugger;
   }
 }
 const [active, setActive] = useState('home-tab-pane');
-const handleSave = (e, tabId) => { debugger;
+const handleNxtPrv = (e, tabId) => {
   setActive(tabId)
   e.preventDefault();
-  console.log('Form Data:', formData.department);
-  {
-    formData.instituteType.map((value, index) => {
-      return value
-    })
-  }
+  console.log('Form Data:', formData);
 };
-const [forCourse, setForCourse] = useState([]);
+const handleCalc = (e) => {
+  console.log('api-calc');
+}
+const handleFilterOptions = (e, name) => {
+  if(name === 'disabilityCategory') {
+    return formData.disabilityCategory[e.target.value]
+  }
+}
 const handleSchemeName = (e) => {
   const name = e.target.value;
   setFormData({ ...formData, schemeName: name });
@@ -99,193 +124,38 @@ const handleSchemeCode = (e) => {
 }
 const [school, setSchool] = useState(false);
 const [college, setCollege] = useState(false);
-// const handleEducationChange = (e) => {
-//   setFormData({ ...formData, education: e });
-// }
-const getCheckedValue = (e) => {
-  const t = e.target.value;
+const generateOptions = (obj) => {
+  return Object.entries(obj).map(([key, val]) => ({
+    value: val.id,
+    label: val.label || val.display_text || val.course_name || val.university_name || val.ownership || val.course_type || val.income_range || val.department_name || val.institute_type || val.subdepartment_name || val.community_name || val.caste_name || val.stream_name || val.university_type || val.institute_category || val.disability_name || val.institution_name,
+  }));
 }
-const [selectedOptions, setSelectedOptions] = useState([]);
-const handleSubDeptChange = (selected) => {
-  setSelectedOptions(selected);
-    const allOptionSelected = selected.some(option => option.value === 'all');
-    if (allOptionSelected) {
-      setSelectedOptions(subdeptOptions);
-      setFormData({ ...formData, subDepartment: subdeptOptions });
-    }
-    else {
-      setFormData({ ...formData, subDepartment: selected });
-    }
-}
-const instOwnershipOptions = Object.entries(instOwnership).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.ownership
-    }
-  )
-})
-const univOptions = Object.entries(univ).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.university_name
-    }
-  )
-})
-const courseTypOption = Object.entries(courseTyp).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.course_type
-    }
-  )
-})
-const incomeOptions = Object.entries(income).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.income_range
-    }
-  )
-})
-const resStatusOptions = Object.entries(resSta).map(([key, val]) => {
-  return(
-    {
-      value: val.value,
-      label: val.label
-    }
-  )
-})
-const religionOptions = Object.entries(religion).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.display_text
-    }
-  )
-})
-const deptOptions = Object.entries(departmentData).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.department_name
-    }
-  )
-})
-const genderOptions = Object.entries(gender).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.display_text
-    }
-  )
-})
-const instTypOptions = Object.entries(instTyp).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.institute_type
-    }
-  )
-})
-const courseOptions = Object.entries(course).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.course_name
-    }
-  )
-})
-const subdeptOptions = Object.entries(subDepartmentData).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.subdepartment_name
-    }
-  )
-})
-
-const communityOptions = Object.entries(community).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.community_name
-    }
-  )
-})
-const casteOptions = Object.entries(caste).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.caste_name
-    }
-  )
-})
-const eduOptions = Object.entries(education).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.display_text
-    }
-  )
-})
-const insCtOptions = Object.entries(institutionCat).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.institute_category
-    }
-  )
-})
-const streamOptions = Object.entries(stream).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.stream_name
-    }
-  )
-})
-const univTypOptions = Object.entries(univTyp).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.university_type
-    }
-  )
-})
-const disabilityOptions = Object.entries(disability).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.disability_name
-    }
-  )
-})
-const instOptions = Object.entries(inst).map(([key, val]) => {
-  return(
-    {
-      value: val.id,
-      label: val.institution_name
-    }
-  )
-})
-const mediumOptions = Object.entries(mediumData).map(([key, val]) => {
-  return(
-    {
-      value: val.value,
-      label: val.label
-    }
-  )
-})
-const [feeType, setFeeType] = useState(true);
-const [streamId, setStreamId] = useState([]);
+const instOwnershipOptions = generateOptions(instOwnership);
+const univOptions = generateOptions(univ);
+const courseTypOption = generateOptions(courseTyp);
+const incomeOptions = generateOptions(income);
+const resStatusOptions = generateOptions(resSta);
+const religionOptions = generateOptions(religion);
+const deptOptions = generateOptions(departmentData);
+const genderOptions = generateOptions(gender);
+const instTypOptions = generateOptions(instTyp);
+const courseOptions = generateOptions(course);
+const subdeptOptions = generateOptions(subDepartmentData);
+const communityOptions = generateOptions(community);
+const casteOptions = generateOptions(caste);
+const eduOptions = generateOptions(education);
+const insCtOptions = generateOptions(institutionCat);
+const streamOptions = generateOptions(stream);
+const univTypOptions = generateOptions(univTyp);
+const disabilityOptions = generateOptions(disability);
+const instOptions = generateOptions(inst);
+const mediumOptions = generateOptions(mediumData);
 const callInstApifunc = async (instTypeId, instOId, instCtId, univsId) => {
   if(instTypeId.length !==0 && instOId.length !==0 && instCtId.length !==0 && univsId.length !==0) {
     try {
       const instResponse = await axios.post (
-        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institutions',
-        { user_id: 1, education_type_id: 1, institution_type_id: instTypeId, institution_ownership_id: instOId, institution_category_id: instCtId, university_id: univsId},
+        IP_END_POINT_API+'ssp_backend/api/v1/get_institutions',
+        { user_id: 1, education_type_id: 1, institution_type_id: instTypeId[0] === 'all' ? ['all'] : instTypeId, institution_ownership_id: instOId[0] === 'all' ? ['all'] : instOId, institution_category_id: instCtId[0] === 'all' ? ['all'] : instCtId, university_id: univsId[0] === 'all' ? ['all'] : univsId},
         { headers: headers }
       );
       setInst(instResponse.data?.data || []);
@@ -297,57 +167,36 @@ const callApiFun = async (courseTypeId, streamId) => {
   if(courseTypeId.length !== 0 && streamId.length !==0 ) {
     try {
       const courseResponse = await axios.post(
-        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_courses',
-        { user_id: 1, course_type_id: courseTypeId[0] === 'all' ? [0] : courseTypeId, stream_id: streamId[0] === 'all' ? [0] : streamId },
+        IP_END_POINT_API+'ssp_backend/api/v1/get_courses',
+        { user_id: 1, course_type_id: courseTypeId[0] === 'all' ? ['all'] : courseTypeId, stream_id: streamId[0] === 'all' ? ['all'] : streamId },
         { headers: headers }
       );
       setCourse(courseResponse.data?.data || []);
     } catch (error) {}
   }
 }
-
-const [communityAll, setCommunityAll] = useState([]);
-const [streamAll, setStreamAll] = useState([]);
-const [univAll, setUnivAll] = useState([]);
-const [instCtAll, setInstCtAll] = useState([]);
-const [instTyAll, setInstTyAll] = useState([]);
-const [instOwnAll, setInstOwnAll] = useState([]);
-const [univTyAll, setUnivTyAll] = useState([]);
-const [instNameAll, setInstNameAll] = useState([]);
-const [courseTyAll, setCourseTyAll] = useState([]);
-const [courseAll, setCourseAll] = useState([]);
-const [mediumAll, setMediumAll] = useState([]);
-const [religionAll, setReligionAll] = useState([]);
-const [casteAll, setCasteAll] = useState([]);
-const [genderAll, setGenderAll] = useState([]);
-const [incomeAll, setIncomeAll] = useState([]);
-const [resStsAll, setResStsAll] = useState([]);
+const [subDepartmentAll, setSubDepartmentAll] = useState([]);
 const callAllOptionFn = (e, name) => {
   const hasAllOption = e.some((option) => {
     return option.value === 'all';
   });
   if (hasAllOption) {
     setFormData({ 
-      ...formData, [name]: name === 'stream' ? streamOptions : name === 'university' ? univOptions : name === 'instituteCategory' ? insCtOptions : name === 'instituteType' ? instTypOptions : name === 'instituteOwnership' ? instOwnershipOptions : name === 'universityType' ? univTypOptions : name === 'instituteText' ? instOptions : name === 'courseType' ? courseTypOption : name === 'course' ? courseOptions : name === 'medium' ? mediumOptions : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : name === 'residentalStatus' ? resStatusOptions :
+      ...formData, [name]: name === 'stream' ? streamOptions : name === 'university' ? univOptions : name === 'instituteCategory' ? insCtOptions : name === 'instituteType' ? instTypOptions : name === 'instituteOwnership' ? instOwnershipOptions : name === 'universityType' ? univTypOptions : name === 'instituteText' ? instOptions : name === 'courseType' ? courseTypOption : name === 'course' ? courseOptions : name === 'medium' ? mediumOptions : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : name === 'residentalStatus' ? resStatusOptions : name === 'subDepartment' ? subdeptOptions :
       ''
      });
     const allOption = e.find((option) => option.value === 'all');
     if (allOption) {
-      return name === 'stream' ? setStreamAll(allOption.value) : name === 'university' ? setUnivAll(allOption.value) : name === 'instituteCategory' ? setInstCtAll(allOption.value) : name === 'instituteType' ? setInstTyAll(allOption.value) : name === 'instituteOwnership' ? setInstOwnAll(allOption.value) : name === 'universityType' ? setUnivTyAll(allOption.value) : name === 'instituteText' ? setInstNameAll(allOption.value) : name === 'courseType' ? setCourseTyAll(allOption.value) : name === 'course' ? setCourseAll(allOption.value) : name === 'medium' ? setMediumAll(allOption.value) : name === 'religion' ? setReligionAll(allOption.value) : name === 'caste' ? setCasteAll(allOption.value) : name === 'gender' ? setGenderAll(allOption.value) : name === 'income' ? setIncomeAll(allOption.value) : name === 'residentalStatus' ? setResStsAll(allOption.value) :
+      return name === 'stream' ? setStreamAll(allOption.value) : name === 'university' ? setUnivAll(allOption.value) : name === 'instituteCategory' ? setInstCtAll(allOption.value) : name === 'instituteType' ? setInstTyAll(allOption.value) : name === 'instituteOwnership' ? setInstOwnAll(allOption.value) : name === 'universityType' ? setUnivTyAll(allOption.value) : name === 'instituteText' ? setInstNameAll(allOption.value) : name === 'courseType' ? setCourseTyAll(allOption.value) : name === 'course' ? setCourseAll(allOption.value) : name === 'medium' ? setMediumAll(allOption.value) : name === 'religion' ? setReligionAll(allOption.value) : name === 'caste' ? setCasteAll(allOption.value) : name === 'gender' ? setGenderAll(allOption.value) : name === 'income' ? setIncomeAll(allOption.value) : name === 'residentalStatus' ? setResStsAll(allOption.value) : name === 'subDepartment' ? setSubDepartmentAll(allOption.value) :
       ''
     }
   }
   else {
     setFormData({ ...formData, [name]: e });
-    return name === 'stream' ? setStreamAll('') : name === 'university' ? setUnivAll('') : name === 'instituteCategory' ? setInstCtAll('') : name === 'instituteType' ? setInstTyAll('') : name === 'instituteOwnership' ? setInstOwnAll('') : name === 'universityType' ? setUnivTyAll('') : name === 'instituteText' ? setInstNameAll('') : name === 'courseType' ? setCourseTyAll('') : name === 'course' ? setCourseAll('') : name === 'medium' ? setMediumAll('') : name === 'religion' ? setReligionAll('') :name === 'caste' ? setCasteAll('') : name === 'gender' ? setGenderAll('') : name === 'income' ? setIncomeAll('') : name === 'residentalStatus' ? setResStsAll('') :
+    return name === 'stream' ? setStreamAll('') : name === 'university' ? setUnivAll('') : name === 'instituteCategory' ? setInstCtAll('') : name === 'instituteType' ? setInstTyAll('') : name === 'instituteOwnership' ? setInstOwnAll('') : name === 'universityType' ? setUnivTyAll('') : name === 'instituteText' ? setInstNameAll('') : name === 'courseType' ? setCourseTyAll('') : name === 'course' ? setCourseAll('') : name === 'medium' ? setMediumAll('') : name === 'religion' ? setReligionAll('') :name === 'caste' ? setCasteAll('') : name === 'gender' ? setGenderAll('') : name === 'income' ? setIncomeAll('') : name === 'residentalStatus' ? setResStsAll('') : name === 'subDepartment' ? setSubDepartmentAll('') :
     ''
   }
 }
-const [getCourseTypeId ,setGetCourseTypeId] = useState([]);
-const [instTypeId, setInstTypeId] = useState([]);
-const [instCtId, setInstCtId] = useState([]);
-const [instOId, setInstOId] = useState([]);
-const [univsId, setUnivsId] = useState([]);
 const [communityId, setCommunityId] = useState([]);
 const handleOptionsChange = async (e, name) => { debugger;
   if (name === 'university') {
@@ -359,7 +208,7 @@ const handleOptionsChange = async (e, name) => { debugger;
     setUnivsId(univsId);
     callInstApifunc(instTypeId, instOId, instCtId, univsId);
   }
-  else if (name === 'instituteText' || name === 'medium' || name === 'religion' || name === 'caste' || name === 'gender' || name === 'income' || name === 'residentalStatus') {
+  else if (name === 'instituteText' || name === 'medium' || name === 'religion' || name === 'caste' || name === 'gender' || name === 'income' || name === 'residentalStatus' || name === 'subDepartment') {
     callAllOptionFn(e, name);
   }
   else if (name === 'education') {
@@ -376,9 +225,9 @@ const handleOptionsChange = async (e, name) => { debugger;
       setCollege(true);
       setSchool(false);
       try {
-        const INST_CTG_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institute_category', {user_id:1}, {headers: headers});
-        const INST_TYP_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institutetypes', {user_id:1}, {headers: headers});
-        const OWNERSHIP_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_ownerships',{id:0}, {headers: headers});
+        const INST_CTG_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institute_category', {user_id:1}, {headers: headers});
+        const INST_TYP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institutetypes', {user_id:1}, {headers: headers});
+        const OWNERSHIP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_ownerships',{id:0}, {headers: headers});
         setInstOwnership(OWNERSHIP_API.data?.data || []);
         setInstTyp(INST_TYP_API.data?.data || []);
         setInstitutionCat(INST_CTG_API.data?.data || []);
@@ -397,8 +246,8 @@ const handleOptionsChange = async (e, name) => { debugger;
       });
       setUnivIdVal(univId);
       const univResponse = await axios.post(
-        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_universities',
-        { user_id: 1, university_type_id: univId },
+        IP_END_POINT_API+'ssp_backend/api/v1/get_universities',
+        { user_id: 1, university_type_id: univId[0] === 'all' ? ['all'] : univId },
         { headers: headers }
       );
       setUniv(univResponse.data?.data || []);
@@ -407,11 +256,6 @@ const handleOptionsChange = async (e, name) => { debugger;
     }
   }
   else if (name === 'instituteType') {
-    // if(e.some(option => option.value === 'all')) {
-    //   setFormData({ ...formData, [name]: instTypOptions});
-    // } else {
-    //   setFormData({ ...formData, [name]: e });
-    // }
     callAllOptionFn(e, name);
     const instTypIds = e.map(option => option.value);
     const instTypId = instTypIds.map((instTypId) => {
@@ -438,8 +282,8 @@ const handleOptionsChange = async (e, name) => { debugger;
       });
       setInstOId(instOwnId);
       const instOwnResponse = await axios.post(
-        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_university_types',
-        { user_id: 1, ownership_id: instOwnId },
+        IP_END_POINT_API+'ssp_backend/api/v1/get_university_types',
+        { user_id: 1, ownership_id: instOwnId[0] === 'all' ? ['all'] : instOwnId },
         { headers: headers }
       );
       setUnivTyp(instOwnResponse.data?.data || []);
@@ -463,11 +307,6 @@ const handleOptionsChange = async (e, name) => { debugger;
       setFormData({ ...formData, [name]: e });
       setCommunityAll('');
     }
-    // if(e.some(option => option.value === 'all')) {
-    //   setFormData({ ...formData, [name]: communityOptions});
-    // } else {
-    //   setFormData({ ...formData, [name]: e });
-    // }
     try {
       const communityIds = e.map(option => option.value);
       const communityId = communityIds.map((communityId) => {
@@ -475,8 +314,8 @@ const handleOptionsChange = async (e, name) => { debugger;
       });
       setCommunityId(communityId);
       const casteResponse = await axios.post(
-        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_caste',
-        { user_id: 1, community_id: communityId },
+        IP_END_POINT_API+'ssp_backend/api/v1/get_caste',
+        { user_id: 1, community_id: communityId[0] === 'all' ? ['all'] : communityId },
         { headers: headers }
       );
       setCaste(casteResponse.data?.data || []);
@@ -514,7 +353,7 @@ const handleOptionsChange = async (e, name) => { debugger;
     setFormData({ ...formData, [name]: e.label });
     try {
       const casteResponse = await axios.post(
-        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_sub_department',
+        IP_END_POINT_API+'ssp_backend/api/v1/get_sub_department',
         { user_id: 1, department_id: [e.value] },
         { headers: headers }
       );
@@ -537,7 +376,7 @@ const handleOptionsChange = async (e, name) => { debugger;
       setDisStatus(true);
       try {
         const disabilityResponse = await axios.post(
-          PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_differentlyabled',
+          IP_END_POINT_API+'ssp_backend/api/v1/get_differentlyabled',
           { user_id: 1},
           { headers: headers }
         );
@@ -618,12 +457,21 @@ const handleOptionsChange = async (e, name) => { debugger;
                 <div className="">
                   <span className="form-label lbl-font lbl-color">Sub Department</span>
                   <Select
-                    //defaultValue={selectedOptions}
+                    value={subDepartmentAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.subDepartment}
                     isMulti
-                    options={subdeptOptions.length === 0 ? [] : [{ value: 'all', label: 'All' }, ...subdeptOptions]}
+                    options={(subdeptOptions.length === 0 || subDepartmentAll === 'all') ? [] : [{ value: 'all', label: 'All' }, ...subdeptOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    onChange={handleSubDeptChange}
+                    onChange={(e) =>  
+                      {
+                        if (e.some(option => option.value === 'all')) {
+                          handleOptionsChange([{ value: 'all', label: 'all' }], 'subDepartment');
+                        } else {
+                          handleOptionsChange(e, 'subDepartment');
+                        }
+                      }
+                    }
+                    //subDepartment
                   />
                 </div>
               </Form.Group>
@@ -633,9 +481,30 @@ const handleOptionsChange = async (e, name) => { debugger;
               <input type="text" className="form-control removespecialchar" placeholder="Enter Scheme Name" onChange={(e) => handleSchemeName(e)} />
             </div>
             <div className="col-md-4 mb-2">
-                <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Code</label>
-                <input type="text" class="form-control removespecialchar" placeholder="Enter Scheme Code" onChange={(e) => handleSchemeCode(e)}/>
-              </div>
+              <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Scheme Name</label>
+              <input type="text" className="form-control removespecialchar" placeholder="Enter Sub Scheme Name"/>
+            </div>
+            <div className="col-md-4 mb-2">
+              <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Scheme Category</label>
+              <input type="text" className="form-control removespecialchar" placeholder="Enter Scheme Category"/>
+            </div>
+            <div className="col-md-4 mb-2">
+              <label for="inputEmail4" className="form-label lbl-font lbl-color">Scholarship Slab</label>
+              <input type="text" className="form-control removespecialchar" placeholder="Enter Scholarship Slab"/>
+            </div>
+            <div className="col-md-4 mb-2">
+              <label for="inputEmail4" className="form-label lbl-font lbl-color">Max Slab</label>
+              <input type="text" className="form-control removespecialchar" placeholder="Enter Max Slab"/>
+            </div>
+            
+            <div className="col-md-4 mb-2">
+              <label for="inputEmail4" className="form-label lbl-font lbl-color">Slab Value</label>
+              <input type="text" className="form-control removespecialchar" placeholder="Enter Slab Value"/>
+            </div>
+            <div className="col-md-4 mb-2">
+              <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Code</label>
+              <input type="text" class="form-control removespecialchar" placeholder="Enter Scheme Code" onChange={(e) => handleSchemeCode(e)}/>
+            </div>
               <div className="col-md-4 mb-2">
                   <Form.Group className="mb-3 instituteApproveRejectForm">
                   <div className="">
@@ -731,12 +600,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                         <div className="">
                           <span className="form-label lbl-font lbl-color">Institute Ownership</span>
                           <Select
-                            //defaultValue={selectedOptions}
+                            value={instOwnAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.instituteOwnership}
                             isMulti
                             options={ instOwnAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...instOwnershipOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            onChange={(e) => handleOptionsChange(e, 'instituteOwnership')}
+                            onChange={(e) =>  
+                              {
+                                if (e.some(option => option.value === 'all')) {
+                                  handleOptionsChange([{ value: 'all', label: 'all' }], 'instituteOwnership');
+                                } else {
+                                  handleOptionsChange(e, 'instituteOwnership');
+                                }
+                              }
+                            }
                           />
                         </div>
                       </Form.Group>
@@ -746,12 +623,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                         <div className="">
                           <span className="form-label lbl-font lbl-color">Institute Type</span>
                           <Select
-                            //defaultValue={selectedOptions}
+                            value={instTyAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.instituteType}
                             isMulti
                             options={instTyAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...instTypOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            onChange={(e) => handleOptionsChange(e, 'instituteType')}
+                            onChange={(e) =>  
+                              {
+                                if (e.some(option => option.value === 'all')) {
+                                  handleOptionsChange([{ value: 'all', label: 'all' }], 'instituteType');
+                                } else {
+                                  handleOptionsChange(e, 'instituteType');
+                                }
+                              }
+                            }
                           />
                         </div>
                       </Form.Group>
@@ -761,12 +646,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                         <div className="">
                           <span className="form-label lbl-font lbl-color">Institute Category</span>
                           <Select
-                            //defaultValue={selectedOptions}
+                            value={instCtAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.instituteCategory}
                             isMulti
                             options={instCtAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...insCtOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            onChange={(e) => handleOptionsChange(e, 'instituteCategory')}
+                            onChange={(e) =>  
+                              {
+                                if (e.some(option => option.value === 'all')) {
+                                  handleOptionsChange([{ value: 'all', label: 'all' }], 'instituteCategory');
+                                } else {
+                                  handleOptionsChange(e, 'instituteCategory');
+                                }
+                              }
+                            }
                           />
                         </div>
                       </Form.Group>
@@ -776,12 +669,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                         <div className="">
                           <span className="form-label lbl-font lbl-color">University Type</span>
                           <Select
-                            //defaultValue={selectedOptions}
+                            value={univTyAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.universityType}
                             isMulti
                             options={ (instOId.length === 0 || univTyAll === 'all') ? [] : [{ value: 'all', label: 'All' }, ...univTypOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            onChange={(e) => handleOptionsChange(e, 'universityType')}
+                            onChange={(e) =>  
+                              {
+                                if (e.some(option => option.value === 'all')) {
+                                  handleOptionsChange([{ value: 'all', label: 'all' }], 'universityType');
+                                } else {
+                                  handleOptionsChange(e, 'universityType');
+                                }
+                              }
+                            }
                           />
                         </div>
                       </Form.Group>
@@ -791,12 +692,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                         <div className="">
                           <span className="form-label lbl-font lbl-color">University</span>
                           <Select
-                            //defaultValue={selectedOptions}
+                            value={univAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.university}
                             isMulti
                             options={(univIdVal.length === 0 || univAll === 'all') ? [] : [{ value: 'all', label: 'All' }, ...univOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            onChange={(e) => handleOptionsChange(e, 'university')}
+                            onChange={(e) =>  
+                              {
+                                if (e.some(option => option.value === 'all')) {
+                                  handleOptionsChange([{ value: 'all', label: 'all' }], 'university');
+                                } else {
+                                  handleOptionsChange(e, 'university');
+                                }
+                              }
+                            }
                           />
                         </div>
                       </Form.Group>
@@ -806,12 +715,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                       <div className="">
                         <span className="form-label lbl-font lbl-color">Institute Name</span>
                         <Select
-                          //defaultValue={selectedOptions}
+                          value={instNameAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.instituteText}
                           isMulti
                           options={(instTypeId.length === 0 || instOId.length === 0 || instOId.length === 0 || instCtId.length === 0 || univsId.length === 0 || instNameAll === 'all' ) ? [] : [{ value: 'all', label: 'All' }, ...instOptions]}
                           className="basic-multi-select"
                           classNamePrefix="select"
-                          onChange={(e) => handleOptionsChange(e, 'instituteText')}
+                          onChange={(e) =>  
+                            {
+                              if (e.some(option => option.value === 'all')) {
+                                handleOptionsChange([{ value: 'all', label: 'all' }], 'instituteText');
+                              } else {
+                                handleOptionsChange(e, 'instituteText');
+                              }
+                            }
+                          }
                         />
                       </div>
                     </Form.Group>
@@ -821,12 +738,21 @@ const handleOptionsChange = async (e, name) => { debugger;
                       <div className="">
                         <span className="form-label lbl-font lbl-color">Student Category</span>
                         <Select
-                          //defaultValue={selectedOptions}
+                          //value={incomeAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.income}
                           isMulti
                           options={[{ value: 'all', label: 'All' }]}
                           className="basic-multi-select"
                           classNamePrefix="select"
                           onChange={(e) => handleOptionsChange(e, 'studentCategory')}
+                          // onChange={(e) =>  
+                          //   {
+                          //     if (e.some(option => option.value === 'all')) {
+                          //       handleOptionsChange([{ value: 'all', label: 'all' }], 'income');
+                          //     } else {
+                          //       handleOptionsChange(e, 'income');
+                          //     }
+                          //   }
+                          // }
                         />
                       </div>
                     </Form.Group>
@@ -846,13 +772,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                         <div className="">
                           <span className="form-label lbl-font lbl-color">Stream</span>
                           <Select
-                            //defaultValue={selectedOptions}
+                            value={streamAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.stream}
                             isMulti
                             options={streamAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...streamOptions]}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            //onChange={handleStreamChange}
-                            onChange={(e) => handleOptionsChange(e, 'stream')}
+                            onChange={(e) =>  
+                              {
+                                if (e.some(option => option.value === 'all')) {
+                                  handleOptionsChange([{ value: 'all', label: 'all' }], 'stream');
+                                } else {
+                                  handleOptionsChange(e, 'stream');
+                                }
+                              }
+                            }
                           />
                         </div>
                       </Form.Group>
@@ -862,13 +795,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <div className="">
                     <span className="form-label lbl-font lbl-color">Course Type</span>
                     <Select
-                      //defaultValue={selectedOptions}
+                      value={courseTyAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.courseType}
                       isMulti
                       options={courseTyAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...courseTypOption]}
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      //onChange={handleCourseTypeChange}
-                      onChange={(e) => handleOptionsChange(e, 'courseType')}
+                      onChange={(e) =>  
+                        {
+                          if (e.some(option => option.value === 'all')) {
+                            handleOptionsChange([{ value: 'all', label: 'all' }], 'courseType');
+                          } else {
+                            handleOptionsChange(e, 'courseType');
+                          }
+                        }
+                      }
                     />
                   </div>
                 </Form.Group>
@@ -878,12 +818,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <div className="">
                     <span className="form-label lbl-font lbl-color">Course</span>
                     <Select
-                      //defaultValue={selectedOptions}
+                      value={courseAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.course}
                       isMulti
                       options={(getCourseTypeId.length === 0 || streamId.length === 0 || courseAll === 'all') ? []  :  [{ value: 'all', label: 'All' }, ...courseOptions]}
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      onChange={(e) => handleOptionsChange(e, 'course')}
+                      onChange={(e) =>  
+                        {
+                          if (e.some(option => option.value === 'all')) {
+                            handleOptionsChange([{ value: 'all', label: 'all' }], 'course');
+                          } else {
+                            handleOptionsChange(e, 'course');
+                          }
+                        }
+                      }
                     />
                   </div>
                 </Form.Group>
@@ -895,12 +843,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <div className="">
                     <span className="form-label lbl-font lbl-color">Medium of Instruction</span>
                     <Select
-                      //defaultValue={selectedOptions}
+                      value={mediumAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.medium}
                       isMulti
                       options={mediumAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...mediumOptions]}
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      onChange={(e) => handleOptionsChange(e, 'medium')}
+                      onChange={(e) =>  
+                        {
+                          if (e.some(option => option.value === 'all')) {
+                            handleOptionsChange([{ value: 'all', label: 'all' }], 'medium');
+                          } else {
+                            handleOptionsChange(e, 'medium');
+                          }
+                        }
+                      }
                     />
                   </div>
                 </Form.Group>
@@ -919,12 +875,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                 <div className="">
                   <span className="form-label lbl-font lbl-color">Religion</span>
                   <Select
-                    //defaultValue={selectedOptions}
+                    value={religionAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.religion}
                     isMulti
                     options={religionAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...religionOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    onChange={(e) => handleOptionsChange(e, 'religion')}
+                    onChange={(e) =>  
+                      {
+                        if (e.some(option => option.value === 'all')) {
+                          handleOptionsChange([{ value: 'all', label: 'all' }], 'religion');
+                        } else {
+                          handleOptionsChange(e, 'religion');
+                        }
+                      }
+                    }
                   />
                 </div>
               </Form.Group>
@@ -934,13 +898,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                 <div className="">
                   <span className="form-label lbl-font lbl-color">Community</span>
                   <Select
-                    //defaultValue={selectedOptions}
+                    value={communityAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.community}
                     isMulti
                     options={communityAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...communityOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    //onChange={handleCommunityChange}
-                    onChange={(e) => handleOptionsChange(e, 'community')}
+                    onChange={(e) =>  
+                      {
+                        if (e.some(option => option.value === 'all')) {
+                          handleOptionsChange([{ value: 'all', label: 'all' }], 'community');
+                        } else {
+                          handleOptionsChange(e, 'community');
+                        }
+                      }
+                    }
                   />
                 </div>
               </Form.Group>
@@ -950,13 +921,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                 <div className="">
                   <span className="form-label lbl-font lbl-color">Caste</span>
                   <Select
-                    //defaultValue={selectedOptions}
+                    value={casteAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.caste}
                     isMulti
                     options={(communityId.length === 0 || casteAll === 'all' ) ? [] : [{ value: 'all', label: 'All' }, ...casteOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    //isDisabled = {disable}
-                    onChange={(e) => handleOptionsChange(e, 'caste')}
+                    onChange={(e) =>  
+                      {
+                        if (e.some(option => option.value === 'all')) {
+                          handleOptionsChange([{ value: 'all', label: 'all' }], 'caste');
+                        } else {
+                          handleOptionsChange(e, 'caste');
+                        }
+                      }
+                    }
                   />
                 </div>
               </Form.Group>
@@ -966,12 +944,20 @@ const handleOptionsChange = async (e, name) => { debugger;
                 <div className="">
                   <span className="form-label lbl-font lbl-color">Gender</span>
                   <Select
-                    //defaultValue={selectedOptions}
+                    value={genderAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.gender}
                     isMulti
                     options={genderAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...genderOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    onChange={(e) => handleOptionsChange(e, 'gender')}
+                    onChange={(e) =>  
+                      {
+                        if (e.some(option => option.value === 'all')) {
+                          handleOptionsChange([{ value: 'all', label: 'all' }], 'gender');
+                        } else {
+                          handleOptionsChange(e, 'gender');
+                        }
+                      }
+                    }
                   />
                 </div>
               </Form.Group>
@@ -981,13 +967,18 @@ const handleOptionsChange = async (e, name) => { debugger;
                 <div className="">
                   <span className="form-label lbl-font lbl-color">Income</span>
                   <Select
-                    //defaultValue={selectedOptions}
-                    //value={formData.income && formData.income[0]?.value === 'all' ? 'All' : formData.income}
+                    value={incomeAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.income}
                     isMulti
                     options={incomeAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...incomeOptions]}
                     className="basic-multi-select"
                     classNamePrefix="select"
-                    onChange={(e) => handleOptionsChange(e, 'income')}
+                    onChange={(e) =>  {
+                      if (e.some(option => option.value === 'all')) {
+                        handleOptionsChange([{ value: 'all', label: 'all' }], 'income');
+                      } else {
+                        handleOptionsChange(e, 'income');
+                      }
+                    }}
                   />
                 </div>
               </Form.Group>
@@ -1004,16 +995,14 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <div className="">
                     <span className="form-label lbl-font lbl-color">Residential Status</span>
                     <Select
-                      //defaultValue={selectedOptions}
-                      //value={formData.residentalStatus && formData.residentalStatus.length > 0 && formData.residentalStatus[0].value === 'all' ? [{ value: 'all', label: 'All' }] : formData.residentalStatus}
-                      value={formData.residentalStatus && formData.residentalStatus.some(option => option.value === 'all') ? [{ value: 'all', label: 'All' }] : formData.residentalStatus}
+                      value={resStsAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.residentalStatus}
                       isMulti
                       options={resStsAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...resStatusOptions]}
                       className="basic-multi-select"
                       classNamePrefix="select"
                       onChange={(e) => {
-                        if (e.some(option => option.value === 'all')) {
-                            handleOptionsChange([{ value: 'All', label: 'All' }], 'residentalStatus');
+                        if (e.some(option => option.value === 'all')) { debugger;
+                            handleOptionsChange([{ value: 'all', label: 'all' }], 'residentalStatus');
                         } else {
                             handleOptionsChange(e, 'residentalStatus');
                         }
@@ -1060,8 +1049,8 @@ const handleOptionsChange = async (e, name) => { debugger;
               }
               <div className='row'>
                 <div className="col-md-4 mb-2 mt-2">
-                  <a onClick={(e) => handleSave(e, 'profile-tab-pane')} className="btn btn-success cus-btn">
-                    <i className="bi bi-send-check"></i> Save </a>
+                  <a onClick={(e) => handleNxtPrv(e, 'profile-tab-pane')} className="btn btn-success cus-btn">
+                  <i class="bi bi-arrow-right"></i> Next </a>
                 </div>
               </div>
             </div>
@@ -1081,7 +1070,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                     <div class="accordion" id="accordionExample">
                       <div class="accordion-item">
                         <h2 class="accordion-header">
-                          <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> General Components </button>
+                          <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> Institute Components </button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                           <div class="accordion-body">
@@ -1091,9 +1080,22 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.instituteCategory.map((value, index) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault111" />
-                                      <label class="form-check-label" for="flexCheckDefault111"> {
+                                      <input class="form-check-input" type="checkbox" value="" id="instCt" />
+                                      <label class="form-check-label" for="instCt"> {
                                         value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Ownership</label>
+                              {
+                                formData.instituteOwnership.map((value, index) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="instOwn" />
+                                      <label class="form-check-label" for="instOwn"> {value.label} </label>
                                     </div>
                                   )
                                 })
@@ -1105,8 +1107,34 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.instituteType.map((value, index) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault1112" />
-                                      <label class="form-check-label" for="flexCheckDefault1112"> {value.label} </label>
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="instTy" />
+                                      <label class="form-check-label" for="instTy"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">University Type</label>
+                              {
+                                formData.universityType.map((value, index) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="univTy" />
+                                      <label class="form-check-label" for="univTy"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">University</label>
+                              {
+                                formData.university.map((value, index) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="univ" />
+                                      <label class="form-check-label" for="univ"> {value.label} </label>
                                     </div>
                                   )
                                 })
@@ -1114,36 +1142,12 @@ const handleOptionsChange = async (e, name) => { debugger;
                             </div>
                             <div className="col-md-12 mb-2">
                               <label for="inputEmail4" className="form-label lbl-font lbl-color">Institute Name</label>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11131" checked />
-                                <label class="form-check-label" for="flexCheckDefault11131"> Institute Name A </label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11132" />
-                                <label class="form-check-label" for="flexCheckDefault11132"> Institute Name B </label>
-                              </div>
-                            </div>
-                            <div className="col-md-12 mb-2">
-                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Community</label> 
                               {
-                                formData.community.map((value, i) => {
+                                formData.instituteText.map((value, index) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value= {value.label} id="flexCheckDefault77" />
-                                      <label class="form-check-label" for="flexCheckDefault77"> {value.label} </label>
-                                    </div>
-                                  )
-                                })
-                              }
-                            </div>
-                            <div className="col-md-12 mb-2">
-                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Caste</label>
-                              {
-                                formData.caste.map((value, i) => {
-                                  return (
-                                    <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault666" checked />
-                                      <label class="form-check-label" for="flexCheckDefault666"> {value.label} </label>
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="instName" />
+                                      <label class="form-check-label" for="instName"> {value.label} </label>
                                     </div>
                                   )
                                 })
@@ -1152,26 +1156,61 @@ const handleOptionsChange = async (e, name) => { debugger;
                             <div className="col-md-12 mb-2">
                               <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Category</label> 
                               <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault123" />
-                                <label class="form-check-label" for="flexCheckDefault123"> Student Category A </label>
+                                <input class="form-check-input" type="checkbox" value="" id="studCt" />
+                                <label class="form-check-label" for="studCt"> Student Category A </label>
                               </div>
                               <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault456" checked />
                                 <label class="form-check-label" for="flexCheckDefault456"> Student Category B </label>
                               </div>
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> Course Components </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
                             <div className="col-md-12 mb-2">
                               <label for="inputEmail4" className="form-label lbl-font lbl-color">Stream</label> 
-                                {
-                                  formData.stream.map((value, i) => { debugger;
-                                    return (
-                                      <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value={value.label}id="flexCheckDefault4561" onClick={(e) => getCheckedValue(e)}/>
-                                        <label class="form-check-label" for="flexCheckDefault4561"> {value.label} </label>
-                                      </div>
-                                    )
-                                  })
-                                }
+                              {
+                                formData.stream.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="stream" />
+                                      <label class="form-check-label" for="stream"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Course Type</label> 
+                              {
+                                formData.courseType.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="courseTy" />
+                                      <label class="form-check-label" for="courseTy"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Medium Of Instruction</label> 
+                              {
+                                formData.medium.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="medium" />
+                                      <label class="form-check-label" for="medium"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
                             </div>
                             <div className="col-md-12 mb-2">
                               <label for="inputEmail4" className="form-label lbl-font lbl-color">Course</label> 
@@ -1179,8 +1218,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.course.map((value, i) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault45612" />
-                                      <label class="form-check-label" for="flexCheckDefault45612"> {value.label} </label>
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="course" />
+                                      <label class="form-check-label" for="course"> {value.label} </label>
                                     </div>
                                   )
                                 })
@@ -1191,18 +1230,90 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div class="accordion-item">
                         <h2 class="accordion-header">
-                          <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> Maintenance Components </button>
+                          <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"> Socio Economic Components </button>
                         </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Religion</label> 
+                              {
+                                formData.religion.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="religion" />
+                                      <label class="form-check-label" for="religion"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Community</label> 
+                              {
+                                formData.community.length === 0 ? '' :
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value={formData.disabilityStatus} id="community" />
+                                  <label class="form-check-label" for="community"> {formData.disabilityStatus} </label>
+                                </div>
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Caste</label> 
+                              {
+                                formData.caste.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="caste"/>
+                                      <label class="form-check-label" for="caste"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Gender</label> 
+                              {
+                                formData.gender.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="gender"/>
+                                      <label class="form-check-label" for="gender"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                            <div className="col-md-12 mb-2">
+                              <label for="inputEmail4" className="form-label lbl-font lbl-color">Income</label> 
+                              {
+                                formData.income.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="income"/>
+                                      <label class="form-check-label" for="income"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"> Maintenance Components </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                           <div class="accordion-body">
                             <div className="col-md-12 mb-2">
                               <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Residential Status</label> 
                               {
                                 formData.residentalStatus.map((value, i) => {
+                                  const checkboxId = `resSt${i}`;
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault456134" />
-                                      <label class="form-check-label" for="flexCheckDefault456134"> {value.label} </label>
+                                      <input class="form-check-input" type="checkbox" value={value.label} id={checkboxId} />
+                                      <label class="form-check-label" for={checkboxId}> {value.label} </label>
                                     </div>
                                   )
                                 })
@@ -1213,27 +1324,33 @@ const handleOptionsChange = async (e, name) => { debugger;
                               {
                                 formData.disabilityStatus.length === 0 ? '' :
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value={formData.disabilityStatus} id="flexCheckDefault4561341" />
-                                  <label class="form-check-label" for="flexCheckDefault4561341"> {formData.disabilityStatus} </label>
+                                  <input class="form-check-input" type="checkbox" value={formData.disabilityStatus} id="disSt" />
+                                  <label class="form-check-label" for="disSt"> {formData.disabilityStatus} </label>
                                 </div>
                               }
                             </div>
                             <div className="col-md-12 mb-2">
                               <label for="inputEmail4" className="form-label lbl-font lbl-color">Disability Category</label> 
-                              {
-                                formData.disabilityCategory.map((value, i) => {
-                                  return (
-                                    <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="flexCheckDefault45613412"/>
-                                      <label class="form-check-label" for="flexCheckDefault45613412"> {value.label} </label>
-                                    </div>
-                                  )
-                                })
-                              }
+                                {
+                                  formData.disabilityCategory.map((value, i) => {
+                                    const checkboxId = `disCt${i}`;
+                                    return (
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value={value.label} id={checkboxId} onClick={(e) => handleFilterOptions(e, 'disabilityCategory')}/>
+                                        <label class="form-check-label" for={checkboxId}> {value.label} </label>
+                                      </div>
+                                    )
+                                  })
+                                }
                             </div>
                           </div>
                         </div>
                       </div>
+                    </div>
+                    <div className='col-lg-12 calcBtn'>
+                      <a className="btn btn-success cus-btn" onClick={(e) => handleCalc(e)}>
+                        <i class="bi bi-send-check"></i> Calculate 
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -1535,8 +1652,10 @@ const handleOptionsChange = async (e, name) => { debugger;
                 <div className="col-lg-6"> Filter </div> */}
               </div>
               <div className="col-md-4 mb-2 mt-2">
-                <a href="#" className="btn btn-success cus-btn">
-                  <i className="bi bi-send-check"></i> Save </a>
+                <a className="btn btn-success cus-btn" onClick={(e) => handleNxtPrv(e, 'contact-tab-pane')}>
+                <i class="bi bi-arrow-right"></i> Next </a>
+                <a  className="btn btn-success cus-btn" onClick={(e) => handleNxtPrv(e, 'home-tab-pane')}>
+                <i class="bi bi-arrow-left"></i> Prev </a>
               </div>
             </div>
           </div>
@@ -1698,8 +1817,10 @@ const handleOptionsChange = async (e, name) => { debugger;
                 </div>
               </div>
               <div class="col-md-12 mb-2 mt-2">
+                <a  className="btn btn-success cus-btn" onClick={(e) => handleNxtPrv(e, 'profile-tab-pane')}>
+                <i class="bi bi-arrow-left"></i> Prev </a>
                 <a href="#" class="btn btn-success cus-btn">
-                  <i class="bi bi-send-check"></i> Submit </a>
+                <i class="bi bi-send-check"></i> Submit </a>
               </div>
             </form>
           </div>

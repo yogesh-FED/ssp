@@ -1782,8 +1782,12 @@ margin-top: -1.2rem !important;
 .cus-btn {
   padding: 4px 11px !important;
   font-size: 14px !important;
+  margin-right: 1rem;
 } 
 
+.calcBtn {
+  margin-top: 1rem;
+}
 .modal-title {
   color: #465f9f;
   font-weight: 500;
