@@ -265,7 +265,7 @@ const InstituteDeptApproveReject = (props) => { debugger
                   </div>
                 </Form.Group>
               </Col>
-              <Col lg={2}>
+              {/* <Col lg={2}>
                 <Form.Group className="mb-3 instituteApproveRejectForm">
                   <div className="instituteApproveRejectFormFilters">
                     <span>Umid Id</span>
@@ -283,6 +283,36 @@ const InstituteDeptApproveReject = (props) => { debugger
                     <Form.Control
                       type="text"
                       placeholder="Emis Id"
+                    />
+                  </div>
+                </Form.Group>
+              </Col> */}
+              <Col lg={3}>
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                  <div className="instituteApproveRejectFormFilters">
+                    <span>Degree</span>
+                    <Select
+                      //defaultValue={Academic_Year_options}
+                      isMulti
+                      options={[{ value: 'Degree names', label: 'Degree names' }]}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      onChange={handleCourseChange}
+                    />
+                  </div>
+                </Form.Group>
+              </Col>
+              <Col lg={3}>
+                <Form.Group className="mb-3 instituteApproveRejectForm">
+                  <div className="instituteApproveRejectFormFilters">
+                    <span>Branch</span>
+                    <Select
+                      //defaultValue={Academic_Year_options}
+                      isMulti
+                      options={[{ value: 'Branch List', label: 'Branch List' }]}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      onChange={handleCourseChange}
                     />
                   </div>
                 </Form.Group>

@@ -10,6 +10,7 @@ import view from '../../assets/icons/eye.png';
 import { Container, Row, Col } from 'react-bootstrap';
 
 const InstituteTable = (props) => {
+  const [rejectAllPop, setRejectAllPop] = useState(false);
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const [isOpen, setIsOpen] = useState(false);
@@ -468,6 +469,9 @@ const InstituteTable = (props) => {
 
   const gridRef = useRef();
   const [selectAll, setSelectAll] = useState(false);
+  const rejectAllReason = () => {
+    setRejectAllPop(true);
+  }
   const toggleSelectAll = () => {
     setSelectAll(!selectAll);
     if (!selectAll) {
@@ -490,6 +494,7 @@ const InstituteTable = (props) => {
   }
   const handleCancel = () => {
     setRejectReason(false);
+    setRejectAllPop(false);
   }
   return (
     <div className='instituteTableSec'>
@@ -522,6 +527,23 @@ const InstituteTable = (props) => {
           domLayout='autoHeight'
         />
       </div>
+      {
+        rejectAllPop && 
+        <>
+          <div className='rejectReason rejAll'>
+            <Form>
+              <Form.Group className="" controlId="exampleForm.ControlTextarea1">
+                <Form.Label>Reject Reason</Form.Label>
+                <Form.Control as="textarea" rows={3} />
+              </Form.Group>
+            </Form>
+            <div className='formSubmit'>
+              <span className='save'>Save</span>
+              <span className='cancel' onClick={handleCancel}>Cancel</span>
+            </div>
+          </div>
+        </>
+      }
       <Popup isOpen={isOpen} closePopup={closePopup} comp={'institute'}>
         <Container>
           <Row className='approveRejDetails'>
@@ -644,13 +666,13 @@ const InstituteTable = (props) => {
           ''
         }
         <div className='instBtn'>
-          <span className='Inst_approve' onClick={closePopup}>Approve</span>
+          <span className='Inst_approve' onClick={closePopup}>Recommend</span>
           <span className='Inst_reject' onClick={handleRejectClick}>Reject</span>
         </div>
       </Popup>
         <div className='instBtn mt-3'>
-          <span className='Inst_approve' onClick={toggleSelectAll}>Approve All</span>
-          <span className='Inst_reject'>Reject All</span>
+          <span className='Inst_approve' onClick={toggleSelectAll}>Recommend All</span>
+          <span className='Inst_reject' onClick={rejectAllReason}>Reject All</span>
         </div>
     </div>
   );

@@ -5,14 +5,15 @@ import Form from 'react-bootstrap/Form';
 const SchemeRegistration = () => {
   const PRODUCTION_END_POINT_API = 'https://tngis.tnega.org/';
   const IP_END_POINT_API = 'http://192.168.4.251/';
-  const [formData, setFormData] = useState({
-    department: [],subDepartment: [],schemeName: '',schemeCode: '',education: [],
-    instituteType: [],instituteCategory: [],universityType: [],university: [],
-    instituteText: [],studentCategory: [],class: [],schoolCategory: [],
-    schoolType: [],schoolName: [],schoolClass: [],stream: [],course: [],
-    courseType: [],medium: [],religion: [],community: [],caste: [],gender: [],income: [],
-    residentalStatus: [], disabilityStatus:[], disabilityCategory: [], schemeFeeType: [], instituteOwnership: []
-  });
+  const initialFormData = {
+    department: [], subDepartment: [], schemeName: '', schemeCode: '', education: [], instituteType: [],
+    instituteCategory: [], universityType: [], university: [], instituteText: [], studentCategory: [],
+    class: [], schoolCategory: [], schoolType: [], schoolName: [], schoolClass: [], stream: [], course: [],
+    courseType: [], medium: [], religion: [], community: [], caste: [], gender: [], income: [],
+    residentalStatus: [], disabilityStatus: [], disabilityCategory: [], schemeFeeType: [], instituteOwnership: []
+  };
+  const [formData, setFormData] = useState({...initialFormData});
+  const [filterFormData, setFilterFormData] = useState({...initialFormData});
   const [departmentData, setDepartmentData] = useState([]);
   const [subDepartmentData, setSubDepartmentData] = useState([]);
   const [community, setCommunity] = useState([]);
@@ -70,14 +71,14 @@ const SchemeRegistration = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const DEPT_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
-        const COMMUNITY_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
-        const RELIGION_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
-        const EDU_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
-        const STREAM_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_streams', {user_id:1}, {headers: headers});
-        const COURSE_TYPE_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_course_types', {user_id:1}, {headers: headers});
-        const GENDER_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Gender'}, {headers: headers});
-        const INCOME_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_income_ranges', {user_id: 1, category:'Income'}, {headers: headers});
+        const DEPT_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_department', { user_id: 1 }, {headers: headers});
+        const COMMUNITY_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_community', { user_id: 1 }, {headers: headers});
+        const RELIGION_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Religion'}, {headers: headers});
+        const EDU_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'EducationType'}, {headers: headers});
+        const STREAM_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_streams', {user_id:1}, {headers: headers});
+        const COURSE_TYPE_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_course_types', {user_id:1}, {headers: headers});
+        const GENDER_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_dropdown_values', {user_id:1, category:'Gender'}, {headers: headers});
+        const INCOME_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_income_ranges', {user_id: 1, category:'Income'}, {headers: headers});
         setIncome(INCOME_API.data?.data || []);
         setGender(GENDER_API.data?.data || []);
         setCourseTyp(COURSE_TYPE_API.data?.data || []);
@@ -107,13 +108,9 @@ const handleNxtPrv = (e, tabId) => {
   console.log('Form Data:', formData);
 };
 const handleCalc = (e) => {
-  console.log('api-calc');
+  console.log(filterFormData);
 }
-const handleFilterOptions = (e, name) => {
-  if(name === 'disabilityCategory') {
-    return formData.disabilityCategory[e.target.value]
-  }
-}
+
 const handleSchemeName = (e) => {
   const name = e.target.value;
   setFormData({ ...formData, schemeName: name });
@@ -130,7 +127,7 @@ const generateOptions = (obj) => {
     label: val.label || val.display_text || val.course_name || val.university_name || val.ownership || val.course_type || val.income_range || val.department_name || val.institute_type || val.subdepartment_name || val.community_name || val.caste_name || val.stream_name || val.university_type || val.institute_category || val.disability_name || val.institution_name,
   }));
 }
-const instOwnershipOptions = generateOptions(instOwnership);
+
 const univOptions = generateOptions(univ);
 const courseTypOption = generateOptions(courseTyp);
 const incomeOptions = generateOptions(income);
@@ -154,7 +151,7 @@ const callInstApifunc = async (instTypeId, instOId, instCtId, univsId) => {
   if(instTypeId.length !==0 && instOId.length !==0 && instCtId.length !==0 && univsId.length !==0) {
     try {
       const instResponse = await axios.post (
-        IP_END_POINT_API+'ssp_backend/api/v1/get_institutions',
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institutions',
         { user_id: 1, education_type_id: 1, institution_type_id: instTypeId[0] === 'all' ? ['all'] : instTypeId, institution_ownership_id: instOId[0] === 'all' ? ['all'] : instOId, institution_category_id: instCtId[0] === 'all' ? ['all'] : instCtId, university_id: univsId[0] === 'all' ? ['all'] : univsId},
         { headers: headers }
       );
@@ -167,7 +164,7 @@ const callApiFun = async (courseTypeId, streamId) => {
   if(courseTypeId.length !== 0 && streamId.length !==0 ) {
     try {
       const courseResponse = await axios.post(
-        IP_END_POINT_API+'ssp_backend/api/v1/get_courses',
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_courses',
         { user_id: 1, course_type_id: courseTypeId[0] === 'all' ? ['all'] : courseTypeId, stream_id: streamId[0] === 'all' ? ['all'] : streamId },
         { headers: headers }
       );
@@ -182,7 +179,7 @@ const callAllOptionFn = (e, name) => {
   });
   if (hasAllOption) {
     setFormData({ 
-      ...formData, [name]: name === 'stream' ? streamOptions : name === 'university' ? univOptions : name === 'instituteCategory' ? insCtOptions : name === 'instituteType' ? instTypOptions : name === 'instituteOwnership' ? instOwnershipOptions : name === 'universityType' ? univTypOptions : name === 'instituteText' ? instOptions : name === 'courseType' ? courseTypOption : name === 'course' ? courseOptions : name === 'medium' ? mediumOptions : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : name === 'residentalStatus' ? resStatusOptions : name === 'subDepartment' ? subdeptOptions :
+      ...formData, [name]: name === 'stream' ? streamOptions : name === 'university' ? univOptions : name === 'instituteCategory' ? insCtOptions : name === 'instituteType' ? instTypOptions : name === 'instituteOwnership' ? generateOptions(instOwnership) : name === 'universityType' ? univTypOptions : name === 'instituteText' ? instOptions : name === 'courseType' ? courseTypOption : name === 'course' ? courseOptions : name === 'medium' ? mediumOptions : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : name === 'residentalStatus' ? resStatusOptions : name === 'subDepartment' ? subdeptOptions :
       ''
      });
     const allOption = e.find((option) => option.value === 'all');
@@ -225,9 +222,9 @@ const handleOptionsChange = async (e, name) => { debugger;
       setCollege(true);
       setSchool(false);
       try {
-        const INST_CTG_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institute_category', {user_id:1}, {headers: headers});
-        const INST_TYP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_institutetypes', {user_id:1}, {headers: headers});
-        const OWNERSHIP_API = await axios.post(IP_END_POINT_API+'ssp_backend/api/v1/get_ownerships',{id:0}, {headers: headers});
+        const INST_CTG_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institute_category', {user_id:1}, {headers: headers});
+        const INST_TYP_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_institutetypes', {user_id:1}, {headers: headers});
+        const OWNERSHIP_API = await axios.post(PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_ownerships',{id:0}, {headers: headers});
         setInstOwnership(OWNERSHIP_API.data?.data || []);
         setInstTyp(INST_TYP_API.data?.data || []);
         setInstitutionCat(INST_CTG_API.data?.data || []);
@@ -246,7 +243,7 @@ const handleOptionsChange = async (e, name) => { debugger;
       });
       setUnivIdVal(univId);
       const univResponse = await axios.post(
-        IP_END_POINT_API+'ssp_backend/api/v1/get_universities',
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_universities',
         { user_id: 1, university_type_id: univId[0] === 'all' ? ['all'] : univId },
         { headers: headers }
       );
@@ -282,7 +279,7 @@ const handleOptionsChange = async (e, name) => { debugger;
       });
       setInstOId(instOwnId);
       const instOwnResponse = await axios.post(
-        IP_END_POINT_API+'ssp_backend/api/v1/get_university_types',
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_university_types',
         { user_id: 1, ownership_id: instOwnId[0] === 'all' ? ['all'] : instOwnId },
         { headers: headers }
       );
@@ -292,7 +289,7 @@ const handleOptionsChange = async (e, name) => { debugger;
       console.log('Error', error);
     }
   }
-  else if(name === 'community') { debugger;
+  else if(name === 'community') {
     const hasAllOption = e.some((option) => {
       return option.value === 'all';
     });
@@ -314,7 +311,7 @@ const handleOptionsChange = async (e, name) => { debugger;
       });
       setCommunityId(communityId);
       const casteResponse = await axios.post(
-        IP_END_POINT_API+'ssp_backend/api/v1/get_caste',
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_caste',
         { user_id: 1, community_id: communityId[0] === 'all' ? ['all'] : communityId },
         { headers: headers }
       );
@@ -353,7 +350,7 @@ const handleOptionsChange = async (e, name) => { debugger;
     setFormData({ ...formData, [name]: e.label });
     try {
       const casteResponse = await axios.post(
-        IP_END_POINT_API+'ssp_backend/api/v1/get_sub_department',
+        PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_sub_department',
         { user_id: 1, department_id: [e.value] },
         { headers: headers }
       );
@@ -376,7 +373,7 @@ const handleOptionsChange = async (e, name) => { debugger;
       setDisStatus(true);
       try {
         const disabilityResponse = await axios.post(
-          IP_END_POINT_API+'ssp_backend/api/v1/get_differentlyabled',
+          PRODUCTION_END_POINT_API+'ssp_backend/api/v1/get_differentlyabled',
           { user_id: 1},
           { headers: headers }
         );
@@ -392,7 +389,7 @@ const handleOptionsChange = async (e, name) => { debugger;
     if (e.some(option => option.value === 'all')) {
       setFormData({ ...formData, [name]:
         name === 'subDepartment' ? subdeptOptions : name === 'instituteType' ? instTypOptions : 
-        name === 'instituteCategory' ? insCtOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'stream' ? streamOptions : name === 'courseType' ? courseTypOption : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : name === 'course' ? courseOptions : name === 'instituteOwnership' ? instOwnershipOptions : ''
+        name === 'instituteCategory' ? insCtOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'universityType' ? univTypOptions : name === 'university' ? univOptions : name === 'stream' ? streamOptions : name === 'courseType' ? courseTypOption : name === 'religion' ? religionOptions : name === 'caste' ? casteOptions : name === 'gender' ? genderOptions : name === 'income' ? incomeOptions : name === 'course' ? courseOptions : name === 'instituteOwnership' ? generateOptions(instOwnership) : ''
       });
     }
     else {
@@ -406,6 +403,22 @@ const handleOptionsChange = async (e, name) => { debugger;
   const [disStatus, setDisStatus] = useState(false);
   const handleTabClick = (tabId) => {
     setActive(tabId);
+  };
+  const handleCheckBox = (e, name) => {
+    const isChecked = e.target.checked;
+    const value = e.target.value;
+
+    if (isChecked) {
+      setFilterFormData(prevState => ({
+        ...prevState,
+        [name]: [...prevState[name], value]
+      }));
+    } else {
+      setFilterFormData(prevState => ({
+        ...prevState,
+        [name]: prevState[name].filter(item => item !== value)
+      }));
+    }
   };
   return ( 
   <>
@@ -602,7 +615,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                           <Select
                             value={instOwnAll === 'all' ? [{ value: 'all', label: 'All' }] : formData.instituteOwnership}
                             isMulti
-                            options={ instOwnAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...instOwnershipOptions]}
+                            options={ instOwnAll === 'all' ? [] : [{ value: 'all', label: 'All' }, ...generateOptions(instOwnership)]}
                             className="basic-multi-select"
                             classNamePrefix="select"
                             onChange={(e) =>  
@@ -1080,7 +1093,9 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.instituteCategory.map((value, index) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value="" id="instCt" />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="instCt" onClick={(e) => handleCheckBox(e, 'instituteCategory')}
+                                      checked={filterFormData.instituteCategory.includes(value.label)}
+                                      />
                                       <label class="form-check-label" for="instCt"> {
                                         value.label} </label>
                                     </div>
@@ -1094,7 +1109,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.instituteOwnership.map((value, index) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="instOwn" />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="instOwn" onClick={(e) => handleCheckBox(e, 'instituteOwnership')}
+                                      checked={filterFormData.instituteOwnership.includes(value.label)}/>
                                       <label class="form-check-label" for="instOwn"> {value.label} </label>
                                     </div>
                                   )
@@ -1107,7 +1123,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.instituteType.map((value, index) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="instTy" />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="instTy" onClick={(e) => handleCheckBox(e, 'instituteType')}
+                                      checked={filterFormData.instituteType.includes(value.label)}/>
                                       <label class="form-check-label" for="instTy"> {value.label} </label>
                                     </div>
                                   )
@@ -1120,7 +1137,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.universityType.map((value, index) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="univTy" />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="univTy" onClick={(e) => handleCheckBox(e, 'universityType')}
+                                      checked={filterFormData.universityType.includes(value.label)}/>
                                       <label class="form-check-label" for="univTy"> {value.label} </label>
                                     </div>
                                   )
@@ -1133,7 +1151,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.university.map((value, index) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="univ" />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="univ" onClick={(e) => handleCheckBox(e, 'university')}
+                                      checked={filterFormData.university.includes(value.label)} />
                                       <label class="form-check-label" for="univ"> {value.label} </label>
                                     </div>
                                   )
@@ -1146,14 +1165,15 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.instituteText.map((value, index) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="instName" />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="instName" onClick={(e) => handleCheckBox(e, 'instituteText')}
+                                      checked={filterFormData.instituteText.includes(value.label)}/>
                                       <label class="form-check-label" for="instName"> {value.label} </label>
                                     </div>
                                   )
                                 })
                               }
                             </div>
-                            <div className="col-md-12 mb-2">
+                            {/* <div className="col-md-12 mb-2">
                               <label for="inputEmail4" className="form-label lbl-font lbl-color">Student Category</label> 
                               <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="studCt" />
@@ -1163,7 +1183,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault456" checked />
                                 <label class="form-check-label" for="flexCheckDefault456"> Student Category B </label>
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>
@@ -1179,7 +1199,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.stream.map((value, i) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="stream" />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="stream" onClick={(e) => handleCheckBox(e, 'stream')}
+                                      checked={filterFormData.stream.includes(value.label)}/>
                                       <label class="form-check-label" for="stream"> {value.label} </label>
                                     </div>
                                   )
@@ -1192,7 +1213,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.courseType.map((value, i) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="courseTy" />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="courseTy" onClick={(e) => handleCheckBox(e, 'courseType')}
+                                      checked={filterFormData.courseType.includes(value.label)}/>
                                       <label class="form-check-label" for="courseTy"> {value.label} </label>
                                     </div>
                                   )
@@ -1205,7 +1227,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.medium.map((value, i) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="medium" />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="medium" onClick={(e) => handleCheckBox(e, 'medium')}
+                                      checked={filterFormData.medium.includes(value.label)}/>
                                       <label class="form-check-label" for="medium"> {value.label} </label>
                                     </div>
                                   )
@@ -1218,7 +1241,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.course.map((value, i) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="course" />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="course" onClick={(e) => handleCheckBox(e, 'course')}
+                                      checked={filterFormData.course.includes(value.label)}/>
                                       <label class="form-check-label" for="course"> {value.label} </label>
                                     </div>
                                   )
@@ -1240,7 +1264,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.religion.map((value, i) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="religion" />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="religion" onClick={(e) => handleCheckBox(e, 'religion')}
+                                      checked={filterFormData.religion.includes(value.label)}/>
                                       <label class="form-check-label" for="religion"> {value.label} </label>
                                     </div>
                                   )
@@ -1250,11 +1275,15 @@ const handleOptionsChange = async (e, name) => { debugger;
                             <div className="col-md-12 mb-2">
                               <label for="inputEmail4" className="form-label lbl-font lbl-color">Community</label> 
                               {
-                                formData.community.length === 0 ? '' :
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value={formData.disabilityStatus} id="community" />
-                                  <label class="form-check-label" for="community"> {formData.disabilityStatus} </label>
-                                </div>
+                                formData.community.map((value, i) => {
+                                  return (
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="community" onClick={(e) => handleCheckBox(e, 'community')}
+                                      checked={filterFormData.community.includes(value.label)}/>
+                                      <label class="form-check-label" for="religion"> {value.label} </label>
+                                    </div>
+                                  )
+                                })
                               }
                             </div>
                             <div className="col-md-12 mb-2">
@@ -1263,7 +1292,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.caste.map((value, i) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="caste"/>
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="caste" onClick={(e) => handleCheckBox(e, 'caste')}
+                                      checked={filterFormData.caste.includes(value.label)}/>
                                       <label class="form-check-label" for="caste"> {value.label} </label>
                                     </div>
                                   )
@@ -1276,7 +1306,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.gender.map((value, i) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="gender"/>
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="gender" onClick={(e) => handleCheckBox(e, 'gender')}
+                                      checked={filterFormData.gender.includes(value.label)} />
                                       <label class="form-check-label" for="gender"> {value.label} </label>
                                     </div>
                                   )
@@ -1289,7 +1320,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                 formData.income.map((value, i) => {
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id="income"/>
+                                      <input class="form-check-input" type="checkbox" value={value.label} id="income" onClick={(e) => handleCheckBox(e, 'income')}
+                                      checked={filterFormData.income.includes(value.label)} />
                                       <label class="form-check-label" for="income"> {value.label} </label>
                                     </div>
                                   )
@@ -1312,7 +1344,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                   const checkboxId = `resSt${i}`;
                                   return (
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value={value.label} id={checkboxId} />
+                                      <input class="form-check-input" type="checkbox" value={value.label} id={checkboxId} onClick={(e) => handleCheckBox(e, 'residentalStatus')}
+                                      checked={filterFormData.residentalStatus.includes(value.label)} />
                                       <label class="form-check-label" for={checkboxId}> {value.label} </label>
                                     </div>
                                   )
@@ -1324,7 +1357,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                               {
                                 formData.disabilityStatus.length === 0 ? '' :
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value={formData.disabilityStatus} id="disSt" />
+                                  <input class="form-check-input" type="checkbox" value={formData.disabilityStatus} id="disSt" onClick={(e) => handleCheckBox(e, 'disabilityStatus')}
+                                      checked={filterFormData.disabilityStatus.includes(formData.disabilityStatus)} />
                                   <label class="form-check-label" for="disSt"> {formData.disabilityStatus} </label>
                                 </div>
                               }
@@ -1336,7 +1370,8 @@ const handleOptionsChange = async (e, name) => { debugger;
                                     const checkboxId = `disCt${i}`;
                                     return (
                                       <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value={value.label} id={checkboxId} onClick={(e) => handleFilterOptions(e, 'disabilityCategory')}/>
+                                        <input class="form-check-input" type="checkbox" value={value.label} id={checkboxId} onClick={(e) => handleCheckBox(e, 'disabilityCategory')}
+                                      checked={filterFormData.disabilityCategory.includes(value.label)} />
                                         <label class="form-check-label" for={checkboxId}> {value.label} </label>
                                       </div>
                                     )
@@ -1367,7 +1402,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Sub Department </label> 
                       {
-                        formData.subDepartment.map((value, index) => { debugger;
+                        formData.subDepartment.map((value, index) => {
                           return (
                               <label htmlFor="toDate" className="form-label w-100 mb-0"> {value.label} </label>
                           )
@@ -1380,37 +1415,189 @@ const handleOptionsChange = async (e, name) => { debugger;
                     </div>
                     <p className="viewmore mb-0 text-danger" onClick={()=> setShowMore(true)} style={{ display: showMore ? 'none' : 'block' }} > <i class="bi bi-arrows-angle-expand"></i> View More </p>
                     <div className={`viewmore-wrap row ${showMore ? 'show' : '' }`}>
+                      <h6 style={{marginTop: '1rem'}}><b><u>Institute Component</u></b></h6>
+                    <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Ownership </label>
+                        {
+                          filterFormData.instituteOwnership.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Category </label>
-                        <label htmlFor="toDate" className="form-label w-100 mb-0"> Institute Category A </label>
+                        {
+                          filterFormData.instituteCategory.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Type </label>
-                        <label htmlFor="toDate" className="form-label w-100 mb-0"> Institute Type A </label>
+                        {
+                          filterFormData.instituteType.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> University Type </label>
+                        {
+                          filterFormData.universityType.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> University </label>
+                        {
+                          filterFormData.university.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Name </label>
-                        <label htmlFor="toDate" className="form-label w-100 mb-0"> Institute Name A </label>
+                        {
+                          filterFormData.instituteText.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
                       </div>
-                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Community </label>
-                        <label htmlFor="toDate" className="form-label w-100 mb-0"> Community A </label>
-                      </div>
-                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Caste </label>
-                        <label htmlFor="toDate" className="form-label w-100 mb-0"> Caste A </label>
-                      </div>
-                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Student Category </label>
-                        <label htmlFor="toDate" className="form-label w-100 mb-0"> Student Category A </label>
-                      </div>
+                      <h6 style={{marginTop: '1rem'}}><b><u>Course Component</u></b></h6>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Stream </label>
-                        <label htmlFor="toDate" className="form-label w-100 mb-0"> Stream A </label>
+                        {
+                          filterFormData.stream.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Course Type </label>
+                        {
+                          filterFormData.courseType.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Medium of Instruction </label>
+                        {
+                          filterFormData.medium.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Course </label>
-                        <label htmlFor="toDate" className="form-label w-100 mb-0"> Course A </label>
+                        {
+                          filterFormData.course.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <h6 style={{marginTop: '1rem'}}><b><u>Socio Economic Components</u></b></h6>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Religion </label>
+                        {
+                          filterFormData.religion.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Community </label>
+                        {
+                          filterFormData.community.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Caste </label>
+                        {
+                          filterFormData.caste.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Gender </label>
+                        {
+                          filterFormData.gender.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Income </label>
+                        {
+                          filterFormData.income.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <h6 style={{marginTop: '1rem'}}><b><u>Maintance Component</u></b></h6>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Residential Status </label>
+                        {
+                          filterFormData.residentalStatus.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Disability Status </label>
+                        {
+                          filterFormData.disabilityStatus.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
+                      </div>
+                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Disability Category </label>
+                        {
+                          filterFormData.disabilityCategory.map((val,i) => {
+                            return (
+                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                            )
+                          })
+                        }
                       </div>
                       <p className="lessmore mb-0 text-danger" onClick={()=> setShowMore(false)} > <i class="bi bi-arrows-angle-contract"></i> View Less </p>
                     </div>
@@ -1450,7 +1637,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                                         <div className="col-lg-6">
                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                             <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                            <input type="number" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
                                           </div>
                                         </div>
                                         <div className="col-lg-5">
@@ -1485,7 +1672,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                                         <div className="col-lg-6">
                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                             <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                            <input type="number" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
                                           </div>
                                         </div>
                                         <div className="col-lg-5">
@@ -1514,7 +1701,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                                         <div className="col-lg-6">
                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                             <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                            <input type="number" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
                                           </div>
                                         </div>
                                         <div className="col-lg-5">
@@ -1543,7 +1730,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                                         <div className="col-lg-6">
                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                             <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                            <input type="number" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
                                           </div>
                                         </div>
                                         <div className="col-lg-5">
@@ -1572,7 +1759,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                                         <div className="col-lg-6">
                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                             <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                            <input type="number" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
                                           </div>
                                         </div>
                                         <div className="col-lg-5">
@@ -1601,7 +1788,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                                         <div className="col-lg-6">
                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                             <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scholarship Amount </label>
-                                            <input type="text" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
+                                            <input type="number" class="form-control removespecialchar" placeholder="Enter Scholarship Amount"  />
                                           </div>
                                         </div>
                                         <div className="col-lg-5">
@@ -1627,7 +1814,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                                   <td className="w-25">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0 text-danger"> Total Fees </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Total Exam Fees" />
+                                      <input type="number" class="form-control removespecialchar" placeholder="Total Exam Fees" />
                                     </div>
                                   </td>
                                 )
@@ -1637,7 +1824,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                                   <div className="col-lg-5">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
                                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0 text-danger"> Total Scholarship Amount </label>
-                                      <input type="text" class="form-control removespecialchar" placeholder="Total Scholarship Amount" />
+                                      <input type="number" class="form-control removespecialchar" placeholder="Total Scholarship Amount" />
                                     </div>
                                   </div>
                                 </div>

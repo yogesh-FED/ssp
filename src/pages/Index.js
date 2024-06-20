@@ -71,7 +71,7 @@ const Index = (props) => { debugger;
                   {
                     props.compName === 'instituteComponent'
                     ?
-                    ''
+                    'Fee Details'
                     :
                     props.compName === 'studentComponent'
                     ?
@@ -101,7 +101,7 @@ const Index = (props) => { debugger;
                   {
                     props.compName === 'instituteComponent'
                     ?
-                    ''
+                    'Scheme Report'
                     :
                     props.compName === 'studentComponent'
                     ?

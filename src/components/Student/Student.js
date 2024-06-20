@@ -8,9 +8,10 @@ import { Card, ListGroup, Container, Row, Col, Form } from 'react-bootstrap';
 import Schemecard from './Schemecard';
 import MotionFramer from '../MotionFramer/MotionFramer';
 import SchemeCards from '../MotionFramer/SchemeCards';
-import Aggrid from '../Aggrid/Aggrid';
+import Aggrid from '../Aggrid/Aggridcomp';
 import EligibleSchemes from '../EligibleSchemes/EligibleSchemes';
 import StudentEligibleScheme from './StudentEligibleScheme';
+import Aggridcomp from '../Aggrid/Aggridcomp';
 
 const Student = () => {
   const handleAvailClick = () => {
@@ -75,6 +76,10 @@ const Student = () => {
                   <td>Thirumurugan</td>
                 </tr>
                 <tr>
+                  <td><b>Caste :</b></td>
+                  <td>Madiga</td>
+                </tr>
+                <tr>
                   <td><b>Institute Name :</b></td>
                   <td>Anna University, Chennai</td>
                 </tr>
@@ -89,8 +94,12 @@ const Student = () => {
             <Table>
               <tbody>
                 <tr>
-                  <td width={100}><b>Gender :</b></td>
+                  <td width={110}><b>Gender :</b></td>
                   <td>Male</td>
+                </tr>
+                <tr>
+                  <td><b>Community :</b></td>
+                  <td>SC-Arunthathiyar</td>
                 </tr>
                 <tr>
                   <td><b>Fees paid :</b></td>
@@ -120,7 +129,7 @@ const Student = () => {
             <StudentGrid />
           </Tab>
           <Tab eventKey="Scheme Status" title="Scheme Status">
-            <Aggrid />
+            <Aggridcomp />
           </Tab>
         </Tabs>
       </div>

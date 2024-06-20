@@ -32,7 +32,7 @@ const Login = () => {
                             <h3 className="fw-bold text-white">Government of Tamilnadu</h3>
                             {/* <h3 className="text-white">Student Scholarship Portal</h3> */}
 
-                            <ul className="nav nav-tabs mb-2 mt-4 d-flex justify-content-center align-items-center" id="myTab" role="tablist">
+                            <ul className="nav nav-tabs mb-2 mt-4 d-flex justify-content-center align-items-center loginTab" id="myTab" role="tablist">
                                 <li className="nav-item mb-2" role="presentation">
                                     <button className="nav-link active" id="home-tab" data-bs-toggle="tab" 
                                     data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" 

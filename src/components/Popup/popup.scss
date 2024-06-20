@@ -32,7 +32,10 @@
     background: white;
     border-radius: 8px;
     &.studentEligible {
-      width: 50%;
+      width: 100%;
+    }
+    &.studentView {
+      width: 30%;
       height: auto;
     }
     &.institute {
@@ -40,6 +43,10 @@
       height: 80%;
       overflow: auto;
       padding: 50px;
+    }
+    &.instituteRejAllPop {
+      width: 50%;
+      height: auto;
     }
     &.fsr {
       width: 100%;

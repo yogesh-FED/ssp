@@ -118,43 +118,43 @@ const InstituteDeptDash = (props) => { debugger;
     <div>
       <Container fluid className='dashboardSec'>
         <Row>
-          <Col lg={2}>
+          <Col lg={3}>
             <div className='dashCards text-center approve' onClick={() => handleDashboardClick('Approved')}>
               <p>Approved</p>
               <h2>{props.approvedCount}</h2>
             </div>
           </Col>
-          <Col lg={2}>
+          <Col lg={3}>
             <div className='dashCards text-center pending' onClick={() => handleDashboardClick('Pending')}>
               <p>Pending</p>
               <h2>{props.pendingCount}</h2>
             </div>
           </Col>
-          <Col lg={2}>
+          <Col lg={3}>
             <div className='dashCards text-center rejected' onClick={() => handleDashboardClick('Rejected')}>
               <p>Rejected</p>
               <h2>{props.rejectedCount}</h2>
             </div>
           </Col>
-          <Col lg={2}>
+          <Col lg={3}>
             <div className='dashCards text-center total'>
             {/* onClick={() => handleDashboardClick('Total')} */}
               <p>Total Application</p>
               <h2>{props.totalCount}</h2>
             </div>
           </Col>
-          <Col lg={2}>
+          {/* <Col lg={2}>
             <div className='dashCards text-center fee' onClick={() => openPopup('fee')}>
-            {/* onClick={() => handleDashboardClick('Total')} */}
+            onClick={() => handleDashboardClick('Total')}
               <p>Fee Details</p>
             </div>
           </Col>
           <Col lg={2}>
             <div className='dashCards text-center schemeRep' onClick={() => openPopup()}>
-            {/* onClick={() => handleDashboardClick('Total')} */}
+            onClick={() => handleDashboardClick('Total')}
               <p>Scheme Report</p>
             </div>
-          </Col>
+          </Col> */}
         </Row>
       </Container>
       <Popup isOpen={isOpen} closePopup={closePopup} comp={'fsr'}>
