@@ -1,0 +1,166 @@
+{
+  "data": [
+      {
+          "id": 8,
+          "subdepartment_code": null,
+          "subdepartment_name": "AGRICULTURE AND FARMERS WELFARE",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 5,
+          "subdepartment_code": null,
+          "subdepartment_name": "FISHERIES & TANUVAS",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 27,
+          "subdepartment_code": "h10024",
+          "subdepartment_name": "Managing Director/ Additional Registrar of Cooperative Societies",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 19,
+          "subdepartment_code": "h10021",
+          "subdepartment_name": "CIPET",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 13,
+          "subdepartment_code": null,
+          "subdepartment_name": "DIRECTORATE OF INDIAN MEDICINE AND HOMEOPATHY (DIMH)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 4,
+          "subdepartment_code": null,
+          "subdepartment_name": "DIRECTORATE OF PUBLIC HEALTH AND PREVENTIVE MEDICINE (DPH)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 24,
+          "subdepartment_code": "H10009",
+          "subdepartment_name": "DMER (BOARD)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 25,
+          "subdepartment_code": null,
+          "subdepartment_name": "DMER (UNIVERSITY)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 14,
+          "subdepartment_code": null,
+          "subdepartment_name": "CENTRAL UNIVERSITY OF TAMIL NADU (CUTN)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 26,
+          "subdepartment_code": "h10027",
+          "subdepartment_name": "Deemed to be University",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 1,
+          "subdepartment_code": null,
+          "subdepartment_name": "DIRECTORATE OF COLLEGIATE EDUCATION (DCE)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 2,
+          "subdepartment_code": null,
+          "subdepartment_name": "DIRECTORATE OF TECHNICAL EDUCATION (DOTE)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 18,
+          "subdepartment_code": "h10020",
+          "subdepartment_name": "STATE PRIVATE UNIVERSITY",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 17,
+          "subdepartment_code": null,
+          "subdepartment_name": "TAMIL NADU OPEN UNIVERSITY (TNOU)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 7,
+          "subdepartment_code": null,
+          "subdepartment_name": "TEACHERS EDUCATION",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 11,
+          "subdepartment_code": null,
+          "subdepartment_name": "DIRECTORATE OF EMPLOYMENT AND TRAINING (DET)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 3,
+          "subdepartment_code": null,
+          "subdepartment_name": "DIRECTORATE OF LEGAL STUDIES (DLS)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 20,
+          "subdepartment_code": null,
+          "subdepartment_name": "DEPARTMENT OF PROMOTION OF INDUSTRY INTERNET TRADE",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 23,
+          "subdepartment_code": "h10026",
+          "subdepartment_name": "Director NIT",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 15,
+          "subdepartment_code": null,
+          "subdepartment_name": "NATIONAL INSTITUTE OF EPIDEMIOLOGY (NIE)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 21,
+          "subdepartment_code": "h10023",
+          "subdepartment_name": "MOS",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 16,
+          "subdepartment_code": null,
+          "subdepartment_name": "NATIONAL COUNCIL FOR HOTEL MANAGEMENT (NCHM)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 22,
+          "subdepartment_code": "h10025",
+          "subdepartment_name": "Department of Youth Affairs",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 6,
+          "subdepartment_code": null,
+          "subdepartment_name": "STATE COUNCIL OF EDUCATIONAL RESEARCH AND TRAINING (SCERT)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 9,
+          "subdepartment_code": null,
+          "subdepartment_name": "DIRECTORATE OF TAMIL DEVELOPMENT (DTD)",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 10,
+          "subdepartment_code": null,
+          "subdepartment_name": "COMMISSIONER OF ARTS AND CULTURE",
+          "subdepartment_name_tamil": ""
+      },
+      {
+          "id": 12,
+          "subdepartment_code": null,
+          "subdepartment_name": "PHYSICAL EDUCATION AND SPORTS",
+          "subdepartment_name_tamil": ""
+      }
+  ]
+}

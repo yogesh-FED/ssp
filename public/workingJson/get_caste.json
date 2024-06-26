@@ -1,0 +1,388 @@
+{
+  "data": [
+      {
+          "id": 2,
+          "caste_name": "Rajaka"
+      },
+      {
+          "id": 2,
+          "caste_name": "Mangala"
+      },
+      {
+          "id": 2,
+          "caste_name": "Ambalakarar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Dommara"
+      },
+      {
+          "id": 2,
+          "caste_name": "Kander"
+      },
+      {
+          "id": 2,
+          "caste_name": "Koracha"
+      },
+      {
+          "id": 2,
+          "caste_name": "Meenavar converts to christianity"
+      },
+      {
+          "id": 2,
+          "caste_name": "Rajakula"
+      },
+      {
+          "id": 2,
+          "caste_name": "Nokkar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Kurumba"
+      },
+      {
+          "id": 2,
+          "caste_name": "Kunnuvar Mannadi"
+      },
+      {
+          "id": 2,
+          "caste_name": "Jogi"
+      },
+      {
+          "id": 2,
+          "caste_name": "Boyar"
+      },
+      {
+          "id": 2,
+          "caste_name": "ThozhuvaNaicker"
+      },
+      {
+          "id": 2,
+          "caste_name": "Kulala"
+      },
+      {
+          "id": 2,
+          "caste_name": "Yogeeswarar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Parvatharajakulam converts to christianity"
+      },
+      {
+          "id": 2,
+          "caste_name": "Agasa"
+      },
+      {
+          "id": 2,
+          "caste_name": "Medara"
+      },
+      {
+          "id": 2,
+          "caste_name": "Panisaivan"
+      },
+      {
+          "id": 2,
+          "caste_name": "Thondaman"
+      },
+      {
+          "id": 2,
+          "caste_name": "Velakatalanair"
+      },
+      {
+          "id": 2,
+          "caste_name": "Vannia Gounder"
+      },
+      {
+          "id": 2,
+          "caste_name": "Mond Golla"
+      },
+      {
+          "id": 2,
+          "caste_name": "Andipandaram"
+      },
+      {
+          "id": 2,
+          "caste_name": "Vanniyar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Gollavar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Mahendra"
+      },
+      {
+          "id": 2,
+          "caste_name": "Arayar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Parvatharajakulam"
+      },
+      {
+          "id": 2,
+          "caste_name": "Mukayar"
+      },
+      {
+          "id": 2,
+          "caste_name": "NOT APPLICABLE"
+      },
+      {
+          "id": 2,
+          "caste_name": "Thockalavar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Sozhia Chetty"
+      },
+      {
+          "id": 2,
+          "caste_name": "Siviar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Gounder"
+      },
+      {
+          "id": 2,
+          "caste_name": "Sathatha Srivaishnava"
+      },
+      {
+          "id": 2,
+          "caste_name": "Dasari"
+      },
+      {
+          "id": 2,
+          "caste_name": "Valaiyar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Mukkuvar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Panisivan"
+      },
+      {
+          "id": 2,
+          "caste_name": "Mutlakampatti"
+      },
+      {
+          "id": 2,
+          "caste_name": "Paravar converts to christianity"
+      },
+      {
+          "id": 2,
+          "caste_name": "Thottia Naicker"
+      },
+      {
+          "id": 2,
+          "caste_name": "Mukayar converts to christianity"
+      },
+      {
+          "id": 2,
+          "caste_name": "Eravallar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Kulala"
+      },
+      {
+          "id": 2,
+          "caste_name": "Mukkuvar converts to christianity"
+      },
+      {
+          "id": 2,
+          "caste_name": "Erragollar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Transgender or Eunuch (Thirunangai or Aravani)"
+      },
+      {
+          "id": 2,
+          "caste_name": "Maravar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Kuruhini Chetty"
+      },
+      {
+          "id": 2,
+          "caste_name": "Narikoravar (Kurivikars)"
+      },
+      {
+          "id": 2,
+          "caste_name": "Ekali"
+      },
+      {
+          "id": 2,
+          "caste_name": "Bestha"
+      },
+      {
+          "id": 2,
+          "caste_name": "Pattanavar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Agnikula Kshatriya"
+      },
+      {
+          "id": 2,
+          "caste_name": "Padayachi"
+      },
+      {
+          "id": 2,
+          "caste_name": "Maruthuvar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Chattada Srivaishnava"
+      },
+      {
+          "id": 2,
+          "caste_name": "Navithar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Telugupatti Chetty"
+      },
+      {
+          "id": 2,
+          "caste_name": "Pannayar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Kongu Chettiar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Vettuva Gounder"
+      },
+      {
+          "id": 2,
+          "caste_name": "Vannar (Salavai Thozhilalar)"
+      },
+      {
+          "id": 2,
+          "caste_name": "Jangam"
+      },
+      {
+          "id": 2,
+          "caste_name": "Thoraiyar (Plains)"
+      },
+      {
+          "id": 2,
+          "caste_name": "Kuyavar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Meenavar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Vanniya"
+      },
+      {
+          "id": 2,
+          "caste_name": "Pattanavar converts to christianity"
+      },
+      {
+          "id": 2,
+          "caste_name": "Punnan Vettuva Gounder"
+      },
+      {
+          "id": 2,
+          "caste_name": "Palli"
+      },
+      {
+          "id": 2,
+          "caste_name": "Rajakambalam"
+      },
+      {
+          "id": 2,
+          "caste_name": "Bhatraju"
+      },
+      {
+          "id": 2,
+          "caste_name": "Chattadi"
+      },
+      {
+          "id": 2,
+          "caste_name": "Kurumba Gounder"
+      },
+      {
+          "id": 2,
+          "caste_name": "Valaiyar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Jambuvanodai"
+      },
+      {
+          "id": 2,
+          "caste_name": "Vanniakula Kshatriya"
+      },
+      {
+          "id": 2,
+          "caste_name": "Sathani"
+      },
+      {
+          "id": 2,
+          "caste_name": "Thoraiyar (Nilgris)"
+      },
+      {
+          "id": 2,
+          "caste_name": "Vettaikarar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Moundadan Chetty"
+      },
+      {
+          "id": 2,
+          "caste_name": "Sembadavar converts to christianity"
+      },
+      {
+          "id": 2,
+          "caste_name": "Isaivellalar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Veluthadar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Paravar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Sembadavar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Latin Catholic Christian Vannar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Velakattalavar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Pronopakari"
+      },
+      {
+          "id": 2,
+          "caste_name": "Madivala"
+      },
+      {
+          "id": 2,
+          "caste_name": "Oddar"
+      },
+      {
+          "id": 2,
+          "caste_name": "Sillavar"
+      }
+  ]
+}

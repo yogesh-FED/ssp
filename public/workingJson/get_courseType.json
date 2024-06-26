@@ -1,0 +1,32 @@
+{
+  "data": [
+      {
+          "id": 1,
+          "course_type": "Certified Course"
+      },
+      {
+          "id": 2,
+          "course_type": "Diploma"
+      },
+      {
+          "id": 3,
+          "course_type": "UG"
+      },
+      {
+          "id": 4,
+          "course_type": "PG"
+      },
+      {
+          "id": 5,
+          "course_type": "PhD"
+      },
+      {
+          "id": 6,
+          "course_type": "ITI"
+      },
+      {
+          "id": 7,
+          "course_type": "SuperSpeciality "
+      }
+  ]
+}

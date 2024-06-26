@@ -1,0 +1,118 @@
+{
+  "data": [
+      {
+          "id": 1,
+          "department_code": "004",
+          "department_name": "AGRICULTURE AND FARMERS WELFARE DEPARTMENT",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 8,
+          "department_code": "011",
+          "department_name": "ANIMAL HUSBANDRY, DAIRYING, FISHERIES AND FISHERMEN DEPARTMENT",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 16,
+          "department_code": "d10015",
+          "department_name": "Cooperation Department",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 13,
+          "department_code": "d10012",
+          "department_name": "Department of Chemicals  Petrochemicals",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 17,
+          "department_code": "d10016",
+          "department_name": "Department of Youth Affairs and Sports",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 6,
+          "department_code": "007",
+          "department_name": "HEALTH AND FAMILY WELFARE DEPARTMENT",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 3,
+          "department_code": "005",
+          "department_name": "HIGHER EDUCATION DEPARTMENT",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 2,
+          "department_code": "008",
+          "department_name": "LABOUR WELFARE AND SKILL DEVELOPMENT DEPARTMENT",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 5,
+          "department_code": "010",
+          "department_name": "LAW DEPARTMENT",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 14,
+          "department_code": "014",
+          "department_name": "MINISTRY OF COMMERCE AND INDUSTRY",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 19,
+          "department_code": "d10018",
+          "department_name": "Ministry of Education",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 12,
+          "department_code": "015",
+          "department_name": "MINISTRY OF HEALTH, INDIAN COUNCIL OF MEDICAL RESEARCH ",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 15,
+          "department_code": "d10014",
+          "department_name": "Ministry of Ports Shipping and Waterways",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 11,
+          "department_code": "016",
+          "department_name": "MINISTRY OF TOURISM",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 18,
+          "department_code": "d10017",
+          "department_name": "Ministry of Youth Affairs and Sports",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 10,
+          "department_code": "006",
+          "department_name": "SCHOOL EDUCATION DEPARTMENT",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 4,
+          "department_code": "012",
+          "department_name": "TAMIL DEVELOPMENT AND INFORMATION DEPARTMENT",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 9,
+          "department_code": "014",
+          "department_name": "TOURISM, CULTURE AND RELIGIOUS ENDOWMENTS DEPARTMENT",
+          "department_name_tamil": ""
+      },
+      {
+          "id": 7,
+          "department_code": "013",
+          "department_name": "YOUTH WELFARE AND SPORTS DEVELOPMENT DEPARTMENT",
+          "department_name_tamil": ""
+      }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "data": [
+      {
+          "id": 1,
+          "institute_category": "ITI"
+      },
+      {
+          "id": 2,
+          "institute_category": "ANM"
+      },
+      {
+          "id": 3,
+          "institute_category": "Engineering"
+      },
+      {
+          "id": 4,
+          "institute_category": "Arts and Science"
+      },
+      {
+          "id": 5,
+          "institute_category": "Agriculture"
+      },
+      {
+          "id": 6,
+          "institute_category": "Indian Medicine"
+      },
+      {
+          "id": 7,
+          "institute_category": "Law"
+      },
+      {
+          "id": 8,
+          "institute_category": "Medical Science"
+      },
+      {
+          "id": 9,
+          "institute_category": "Fisheries"
+      },
+      {
+          "id": 10,
+          "institute_category": "Veterinary Science and Food Science"
+      },
+      {
+          "id": 11,
+          "institute_category": "Polytechnic"
+      },
+      {
+          "id": 12,
+          "institute_category": "School Education"
+      },
+      {
+          "id": 13,
+          "institute_category": "Teacher Education"
+      },
+      {
+          "id": 14,
+          "institute_category": "Physical Education and Sports"
+      },
+      {
+          "id": 15,
+          "institute_category": "Music and Fine Arts"
+      },
+      {
+          "id": 16,
+          "institute_category": "MPHW"
+      }
+  ]
+}

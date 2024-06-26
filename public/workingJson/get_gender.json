@@ -1,0 +1,22 @@
+{
+  "data": [
+      {
+          "id": 2,
+          "display_text": "Female",
+          "display_text_tamil": "பெண்",
+          "active": true
+      },
+      {
+          "id": 1,
+          "display_text": "Male",
+          "display_text_tamil": "ஆண்",
+          "active": true
+      },
+      {
+          "id": 3,
+          "display_text": "Third Gender",
+          "display_text_tamil": "மூன்றாம் பாலினத்தவர்",
+          "active": true
+      }
+  ]
+}

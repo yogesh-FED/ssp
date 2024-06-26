@@ -1,0 +1,16 @@
+{
+  "data": [
+      {
+          "id": 50,
+          "display_text": "College",
+          "display_text_tamil": null,
+          "active": true
+      },
+      {
+          "id": 49,
+          "display_text": "School",
+          "display_text_tamil": null,
+          "active": true
+      }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "data": [
+      {
+          "id": 1,
+          "stream_name": "MEDICINE"
+      },
+      {
+          "id": 2,
+          "stream_name": "LAW"
+      },
+      {
+          "id": 3,
+          "stream_name": "VOCATIONAL"
+      },
+      {
+          "id": 4,
+          "stream_name": "BUSINESS ADMINISTRATION"
+      },
+      {
+          "id": 5,
+          "stream_name": "EDUCATION"
+      },
+      {
+          "id": 6,
+          "stream_name": "ENGINEERING & TECHNOLOGY"
+      },
+      {
+          "id": 7,
+          "stream_name": "AGRICULTURE"
+      },
+      {
+          "id": 8,
+          "stream_name": "ARTS & SCIENCE"
+      },
+      {
+          "id": 9,
+          "stream_name": "COMPUTER APPLICATION"
+      },
+      {
+          "id": 10,
+          "stream_name": "MUSIC & FINE ARTS"
+      },
+      {
+          "id": 11,
+          "stream_name": "NAUTICAL SCIENCE"
+      },
+      {
+          "id": 12,
+          "stream_name": "ITI"
+      },
+      {
+          "id": 13,
+          "stream_name": "FISHERIES SCIENCE"
+      }
+  ]
+}

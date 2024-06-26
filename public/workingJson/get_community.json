@@ -1,0 +1,40 @@
+{
+  "data": [
+      {
+          "id": 5,
+          "community_name": "BC-Muslim"
+      },
+      {
+          "id": 4,
+          "community_name": "BC-Others"
+      },
+      {
+          "id": 8,
+          "community_name": "DNC (Denotified Communities)"
+      },
+      {
+          "id": 2,
+          "community_name": "MBC"
+      },
+      {
+          "id": 9,
+          "community_name": "NOT APPLICABLE"
+      },
+      {
+          "id": 1,
+          "community_name": "OC"
+      },
+      {
+          "id": 6,
+          "community_name": "SC-Arunthathiyar"
+      },
+      {
+          "id": 7,
+          "community_name": "SC-Others"
+      },
+      {
+          "id": 3,
+          "community_name": "ST"
+      }
+  ]
+}
