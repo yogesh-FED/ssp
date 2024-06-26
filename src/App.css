@@ -1319,6 +1319,7 @@ tbody tr:nth-child(odd) {
   transition-duration: 0.25s;
   transition-property: background;
   -webkit-transition-property: background;
+  cursor: pointer;
 }
 .sidebar .nav .nav-item.active {
   /* background: #00000045; */
@@ -1384,7 +1385,7 @@ tbody tr:nth-child(odd) {
 }
 
 .sidebar-icon-only .content-wrapper {
-  padding: 0.75rem 1.5rem 0.75rem 1.35rem;
+  padding: 0.75rem 1.5rem 0.75rem 4.5rem;
 } 
 
 .content-wrapper {
@@ -1408,7 +1409,8 @@ tbody tr:nth-child(odd) {
     width: 100%;
 }
   .sidebar-icon-only .sidebar {
-    display: none;
+    /* display: none; */
+    left: -14rem;
 }
 
   .sidebar-icon-only .sidebar .nav {
@@ -1420,7 +1422,8 @@ tbody tr:nth-child(odd) {
   }
   .sidebar-icon-only .sidebar .nav .nav-item .nav-link {
     display: block;
-    text-align: center;
+    text-align: right;
+    padding-right: 1rem;
   }
   .sidebar-icon-only .sidebar .nav .nav-item .nav-link .menu-title,
   .sidebar-icon-only .sidebar .nav .nav-item .nav-link .badge,
@@ -1897,7 +1900,9 @@ ul#myTab {
 .lessmore {
   cursor: pointer;
 }
-
+.accordion button::focus {
+  box-shadow: none;
+}
 .separateComp {
   padding: 2rem;
   background: #eee;

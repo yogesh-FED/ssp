@@ -6,7 +6,7 @@ const Popup = ({ isOpen, closePopup, children, comp }) => {
 
   return (
     <div className="popup-overlay">
-      <div className={comp === 'institute' ? "popup-content institute" : comp === 'fsr' ? "popup-content fsr" : comp === "studentEligible" ? "popup-content studentEligible" : comp === "studentView" ? "popup-content studentView" : "popup-content" }>
+      <div className={comp === 'institute' ? "popup-content institute" : comp === 'fsr' ? "popup-content fsr" : comp === "studentEligible" ? "popup-content studentEligible" : comp === "studentView" ? "popup-content studentView" : comp === "studentOtp" ? "popup-content studentOtp" : "popup-content" }>
         <button className="close-btn" onClick={closePopup}>×</button>
         {children}
       </div>

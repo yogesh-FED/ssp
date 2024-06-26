@@ -5,9 +5,6 @@ import StudentGrid from '../Grid/StudentGrid';
 import Table from 'react-bootstrap/Table';
 import './student.scss';
 import { Card, ListGroup, Container, Row, Col, Form } from 'react-bootstrap';
-import Schemecard from './Schemecard';
-import MotionFramer from '../MotionFramer/MotionFramer';
-import SchemeCards from '../MotionFramer/SchemeCards';
 import Aggrid from '../Aggrid/Aggridcomp';
 import EligibleSchemes from '../EligibleSchemes/EligibleSchemes';
 import StudentEligibleScheme from './StudentEligibleScheme';
@@ -121,7 +118,7 @@ const Student = () => {
           className="mb-3"
           fill
         >
-          <Tab eventKey="Eligible" title="Your Eligible Schemes">
+          <Tab eventKey="Eligible" title="Probable Eligible Schemes">
             {/* <EligibleSchemes /> */}
             <StudentEligibleScheme />
           </Tab>

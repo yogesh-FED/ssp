@@ -8,6 +8,7 @@ import Table from 'react-bootstrap/Table';
 import axios from 'axios';
 import { Card, ListGroup, Container, Row, Col, Form } from 'react-bootstrap';
 import TrackIcon from '../../assets/icons/trackIcon.png';
+import view from '../../assets/icons/eye.png';
 
 const Aggridcomp = () => {
   const [gridApi, setGridApi] = useState(null);
@@ -108,6 +109,17 @@ const Aggridcomp = () => {
   const gridOptions = {
     rowSelection: 'multiple'
   };
+  const ViewBtn = ({ value, data, node, colDef, api, columnApi, context }) => {
+    const handleClick = () => {
+      setTableData(data);
+      setIsOpen(true);
+    };
+    return (
+      <button className='viewIcon' onClick={() => handleClick()}>
+        <img src={view} alt='view' />
+      </button>
+    )
+  }
   const ButtonRenderer = ({ value, data, node, colDef, api, columnApi, context }) => {
     const handleClick = () => {
       setTableData(data);
@@ -116,7 +128,7 @@ const Aggridcomp = () => {
   
     return (
       <>
-        <p className= {data.status === 'Pending' ? 'Pending btnStyle' : data.status === 'Applied' ? 'Applied btnStyle' : data.status === 'Approved' ? 'Approved btnStyle' : data.status === 'Rejected' ? 'Rejected btnStyle' : ''}  onClick={handleClick}> {
+        <p className= {data.status === 'Pending' ? 'Pending btnStyle' : data.status === 'Applied' ? 'Applied btnStyle' : data.status === 'Approved' ? 'Approved btnStyle' : data.status === 'Rejected' ? 'Rejected btnStyle' : ''}> {
           data.status === 'Pending' ? 'Pending' : data.status === 'Applied' ? 'Applied' : data.status === 'Approved' ? 'Approved' : data.status === 'Rejected' ? 'Rejected' : ''
         } </p>
       </>
@@ -128,7 +140,8 @@ const Aggridcomp = () => {
     { field: 'Applied_On', width: 200 },
     { field: 'Academic_Year', width: 200 },
     { field: 'Scheme_Fee', width: 200 },
-    { field: 'status', cellRenderer: ButtonRenderer, width: 200 }
+    { field: 'status', cellRenderer: ButtonRenderer, width: 200 },
+    { field: 'Action', cellRenderer: ViewBtn, width: 100}
   ];
 
   const defaultColDef = useMemo(() => {

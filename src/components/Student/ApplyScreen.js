@@ -15,8 +15,10 @@ const ApplyScreen = (props) => {
               <Col lg={4}>
                 <Form>
                   <div class="form-group marBtm">
-                    <label for="dept">{key.replace(/_/g, ' ')}</label>
-                    <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value={props.selectedRows[key]} readOnly/>
+                <ul>
+                  <li><label for="dept">{key.replace(/_/g, ' ')}</label></li>
+                  <li><label for="dept"><b>{props.selectedRows[key]}</b></label></li>
+                </ul>
                   </div>
                 </Form>
               </Col>
@@ -28,160 +30,200 @@ const ApplyScreen = (props) => {
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Department Name</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Agriculture Scheme' readOnly/>
+                <ul>
+                  <li><label for="dept">Department Name:</label></li>
+                  <li><label for="dept"><b>Agriculture Scheme</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Sub Department Name</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Agriculture Scheme' readOnly/>
+                <ul>
+                  <li><label for="dept">Sub Department Name:</label></li>
+                  <li><label for="dept"><b>Agriculture Scheme</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Institute Name</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Agricultural College, Theni' readOnly/>
+                <ul>
+                  <li><label for="dept">Institute Name:</label></li>
+                  <li><label for="dept"><b>Agricultural College, Theni</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Institute Type</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Standalone College' readOnly/>
+                <ul>
+                  <li><label for="dept">Institute Type:</label></li>
+                  <li><label for="dept"><b>Standalone College</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Institute Catagory</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Agriculture' readOnly/>
+                <ul>
+                  <li><label for="dept">Institute Catagory:</label></li>
+                  <li><label for="dept"><b>Agriculture</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Institute Ownership</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Govt Aided' readOnly/>
+                <ul>
+                  <li><label for="dept">Institute Ownership:</label></li>
+                  <li><label for="dept"><b>Govt Aided</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">University Type</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Central University' readOnly/>
+                <ul>
+                  <li><label for="dept">University Type:</label></li>
+                  <li><label for="dept"><b>Central University</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">University Name</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Govt Agriculture College' readOnly/>
+                <ul>
+                  <li><label for="dept">University Name:</label></li>
+                  <li><label for="dept"><b>Govt Agriculture College</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Stream</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Agriculture' readOnly/>
+                <ul>
+                  <li><label for="dept">Stream:</label></li>
+                  <li><label for="dept"><b>Agriculture</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Course Type</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='UG' readOnly/>
+                <ul>
+                  <li><label for="dept">Course Type:</label></li>
+                  <li><label for="dept"><b>UG</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Course</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='B.Tech' readOnly/>
+                <ul>
+                  <li><label for="dept">Course:</label></li>
+                  <li><label for="dept"><b>B.Tech</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Medium of Instruction</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Tamil' readOnly/>
+                <ul>
+                  <li><label for="dept">Medium of Instruction:</label></li>
+                  <li><label for="dept"><b>Tamil</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Religion</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Hindu' readOnly/>
+                <ul>
+                  <li><label for="dept">Religion:</label></li>
+                  <li><label for="dept"><b>Hindu</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Community</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='MBC' readOnly/>
+                <ul>
+                  <li><label for="dept">Community:</label></li>
+                  <li><label for="dept"><b>MBC</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Caste</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Rajaka' readOnly/>
+                <ul>
+                  <li><label for="dept">Caste:</label></li>
+                  <li><label for="dept"><b>Rajaka</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Gender</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Male' readOnly/>
+                <ul>
+                  <li><label for="dept">Gender:</label></li>
+                  <li><label for="dept"><b>Male</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Income</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='0 to 12000' readOnly/>
+                <ul>
+                  <li><label for="dept">Income:</label></li>
+                  <li><label for="dept"><b>0 to 12000</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Residential Status</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Hosteller' readOnly/>
+                <ul>
+                  <li><label for="dept">Residential Status:</label></li>
+                  <li><label for="dept"><b>Hosteller</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Disablity Status</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Yes' readOnly/>
+                <ul>
+                  <li><label for="dept">Disablity Status:</label></li>
+                  <li><label for="dept"><b>Yes</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>
           <Col lg={4}>
             <Form>
               <div class="form-group marBtm">
-                <label for="dept">Disablity Catagory</label>
-                <input type="email" class="form-control" id="dept" aria-describedby="emailHelp" placeholder="Department Name" value='Blindness' readOnly/>
+                <ul>
+                  <li><label for="dept">Disablity Catagory:</label></li>
+                  <li><label for="dept"><b>Blindness</b></label></li>
+                </ul>
               </div>
             </Form>
           </Col>

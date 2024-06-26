@@ -64,7 +64,7 @@ const StudentEligibleScheme = () => {
   const [columnDefs, setColumnDefs] = useState([
     {
         field: "Scheme_Name",
-        width: 550,
+        width: 450,
         //checkboxSelection: true,
         // editable: true,
         // cellEditor: 'agSelectCellEditor',

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
@@ -30,6 +30,9 @@ import "./assets/js/main";
 import Sample from "./pages/Sample.js";
 
 const App = () => {
+  useEffect(() => {
+    document.body.className = 'sidebar-icon-only';
+  },[])
   return (
     <div>
       <BrowserRouter basename="/ssp_frontend">

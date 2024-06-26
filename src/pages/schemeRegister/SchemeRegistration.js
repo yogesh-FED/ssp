@@ -501,18 +501,18 @@ const handleOptionsChange = async (e, name) => { debugger;
               <label for="inputEmail4" className="form-label lbl-font lbl-color">Sub Scheme Category</label>
               <input type="text" className="form-control removespecialchar" placeholder="Enter Scheme Category"/>
             </div>
-            <div className="col-md-4 mb-2">
+            {/* <div className="col-md-4 mb-2">
               <label for="inputEmail4" className="form-label lbl-font lbl-color">Scholarship Slab</label>
               <input type="text" className="form-control removespecialchar" placeholder="Enter Scholarship Slab"/>
-            </div>
+            </div> */}
             <div className="col-md-4 mb-2">
               <label for="inputEmail4" className="form-label lbl-font lbl-color">Max Slab</label>
-              <input type="text" className="form-control removespecialchar" placeholder="Enter Max Slab"/>
+              <input type="number" className="form-control removespecialchar" placeholder="Enter Max Slab"/>
             </div>
             
             <div className="col-md-4 mb-2">
               <label for="inputEmail4" className="form-label lbl-font lbl-color">Slab Value</label>
-              <input type="text" className="form-control removespecialchar" placeholder="Enter Slab Value"/>
+              <input type="number" className="form-control removespecialchar" placeholder="Enter Slab Value"/>
             </div>
             <div className="col-md-4 mb-2">
               <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Code</label>
