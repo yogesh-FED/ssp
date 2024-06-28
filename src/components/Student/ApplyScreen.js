@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
+import Table from 'react-bootstrap/Table';
 
 const ApplyScreen = (props) => {
   const showStudentDetail = () => {
@@ -8,231 +9,127 @@ const ApplyScreen = (props) => {
   return (
     <div className='applyScreen'>
       <Container>
+      <h5><b>ELIGIBLE SCHEME DETAILS</b></h5>
         <Row className='sectionSeparate'>
-          <h5>ELIGIBLE SCHEME DETAILS</h5>
           {
-            Object.keys(props.selectedRows).map((key, index) => (
-              <Col lg={4}>
-                <Form>
-                  <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">{key.replace(/_/g, ' ')}</label></li>
-                  <li><label for="dept"><b>{props.selectedRows[key]}</b></label></li>
-                </ul>
-                  </div>
-                </Form>
-              </Col>
-            ))
+            <Table responsive>
+            <thead>
+              <tr>
+                {
+                  Object.keys(props.selectedRows).map((key, index) => (
+                    <th>{key.replace(/_/g, ' ')}</th>
+                  ))
+                }
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {
+                  Object.keys(props.selectedRows).map((key, index) => (
+                    <td>{props.selectedRows[key]}</td>
+                  ))
+                }
+              </tr>
+            </tbody>
+          </Table>
           }
         </Row>
+        <h5><b>SCHEME DETAILS</b></h5>
         <Row className='sectionSeparate'>
-          <h5>SCHEME DETAILS</h5>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Department Name:</label></li>
-                  <li><label for="dept"><b>Agriculture Scheme</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Sub Department Name:</label></li>
-                  <li><label for="dept"><b>Agriculture Scheme</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Institute Name:</label></li>
-                  <li><label for="dept"><b>Agricultural College, Theni</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Institute Type:</label></li>
-                  <li><label for="dept"><b>Standalone College</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Institute Catagory:</label></li>
-                  <li><label for="dept"><b>Agriculture</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Institute Ownership:</label></li>
-                  <li><label for="dept"><b>Govt Aided</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">University Type:</label></li>
-                  <li><label for="dept"><b>Central University</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">University Name:</label></li>
-                  <li><label for="dept"><b>Govt Agriculture College</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Stream:</label></li>
-                  <li><label for="dept"><b>Agriculture</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Course Type:</label></li>
-                  <li><label for="dept"><b>UG</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Course:</label></li>
-                  <li><label for="dept"><b>B.Tech</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Medium of Instruction:</label></li>
-                  <li><label for="dept"><b>Tamil</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Religion:</label></li>
-                  <li><label for="dept"><b>Hindu</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Community:</label></li>
-                  <li><label for="dept"><b>MBC</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Caste:</label></li>
-                  <li><label for="dept"><b>Rajaka</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Gender:</label></li>
-                  <li><label for="dept"><b>Male</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Income:</label></li>
-                  <li><label for="dept"><b>0 to 12000</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Residential Status:</label></li>
-                  <li><label for="dept"><b>Hosteller</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Disablity Status:</label></li>
-                  <li><label for="dept"><b>Yes</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-          <Col lg={4}>
-            <Form>
-              <div class="form-group marBtm">
-                <ul>
-                  <li><label for="dept">Disablity Catagory:</label></li>
-                  <li><label for="dept"><b>Blindness</b></label></li>
-                </ul>
-              </div>
-            </Form>
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={12} className='applyCancleCta'>
-            {/* <span className='applyBtn' onClick={() => showStudentDetail()}>Apply</span>  */}
-            <span className='applyBtn' onClick={() => props.closePopup()}>Close</span>
-          </Col>
+          <h6>DEPARTMENT DETAILS</h6>
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>Department Name</th>
+                <th>Sub Department Name</th>
+                <th>Institute Name</th>
+                <th>Institute Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Agriculture Scheme</td>
+                <td>Agriculture Scheme</td>
+                <td>Agricultural College, Theni</td>
+                <td>Standalone College</td>
+              </tr>
+            </tbody>
+          </Table>
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>Institute Catagory</th>
+                <th>Institute Ownership</th>
+                <th>University Type</th>
+                <th>University Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Agriculture</td>
+                <td>Govt Aided</td>
+                <td>Central University</td>
+                <td>Govt Agriculture College</td>
+              </tr>
+            </tbody>
+          </Table>
+          <h6>COURSE DETAILS</h6>
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>Stream</th>
+                <th>Course Type</th>
+                <th>Course</th>
+                <th>Medium</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Agriculture</td>
+                <td>UG</td>
+                <td>B.Tech</td>
+                <td>Tamil</td>
+              </tr>
+            </tbody>
+          </Table>
+          <h6>Socio Economic Components</h6>
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>Religion</th>
+                <th>Community</th>
+                <th>Caste</th>
+                <th>Gender</th>
+                <th>Income</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hindu</td>
+                <td>MBC</td>
+                <td>Rajaka</td>
+                <td>Male</td>
+                <td>0 to 12000</td>
+              </tr>
+            </tbody>
+          </Table>
+          <h6>Maintance Components</h6>
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>Residential Status</th>
+                <th>Disablity Status</th>
+                <th>Disablity Catagory</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hosteller</td>
+                <td>No</td>
+                <td>-</td>
+              </tr>
+            </tbody>
+          </Table>
         </Row>
       </Container>
     </div>

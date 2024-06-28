@@ -14,9 +14,14 @@ const StudentViewDetail = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [getOtpScreen, setGetOtpScreen] = useState(false);
   const openPopup = () => setIsOpen(true);
-  const closePopup = () => {
-    setIsOpen(false);
-    props.closePopup();
+  const closePopup = (e, args) => {
+    if(args === 'consentDeclaration'){
+      setGetOtpScreen(false);
+    }
+    else {
+      setIsOpen(false);
+      props.closePopup();
+    }
   };
   const ApplyScheme = () => {
     setApplyComplete(true);
@@ -253,10 +258,19 @@ const StudentViewDetail = (props) => {
           </Col>
         </Row>
         <Row>
-          <Col lg={12} className='applyCancleCta'>
-            {/* <span className='applyBtn' onClick={() => ApplyScheme()}>Apply Scheme</span>  */}
-            <span className='applyBtn' onClick={() => getOtpToApply()}>Get OTP</span> 
-            <span className='cancel' onClick={() => props.closePopup()}>Cancel Scheme</span>
+          <Col lg={12} className='consentDec'>
+            <h5><i class="bi bi-pencil-square"></i>CONSENT DECLARATION</h5>
+            <div className='declaration'>
+              <p>This is to inform that, I have undergone education in Government School, Tamil Nadu. I am well aware of the benefits and conditions of the Scholarship. I have submit that the information given by me is true to the best of my knowledge.</p>
+              <p>If Sanctioned Scholarship will be transfered to my bank account.</p>
+              <p>By Submitting and entering the OTP, i hereby give my consent to State Government / TNeGA to use and share my Aadhar number or any other unique identifier with any State / Central Government / Quasi Agencies and authorize TNEGA to obtain my demographic, financial and other information for the sole purpose of establishing my bonafied for welfare scheme of Government of Tamil Nadu.</p>
+              <p>I Voluntarily give my whatsapp number to Portal for alerts.</p>
+              <div className='applyCancleCta'>
+                {/* <span className='applyBtn' onClick={() => ApplyScheme()}>Apply Scheme</span>  */}
+                <span className='applyBtn' onClick={() => getOtpToApply()}>Get OTP</span> 
+                {/* <span className='cancel' onClick={() => props.closePopup()}>Cancel Scheme</span> */}
+              </div>
+            </div>
           </Col>
         </Row>
       </Container>
@@ -266,6 +280,7 @@ const StudentViewDetail = (props) => {
           <Popup isOpen={isOpen} closePopup={closePopup} comp='studentView'>
             <h5>SCHEME APPLIED</h5>
             <p>Sent to Institute for Approval!</p>
+            <p onClick={closePopup} className='okClick'>Ok</p>
           </Popup>
         </div>
       }
@@ -273,14 +288,10 @@ const StudentViewDetail = (props) => {
         getOtpScreen && 
         <div className='text-center otpScreen'>
           <Popup isOpen={isOpen} closePopup={closePopup} comp='studentOtp'>
-            <h5><i class="bi bi-pencil-square"></i>CONSENT DECLARATION</h5>
             <div className='declaration'>
-              <p>This is to inform that, I have undergone education in Government School, Tamil Nadu. I am well aware of the benefits and conditions of the Scholarship. I have submit that the information given by me is true to the best of my knowledge.</p>
-              <p>If Sanctioned Scholarship will be transfered to my bank account.</p>
-              <p>By Submitting and entering the OTP, i hereby give my consent to State Government / TNeGA to use and share my Aadhar number or any other unique identifier with any State / Central Government / Quasi Agencies and authorize TNEGA to obtain my demographic, financial and other information for the sole purpose of establishing my bonafied for welfare scheme of Government of Tamil Nadu.</p>
-              <p>I Voluntarily give my whatsapp number to Portal for alerts.</p>
+              <p> 6 Digit OTP Sent To : <b>xxxxxx8611</b></p>
               <div class="input-group otpInput">
-                <span class="input-group-text" id="basic-addon3">Enter OTP here</span>
+                <span class="input-group-text" id="basic-addon3">Enter OTP</span>
                 <input
                   type="text"
                   className="form-control"
@@ -290,9 +301,11 @@ const StudentViewDetail = (props) => {
                   maxLength="6"
                   value={otpValue}
                   onChange={handleOtpChange}
+                  autocomplete="off"
                 />
               </div>
-              <button className={`applyBtn ${otpComplete ? 'active' : ''}`} onClick={() => ApplyScheme()} disabled={!otpComplete} >Apply Scheme</button>
+              <span><button className={`applyBtn ${otpComplete ? 'active' : ''}`} onClick={() => ApplyScheme()} disabled={!otpComplete} >Apply Scheme</button></span>
+              <span className='consentCancel' onClick={(e) => closePopup(e, 'consentDeclaration')}><b>Cancel</b></span>
             </div>
           </Popup>
         </div> 

@@ -9,6 +9,7 @@ const Header = (props) => {
   const navigate = useNavigate();
   const handleLogout = () => {
     navigate('/');
+    document.body.className = 'sidebar-icon-only';
   }
   const handleClick1 = (event) => {
     document.body.classList.toggle("sidebar-icon-only");

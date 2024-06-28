@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
@@ -7,7 +7,6 @@ import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Footer from "./components/layouts/Footer";
 import Header from "./components/layouts/Header";
-import Index from "./pages/Index";
 import "./utils/i18n";
 import InnerPage from "./pages/InnerPage";
 import SchemeRegister from "./pages/SchemeRegister.js"
@@ -30,12 +29,25 @@ import "./assets/js/main";
 import Sample from "./pages/Sample.js";
 
 const App = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   useEffect(() => {
-    document.body.className = 'sidebar-icon-only';
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', handleResize);
+    if(windowWidth <= 992) {
+      document.body.className = '';
+    } else {
+      document.body.className = 'sidebar-icon-only';
+    }
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   },[])
   return (
     <div>
       <BrowserRouter basename="/ssp_frontend">
+    
         {/* <Header />  */}
         <Routes>
           <Route path="/" element={<Login />} />

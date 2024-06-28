@@ -28,6 +28,14 @@ const StudentEligibleScheme = () => {
     setIsOpen(false);
     setClickView(false);
   };
+  const viewIcon = ({ value, data, node, colDef, api, columnApi, context }) => { debugger;
+    return (
+     <>
+      {value}
+      <i class="bi bi-info-circle padLft"></i>
+     </>
+    )
+  }
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const academic_year = currentYear - 1 - currentYear
@@ -39,7 +47,6 @@ const StudentEligibleScheme = () => {
       Scheme_Amount: 60000,
       //Community: 'MBC',
       //Caste: 'Muthiriyar',
-      Total_Fee: 100000
     },
     { 
       Application_No: 2, 
@@ -48,7 +55,6 @@ const StudentEligibleScheme = () => {
       Scheme_Amount: 40000,
       //Community: 'BC',
       //Caste: 'Boyar',
-      Total_Fee: 100000
     },
     { 
       Application_No: 3, 
@@ -57,35 +63,36 @@ const StudentEligibleScheme = () => {
       Scheme_Amount: 25000,
       //Community: 'DNC', 
       //Caste: 'Sidhannar',
-      Total_Fee: 100000
     },
   ]);
 
   const [columnDefs, setColumnDefs] = useState([
     {
         field: "Scheme_Name",
-        width: 450,
+        //width: 450,
         //checkboxSelection: true,
         // editable: true,
         // cellEditor: 'agSelectCellEditor',
         // cellEditorParams: {
         //     values: ["Tesla", "Ford", "Toyota", "Mercedes", "Fiat", "Nissan", "Vauxhall", "Volvo", "Jaguar"],
         // },
+        cellRenderer: viewIcon
     },
     { field: "Scheme_Amount"},
-    { field: "Total_Fee" },
     {
       field: "actions",
       headerName: "Actions",
       cellRenderer: ViewBtn,
-      width: 150
+      //width: 150
     },
   ]);
   const defaultColDef = useMemo(() => {
     return {
       //filter: 'agTextColumnFilter',
       //floatingFilter: true,
-      //width: 200,
+      flex: 1,
+      minWidth: 100,
+      resizable: true,
       suppressMovable: true
     }
   }, []);
@@ -143,7 +150,7 @@ const StudentEligibleScheme = () => {
   };
   return (
     <>
-      <div className="ag-theme-alpine">
+      <div className="ag-theme-alpine studentEligibleGrid">
         {/* <p className='selectAllSchemes'>
           <input
           type="checkbox"
@@ -152,20 +159,20 @@ const StudentEligibleScheme = () => {
           style={{ marginBottom: 10 }}
           /> Select All Schemes
         </p> */}
-        <AgGridReact
-          onGridReady={onGridReady}
-          ref={gridRef}
-          rowData={rowData}
-          columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
-          rowSelection="single"
-          pagination={true}
-          paginationPageSize={3}
-          paginationPageSizeSelector={[1, 3, 5]}
-          domLayout='autoHeight'
-          onRowClicked={onRowClicked}
-          suppressRowDrag={true}
-        />
+          <AgGridReact
+            onGridReady={onGridReady}
+            ref={gridRef}
+            rowData={rowData}
+            columnDefs={columnDefs}
+            defaultColDef={defaultColDef}
+            rowSelection="single"
+            pagination={true}
+            paginationPageSize={3}
+            paginationPageSizeSelector={[1, 3, 5]}
+            domLayout='autoHeight'
+            onRowClicked={onRowClicked}
+            suppressRowDrag={true}
+          />
       </div>
       {/* <p className={appliedBtn ? 'appliedBtn approveBtn' : 'approveBtn'} onClick={onButtonClick}>
         {
@@ -221,15 +228,6 @@ const StudentEligibleScheme = () => {
               getRowData = {getRowData}
               closePopup={closePopup}
             />
-            {/* {
-              Object.keys(getRowData).map((key, index) => (
-              <div class="form-input" key={index}>
-                <label>{key.replace(/_/g, ' ')}</label>
-                <input class="form-input" type="input" value={getRowData[key]} id=""/>
-              </div>
-              ))
-            } */}
-            
           </Popup>
         </div>
       }

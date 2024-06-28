@@ -1,14 +1,14 @@
 @import '../Style/variable';
 
 .schemeListParent {
-  padding: 3rem 1rem;
+  .allSchemeGrids {
+    text-align: left;
+  }
   .filterSec {
     border-right: 1px solid #ccc;
     text-align: left;
   }
   .listSec {
-    height: 100vh;
-    overflow: auto;
     ::-webkit-scrollbar {
       width: 10px;
       height: 10px;
@@ -60,4 +60,16 @@
       text-align: center;
     }
   }
+}
+.notEligible {
+  color: red;
+  font-weight: bold;
+}
+.clrChange {
+  color: $globalFontColor;
+}
+.allschemeBr {
+  padding: 2rem;
+  background-color: #f5f5f5;
+  border-radius: 15px;
 }

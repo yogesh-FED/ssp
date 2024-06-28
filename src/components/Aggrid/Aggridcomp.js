@@ -136,7 +136,7 @@ const Aggridcomp = () => {
   };
 
   const columnDefs = [
-    { field: 'Scheme_Name', width: 200 },
+    { field: 'Scheme_Name', width: 200,},
     { field: 'Applied_On', width: 200 },
     { field: 'Academic_Year', width: 200 },
     { field: 'Scheme_Fee', width: 200 },

@@ -73,7 +73,6 @@ const Index = (props) => {
         {props.compName === 'instituteComponent' ? setInstDash(true) : setInstDash(false)}
         break;
     }
-    //document.body.className = 'sidebar-icon-only';
   };
   const [isOpen, setIsOpen] = useState(false);
   const openSchemeResgistration = () => {
@@ -81,7 +80,7 @@ const Index = (props) => {
   }
   const [comp, setComp] = useState('');
   const location = useLocation();
-  useEffect (() => {
+  useEffect (() => { debugger;
     switch (location.pathname) {
       case '/institute':
         setComp('institute');
@@ -94,6 +93,20 @@ const Index = (props) => {
       default:
         setComp('Page Not Found');
     }
+    switch (props.compName) {
+      case 'studentComponent':
+        setStudentScreen(true);
+        break;
+      case 'departmentComponent':
+        setSchemeReg(true);
+        break;
+      case 'instituteComponent':
+        setInstDash(true);
+        break;
+      default:
+        setDashBoardScreen(true);
+        break;
+    }
   },[])
   return (
     <div>
@@ -101,17 +114,21 @@ const Index = (props) => {
       <main id="main">
         <nav className="sidebar sidebar-offcanvas" id="sidebar">
           <ul className="nav">
-            <li className={`nav-item ${activeMenu === 'Dashboard' ? 'active' : ''}`} onClick={handleClick}>
-              <a className="nav-link">
-                <span className="menu-title">
-                  Dashboard
-                </span>
-                <i class="bi bi-speedometer2 menu-icon" onClick={(event) => handleClick(event, 'Dashboard')}></i>
-              </a>
-            </li>
+            {
+              props.compName === 'instituteComponent' && (
+              <li className={`nav-item ${activeMenu === 'Dashboard' ? 'active' : ''}`} onClick={handleClick}>
+                <a className="nav-link">
+                  <span className="menu-title">
+                    Dashboard
+                  </span>
+                  <i class="bi bi-speedometer2 menu-icon" onClick={(event) => handleClick(event, 'Dashboard')}></i>
+                </a>
+              </li>
+              )
+            }
             {
               props.compName === 'departmentComponent' && (
-              <li className={`nav-item ${activeMenu === 'Scheme Registration'? 'active' : ''}`} onClick={handleClick}>
+              <li className="nav-item active" onClick={handleClick}>
                 <a className="nav-link">
                   <span className="menu-title">
                     Scheme Registration
@@ -124,7 +141,7 @@ const Index = (props) => {
             {
               props.compName === 'studentComponent' && (
               <>
-                <li className={`nav-item ${ activeMenu === 'Student Details' ? 'active' : ''}`} onClick={handleClick}>
+                <li className="nav-item active" onClick={handleClick}>
                   <a className="nav-link">
                     <span className="menu-title">
                       Student Details
@@ -132,14 +149,14 @@ const Index = (props) => {
                     <i class="bi bi-person-lines-fill menu-icon" onClick={(event) => handleClick(event, 'Student Details')}></i>
                   </a>
                 </li>
-                <li className={`nav-item ${ activeMenu === 'All Schemes' ? 'active' : ''}`} onClick={handleClick}>
+                {/* <li className={`nav-item ${ activeMenu === 'All Schemes' ? 'active' : ''}`} onClick={handleClick}>
                   <a className="nav-link">
                     <span className="menu-title">
                       All Schemes
                     </span>
                     <i class="bi bi-card-list menu-icon" onClick={(event) => handleClick(event, 'All Schemes')}></i>
                   </a>
-                </li>
+                </li> */}
               </>
               )
             }

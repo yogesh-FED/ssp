@@ -1097,11 +1097,12 @@ section {
 }
 /*color gradients ends*/
 /*table starts*/
-thead {
+thead th {
   /*background: #afd4f8;*/
   /*background: #0b968b;*/
-  background: var(--bg-green);
-  color: #fff;
+  /* background: var(--bg-green); */
+  /* color: #fff; */
+  font-weight: 100;
 }
 tbody tr:nth-child(odd) {
   /*background: #afd4f829;*/
@@ -1323,7 +1324,7 @@ tbody tr:nth-child(odd) {
 }
 .sidebar .nav .nav-item.active {
   /* background: #00000045; */
-  background: #5c7d614d;
+  background: #cfe2ff;
   border-top-right-radius: 40px;
   border-bottom-left-radius: 40px;
 }
@@ -1344,7 +1345,8 @@ tbody tr:nth-child(odd) {
 }
 .sidebar .nav .nav-item.active > .nav-link .menu-title {
   /* color: #70ed85; */
-  color: #e6ff00;
+  /* color: #e6ff00; */
+  color: #331f8e;
 }
 .sidebar .nav .nav-item .nav-link .menu-title {
   color: inherit;
@@ -1362,7 +1364,7 @@ tbody tr:nth-child(odd) {
 .sidebar .nav .nav-item.active > .nav-link i {
   /* color: #b66dff; */
   /* color: #70ed85; */
-  color: #e6ff00; 
+  color: #331f8e; 
 }
 
 .sidebar-icon-only .main-panel {

@@ -82,12 +82,12 @@ const Login = () => {
                                                         <input type="number" id="txt_password" name="txt_password" className="form-control form-control"
                                                             placeholder="Enter UMIS ID / EMIS ID" required />
                                                     </div> */}
-                                                    <div className="input-group mb-2" id="div_password">
+                                                    {/* <div className="input-group mb-2" id="div_password">
                                                         <a className="btn btn-primary btn-otp"><i className="bi bi-check2-circle"></i> Get OTP</a>
-                                                    </div>
+                                                    </div> */}
                                                     <div className="input-group mb-2" id="div_password">
-                                                        <input type="number" id="txt_password" name="txt_password" className="form-control form-control"
-                                                            placeholder="Enter OTP" required />
+                                                        <input type="password" id="txt_password" name="txt_password" className="form-control form-control"
+                                                            placeholder="Enter Password" required />
                                                     </div>
                                                     <div className="mb-1 mt-3 h-100 d-flex align-items-center justify-content-center">
                                                         <a onClick={studentLogin} id="btnSendOTP" value="Submit" className="btn btn-lg btn-otp btn-success d-block"><i class="bi bi-send"></i> Submit</a>
@@ -108,12 +108,12 @@ const Login = () => {
                                                         <input type="number" id="txt_password" name="txt_password" className="form-control form-control"
                                                             placeholder="Enter Institute ID" required />
                                                     </div> */}
-                                                    <div className="input-group mb-2" id="div_password">
+                                                    {/* <div className="input-group mb-2" id="div_password">
                                                         <a className="btn btn-primary btn-otp"><i className="bi bi-check2-circle"></i> Get OTP</a>
-                                                    </div>
+                                                    </div> */}
                                                     <div className="input-group mb-2" id="div_password">
-                                                        <input type="number" id="txt_password" name="txt_password" className="form-control form-control"
-                                                            placeholder="Enter OTP" required />
+                                                        <input type="password" id="txt_password" name="txt_password" className="form-control form-control"
+                                                            placeholder="Enter Password" required />
                                                     </div>
                                                     <div className="mb-1 mt-3 h-100 d-flex align-items-center justify-content-center">
                                                         <a onClick={instituteLogin} id="btnSendOTP" value="Submit" className="btn btn-lg btn-otp btn-success d-block"><i class="bi bi-send"></i> Submit</a>
@@ -127,19 +127,19 @@ const Login = () => {
                                                 <div class="input-group mb-2">
                                                         <span class="input-group-text box-color" id="basic-addon1"><i class="bi bi-person-check"></i></span>
                                                         <input type="number" id="txt_password" name="txt_password" className="form-control form-control"
-                                                            placeholder="Enter Department ID" required />
+                                                            placeholder="Enter Depatment ID" required />
                                                     </div>
 
                                                     {/* <div className="input-group mb-2" id="div_password">
                                                         <input type="number" id="txt_password" name="txt_password" className="form-control form-control"
                                                             placeholder="Enter Institute ID" required />
                                                     </div> */}
-                                                    <div className="input-group mb-2" id="div_password">
+                                                    {/* <div className="input-group mb-2" id="div_password">
                                                         <a className="btn btn-primary btn-otp"><i className="bi bi-check2-circle"></i> Get OTP</a>
-                                                    </div>
+                                                    </div> */}
                                                     <div className="input-group mb-2" id="div_password">
-                                                        <input type="number" id="txt_password" name="txt_password" className="form-control form-control"
-                                                            placeholder="Enter OTP" required />
+                                                        <input type="password" id="txt_password" name="txt_password" className="form-control form-control"
+                                                            placeholder="Enter Password" required />
                                                     </div>
                                                     <div className="mb-1 mt-3 h-100 d-flex align-items-center justify-content-center">
                                                         <a onClick={departmentLogin} id="btnSendOTP" value="Submit" className="btn btn-lg btn-otp btn-success d-block"><i class="bi bi-send"></i> Submit</a>

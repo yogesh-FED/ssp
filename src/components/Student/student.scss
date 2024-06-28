@@ -48,18 +48,15 @@
   }
 }
 .studentBasicDetails {
-  background: $mildGreen;
-  border-radius: 15px;
-  //width: 60%;
+  // background: $mildGreen;
+  // border-radius: 15px;
+  // width: 90%;
   padding: 1rem;
   table {
     margin: 0;
     td {
       border-bottom: none;
-      background: $mildGreen;
-      b {
-        color: $globalFontColor;
-      }
+      color: $globalFontColor;
     }
   }
 }
@@ -173,17 +170,30 @@
       margin-top: 0.5rem;
     }
   }
+  h5 {
+    color: $globalFontColor;
+    margin-top: 2rem;
+  }
   .sectionSeparate {
+    margin-bottom: 3rem !important;
+    table {
+      th {
+        font-weight: 100;
+        font-size: 14px;
+      }
+      td {
+        color: $globalFontColor;
+      }
+    }
     h6 {
       padding: 0.5rem;
       background: $mildGreen;
       text-align: left;
     }
     padding: 1rem;
-    background: #f5f5f5;
     border-radius: 5px;
     margin-bottom: 1rem;
-    border: 1px solid $mildGreen;
+    border: 1px solid $globalFontColor;
   }
   .form-group {
     ul {
@@ -219,7 +229,7 @@
     }
   }
   .applyCancleCta {
-    text-align: right;
+    //text-align: right;
     padding: 1rem;
     span {
       display: inline-block;
@@ -230,16 +240,26 @@
       &.applyBtn {
         background: $globalFontColor;
         color: $white;
-        margin-right: 1rem;
       }
       &.cancel {
-        color: $white;
-        background: $cancelBtn;
+        text-decoration: underline;
+        color: $cancelBtn;
+        background: none;
       }
     }
   }
 }
-
+.padLft {
+  padding-left: 0.5rem;
+}
+.studentEligibleGrid .ag-body .ag-row {
+  cursor: pointer;
+}
+.consentDec {
+  h5 {
+    text-align: left;
+  }
+}
 @keyframes fadeInOut {
   0% {
     opacity: 0;

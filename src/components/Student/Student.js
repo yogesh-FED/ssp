@@ -9,6 +9,7 @@ import Aggrid from '../Aggrid/Aggridcomp';
 import EligibleSchemes from '../EligibleSchemes/EligibleSchemes';
 import StudentEligibleScheme from './StudentEligibleScheme';
 import Aggridcomp from '../Aggrid/Aggridcomp';
+import AllSchemes from '../../pages/AllSchemes';
 
 const Student = () => {
   const handleAvailClick = () => {
@@ -65,49 +66,30 @@ const Student = () => {
       </Container> */}
       <div className='studentBasicDetails'>
         <Row>
-          <Col lg={6}>
-            <Table>
-              <tbody>
-                <tr>
-                  <td><b>Student Name :</b></td>
-                  <td>Thirumurugan</td>
-                </tr>
-                <tr>
-                  <td><b>Caste :</b></td>
-                  <td>Madiga</td>
-                </tr>
-                <tr>
-                  <td><b>Institute Name :</b></td>
-                  <td>Anna University, Chennai</td>
-                </tr>
-                <tr>
-                  <td><b>Academic Year :</b></td>
-                  <td>{`${currentYear - 1}-${currentYear}`}</td>
-                </tr>
-              </tbody>
-            </Table>
-          </Col>
-          <Col lg={6}>
-            <Table>
-              <tbody>
-                <tr>
-                  <td width={110}><b>Gender :</b></td>
-                  <td>Male</td>
-                </tr>
-                <tr>
-                  <td><b>Community :</b></td>
-                  <td>SC-Arunthathiyar</td>
-                </tr>
-                <tr>
-                  <td><b>Fees paid :</b></td>
-                  <td>₹ 15000</td>
-                </tr>
-                <tr>
-                  <td><b>Total Fee :</b></td>
-                  <td>₹ 100000</td>
-                </tr>
-              </tbody>
-            </Table>
+          <Col lg={12}>
+            <h5><b>STUDENT DETAILS</b></h5>
+            <Table responsive>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Caste</th>
+                <th>Community</th>
+                <th>Academic Year</th>
+                <th>Fees Paid</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Thirumurugan</td>
+                <td>Male</td>
+                <td>Madiga</td>
+                <td>SC-Arunthathiyar</td>
+                <td>2023-2024</td>
+                <td>₹ 15000</td>
+              </tr>
+            </tbody>
+          </Table>
           </Col>
         </Row>
       </div>
@@ -122,11 +104,14 @@ const Student = () => {
             {/* <EligibleSchemes /> */}
             <StudentEligibleScheme />
           </Tab>
-          <Tab eventKey="BasicDetails" title="My Basic Details">
+          {/* <Tab eventKey="BasicDetails" title="My Basic Details">
             <StudentGrid />
-          </Tab>
+          </Tab> */}
           <Tab eventKey="Scheme Status" title="Scheme Status">
             <Aggridcomp />
+          </Tab>
+          <Tab eventKey="All Scheme" title="All Scheme">
+            <AllSchemes />
           </Tab>
         </Tabs>
       </div>

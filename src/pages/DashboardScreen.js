@@ -5,13 +5,13 @@ import PageInProg from './PageInProg'
 const DashboardScreen = (props) => {
   return (
     <div>
-      {
+      {/* {
         props.compName === 'studentComponent' && (
           <>
             <PageInProg />
           </>
         )
-      }
+      } */}
       {
         props.compName === 'instituteComponent' && (
           <>
@@ -19,13 +19,13 @@ const DashboardScreen = (props) => {
           </>
         )
       }
-      {
+      {/* {
         props.compName === 'departmentComponent' && (
           <>
             <PageInProg />
           </>
         )
-      }
+      } */}
     </div>
   )
 }
