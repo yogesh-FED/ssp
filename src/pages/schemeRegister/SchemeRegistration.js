@@ -478,7 +478,25 @@ const handleOptionsChange = async (e, name) => { debugger;
   const handleTabClick = (tabId) => {
     setActive(tabId);
   };
-  const handleEnterFeeCta = () => {
+  const [selectedInstituteCategories, setSelectedInstituteCategories] = useState([]);
+  const handleEnterFeeCta = () => { debugger;
+    const selectedValBoxes = document.querySelectorAll('.selectedValBox');
+    let allSpanValues = [];
+    selectedValBoxes.forEach((box) => {
+      const category = box.dataset.category;
+      const spans = box.querySelectorAll('span.form-label');
+      spans.forEach((span) => {
+        const value = span.textContent.trim();
+        allSpanValues.push({
+          category: category,
+          value: value
+        });
+      });
+    });
+
+    console.log('All span values:', allSpanValues);
+    const instituteCategories = allSpanValues.filter(item => item.category === 'Institute Category');
+    setSelectedInstituteCategories(instituteCategories);
     setEnterFeeDetails(true);
   }
   const handleCheckBox = (e, name) => {
@@ -1513,11 +1531,13 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <form className="row">
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Department </label>
-                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {formData.department} </span>
+                      <div className='selectedValBox' data-category='Department'>
+                        <span htmlFor="toDate" className="form-label w-100 mb-0"> {formData.department} </span>
+                      </div>
                     </div>
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Sub Department </label> 
-                      <div className='selectedValBox'>
+                      <div className='selectedValBox' data-category='Sub Department'>
                       {
                         formData.subDepartment.map((value, index) => {
                           return (
@@ -1529,7 +1549,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                     </div>
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scheme Name </label>
-                      <div className='selectedValBox'>
+                      <div className='selectedValBox' data-category='Scheme Name'>
                       <span htmlFor="toDate" className="form-label w-100 mb-0"> { formData.schemeName } </span>
                       </div>
                     </div>
@@ -1538,7 +1558,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       <h6 style={{marginTop: '1rem'}}><b><u>Institute Component</u></b></h6>
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Ownership </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox'  data-category='Institute Ownership'>
                         {
                           filterFormData.instituteOwnership.map((val,i) => {
                             return (
@@ -1550,7 +1570,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Category </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Institute Category'>
                         {
                           filterFormData.instituteCategory.map((val,i) => {
                             return (
@@ -1562,7 +1582,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Type </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Institute Type'>
                         {
                           filterFormData.instituteType.map((val,i) => {
                             return (
@@ -1574,7 +1594,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> University Type </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='University Type'>
                         {
                           filterFormData.universityType.map((val,i) => {
                             return (
@@ -1586,7 +1606,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> University </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='University'>
                         {
                           filterFormData.university.map((val,i) => {
                             return (
@@ -1598,7 +1618,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Name </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Institute Name'>
                         {
                           filterFormData.instituteText.map((val,i) => {
                             return (
@@ -1611,7 +1631,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       <h6 style={{marginTop: '1rem'}}><b><u>Course Component</u></b></h6>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Stream </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Stream'>
                         {
                           filterFormData.stream.map((val,i) => {
                             return (
@@ -1623,7 +1643,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Course Type </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Course Type'>
                         {
                           filterFormData.courseType.map((val,i) => {
                             return (
@@ -1635,7 +1655,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Medium of Instruction </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Medium'>
                         {
                           filterFormData.medium.map((val,i) => {
                             return (
@@ -1647,7 +1667,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Course </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Course'>
                         {
                           filterFormData.course.map((val,i) => {
                             return (
@@ -1660,7 +1680,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       <h6 style={{marginTop: '1rem'}}><b><u>Socio Economic Components</u></b></h6>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Religion </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Religion'>
                         {
                           filterFormData.religion.map((val,i) => {
                             return (
@@ -1672,7 +1692,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Community </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Community'>
                         {
                           filterFormData.community.map((val,i) => {
                             return (
@@ -1684,7 +1704,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Caste </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Caste'>
                         {
                           filterFormData.caste.map((val,i) => {
                             return (
@@ -1696,7 +1716,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Gender </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Gender'>
                         {
                           filterFormData.gender.map((val,i) => {
                             return (
@@ -1708,7 +1728,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Income </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Income'>
                         {
                           filterFormData.income.map((val,i) => {
                             return (
@@ -1721,7 +1741,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       <h6 style={{marginTop: '1rem'}}><b><u>Maintance Component</u></b></h6>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Residential Status </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Residential Status'>
                         {
                           filterFormData.residentalStatus.map((val,i) => {
                             return (
@@ -1733,7 +1753,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Disability Status </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Disability Status'>
                         {
                           filterFormData.disabilityStatus.map((val,i) => {
                             return (
@@ -1745,7 +1765,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Disability Category </label>
-                        <div className='selectedValBox'>
+                        <div className='selectedValBox' data-category='Disability Category'>
                         {
                           filterFormData.disabilityCategory.map((val,i) => {
                             return (
