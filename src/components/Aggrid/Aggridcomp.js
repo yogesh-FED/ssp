@@ -9,8 +9,9 @@ import axios from 'axios';
 import { Card, ListGroup, Container, Row, Col, Form } from 'react-bootstrap';
 import TrackIcon from '../../assets/icons/trackIcon.png';
 import view from '../../assets/icons/eye.png';
+import { PropaneSharp } from '@mui/icons-material';
 
-const Aggridcomp = () => {
+const Aggridcomp = (props) => {
   const [gridApi, setGridApi] = useState(null);
   const [columnApi, setColumnApi] = useState(null);
   const [tableData, setTableData] = useState([]);
@@ -31,7 +32,16 @@ const Aggridcomp = () => {
       sheetName: 'Data'
     });
   };
-  const [rowData, setRowData] = useState([
+  const [rowData, setRowData] = useState(props.comp === 'schemeFixedList' ? 
+  [
+    {
+      Scheme_Name : 'Central Scheme Created 1',
+      Scheme_amount: 10000,
+      Freezed: 'No'
+    }
+  ] 
+  : 
+  [
     { 
       flex: 1,
       SNo: 1, 
@@ -135,7 +145,16 @@ const Aggridcomp = () => {
     );
   };
 
-  const columnDefs = [
+  const columnDefs = props.comp === 'schemeFixedList'
+  ?
+  [
+    { field: 'Scheme_Name', width: 200,},
+    { field: 'Scheme_amount', width: 200,},
+    { field: 'Freezed', width: 200,},
+    { field: 'Action', cellRenderer: ViewBtn, width: 100}
+  ]
+  :
+  [
     { field: 'Scheme_Name', width: 200,},
     { field: 'Applied_On', width: 200 },
     { field: 'Academic_Year', width: 200 },
@@ -148,8 +167,20 @@ const Aggridcomp = () => {
     return {
       filter: 'agTextColumnFilter',
       floatingFilter: true,
-      width: 200    }
+      width: 200,
+      resizable: true,
+      suppressMovable: true   }
   }, []);
+  const schemeFixedListColDef = useMemo (() => {
+    return {
+      filter: 'agTextColumnFilter',
+      floatingFilter: true,
+      flex: 1,
+      minWidth: 100,
+      resizable: true,
+      suppressMovable: true
+    }
+  })
   const [trackingData, setTrackingData] = useState([]);
   useEffect (() => {
     const fetchData = async () => {
@@ -177,12 +208,8 @@ const Aggridcomp = () => {
           paginationPageSize={5}
           paginationPageSizeSelector = {paginationPageSizeSelector}
           domLayout='autoHeight'
-          defaultColDef = {defaultColDef}
-          // defaultColDef={{
-          //   sortable: true,
-          //   resizable: true,
-          //   flex: 1
-          // }}
+          defaultColDef = {props.comp === 'schemeFixedList' ? schemeFixedListColDef : defaultColDef}
+          suppressRowDrag={true}
         >
         </AgGridReact>
       </div>
@@ -190,69 +217,79 @@ const Aggridcomp = () => {
         <button onClick={() => exportToExcel()}>Export to Excel</button>
       </div>
       <div className='text-left'>
-        <Popup isOpen={isOpen} closePopup={closePopup}>
-          <Col lg={12}>
-            <Table>
-              <tbody>
-                <tr>
-                  <td><b>Scheme Name :</b></td>
-                  <td>{ tableData.Scheme_Name }</td>
-                </tr>
-                <tr>
-                  <td><b>Status :</b></td>
-                  <td><b className= {tableData.status === 'Applied' ? 'statusHighlight applied' : tableData.status === 'Approved' ? 'statusHighlight approved' : tableData.status === 'Rejected' ? 'statusHighlight rejected' : tableData.status === 'Pending' ? 'statusHighlight pending' : ''}>{ tableData.status === 'Applied' ? 'Scheme Approval is pending with Institute.' : tableData.status === 'Approved' ? 'Your Scheme is Approved.' : tableData.status === 'Rejected' ? 'Scheme Rejected.' : tableData.status === 'Pending' ? 'Scheme Approval is pending with Department.' : '' }</b></td>
-                </tr>
-                {
-                  tableData.status === 'Rejected' && (
-                    <tr>
-                      <td><b>Reject Remark :</b></td>
-                      <td>Community not verified</td>
-                    </tr>
-                  )
-                }
-                <tr>
-                  <td><b>Academic Year :</b></td>
-                  <td>{tableData.Academic_Year}</td>
-                </tr>
-                <tr>
-                  <td><b>Scheme Fee :</b></td>
-                  <td>{tableData.Scheme_Fee }</td>
-                </tr>
-                <tr>
-                  <td><b>Account Number :</b></td>
-                  <td>99442233450002</td>
-                </tr>
-                <tr>
-                  <td><b>IFSC Code :</b></td>
-                  <td>UIB0003456</td>
-                </tr>
-              </tbody>
-            </Table>
-          </Col>
-          <Col lg={12}>
-            <div className='timeLine'>
-              <p><b>Application Progress Tracker</b></p>
-              <ul>
-                {
-                  Object.entries(trackingData).map(([keys,val]) => {
-                    return (
-                      Object.entries(val).map(([key,val]) => {
-                        return (
-                          <li key={keys}>
-                            <img src={TrackIcon} alt='tracking'/>
-                            <b> {key.replace(/([a-z])([A-Z])/g, '$1 $2')} </b> 
-                            <br />
-                            <span> {val} </span>
-                          </li>
-                        )   
-                      })
+        {
+          props.comp === 'schemeFixedList'
+          ?
+          <Popup isOpen={isOpen} closePopup={closePopup}>
+            <Col lg={12}>
+              <h5>Scheme Details</h5>
+            </Col>
+          </Popup>
+          :
+          <Popup isOpen={isOpen} closePopup={closePopup}>
+            <Col lg={12}>
+              <Table>
+                <tbody>
+                  <tr>
+                    <td><b>Scheme Name :</b></td>
+                    <td>{ tableData.Scheme_Name }</td>
+                  </tr>
+                  <tr>
+                    <td><b>Status :</b></td>
+                    <td><b className= {tableData.status === 'Applied' ? 'statusHighlight applied' : tableData.status === 'Approved' ? 'statusHighlight approved' : tableData.status === 'Rejected' ? 'statusHighlight rejected' : tableData.status === 'Pending' ? 'statusHighlight pending' : ''}>{ tableData.status === 'Applied' ? 'Scheme Approval is pending with Institute.' : tableData.status === 'Approved' ? 'Your Scheme is Approved.' : tableData.status === 'Rejected' ? 'Scheme Rejected.' : tableData.status === 'Pending' ? 'Scheme Approval is pending with Department.' : '' }</b></td>
+                  </tr>
+                  {
+                    tableData.status === 'Rejected' && (
+                      <tr>
+                        <td><b>Reject Remark :</b></td>
+                        <td>Community not verified</td>
+                      </tr>
                     )
-                  })
-                }
-              </ul>
-            </div>
-          </Col>
-        </Popup>
+                  }
+                  <tr>
+                    <td><b>Academic Year :</b></td>
+                    <td>{tableData.Academic_Year}</td>
+                  </tr>
+                  <tr>
+                    <td><b>Scheme Fee :</b></td>
+                    <td>{tableData.Scheme_Fee }</td>
+                  </tr>
+                  <tr>
+                    <td><b>Account Number :</b></td>
+                    <td>99442233450002</td>
+                  </tr>
+                  <tr>
+                    <td><b>IFSC Code :</b></td>
+                    <td>UIB0003456</td>
+                  </tr>
+                </tbody>
+              </Table>
+            </Col>
+            <Col lg={12}>
+              <div className='timeLine'>
+                <p><b>Application Progress Tracker</b></p>
+                <ul>
+                  {
+                    Object.entries(trackingData).map(([keys,val]) => {
+                      return (
+                        Object.entries(val).map(([key,val]) => {
+                          return (
+                            <li key={keys}>
+                              <img src={TrackIcon} alt='tracking'/>
+                              <b> {key.replace(/([a-z])([A-Z])/g, '$1 $2')} </b> 
+                              <br />
+                              <span> {val} </span>
+                            </li>
+                          )   
+                        })
+                      )
+                    })
+                  }
+                </ul>
+              </div>
+            </Col>
+          </Popup>
+        }
       </div>
     </>
   );

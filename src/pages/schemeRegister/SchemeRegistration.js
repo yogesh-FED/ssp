@@ -1,7 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react' ; 
+import React, { useEffect, useState } from 'react' ;
+import { Container, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
 import Form from 'react-bootstrap/Form';
+import Popup from '../../components/Popup/Popup';
+import { AgGridReact } from 'ag-grid-react';
+import Aggridcomp from '../../components/Aggrid/Aggridcomp';
 const SchemeRegistration = () => {
   const PRODUCTION_END_POINT_API = 'https://tngis.tnega.org/';
   const IP_END_POINT_API = 'http://192.168.4.251/';
@@ -12,6 +16,8 @@ const SchemeRegistration = () => {
     courseType: [], medium: [], religion: [], community: [], caste: [], gender: [], income: [],
     residentalStatus: [], disabilityStatus: [], disabilityCategory: [], schemeFeeType: [], instituteOwnership: []
   };
+  const [schemeRegisteredState, setSchemeRegisteredState] = useState(false);
+  const [schemeRegisteredErrState, setSchemeRegisteredErrState] = useState(false);
   const [formData, setFormData] = useState({...initialFormData});
   const [filterFormData, setFilterFormData] = useState({...initialFormData});
   const [departmentData, setDepartmentData] = useState([]);
@@ -56,6 +62,7 @@ const SchemeRegistration = () => {
   const [genderAll, setGenderAll] = useState([]);
   const [incomeAll, setIncomeAll] = useState([]);
   const [resStsAll, setResStsAll] = useState([]);
+  const [createScheme, setCreateScheme] = useState([]);
   const [mediumData, setMediumData] = useState([
     { value: 'English', label: 'English' },
     { value: 'Tamil', label: 'Tamil' }
@@ -68,6 +75,72 @@ const SchemeRegistration = () => {
     "Content-Type": "application/x-www-form-urlencoded",
     'X-APP-KEY': 'te$t',
   };
+  const [isOpen, setIsOpen] = useState(false);
+  const openPopup = () => setIsOpen(true);
+  const closePopup = () => setIsOpen(false);
+  const handleCreateScheme = async (e) => {
+    try {
+      const CREATE_SCHEME_API = await axios.post('https://tngis.tnega.org/ssp_backend/api/v1/create_user_scheme', 
+        { 
+        active
+        : 
+        true,
+        created_user
+        : 
+        44,
+        department_id
+        : 
+        1,
+        frequency
+        : 
+        1,
+        max_slab_present
+        : 
+        true,
+        mutually_exclusive
+        : 
+        1,
+        rule_name
+        : 
+        "Eligibility Rule",
+        scheme_category
+        : 
+        "Education",
+        scheme_code
+        : 
+        "EDU2303",
+        scheme_name
+        : 
+        "National Scholarship",
+        scholarship_slab
+        : 
+        2,
+        slab_type
+        : 
+        4,
+        slab_value
+        : 
+        15000.00,
+        sub_scheme_name
+        : 
+        "Science Students",
+        sub_department_id
+        : 
+        1,
+        updated_user
+        : 
+        44 }, 
+      {headers: headers});
+      setCreateScheme(CREATE_SCHEME_API.data?.data || [])
+      if(createScheme) {
+        setSchemeRegisteredState(true);
+      }
+    }
+    catch (error) {
+      console.log('Error fetching department data:', error);
+      setSchemeRegisteredState(false);
+    }
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -398,12 +471,16 @@ const handleOptionsChange = async (e, name) => { debugger;
   }
 }
   const [showMore, setShowMore] = useState(false); 
+  const [enterFeeDetails, setEnterFeeDetails] = useState(false);
   const [selectedFeesType, setSelectedFeesType] = useState(''); 
   const handleSelectChange = (event) => { setSelectedFeesType(event.target.value); }; 
   const [disStatus, setDisStatus] = useState(false);
   const handleTabClick = (tabId) => {
     setActive(tabId);
   };
+  const handleEnterFeeCta = () => {
+    setEnterFeeDetails(true);
+  }
   const handleCheckBox = (e, name) => {
     const isChecked = e.target.checked;
     const value = e.target.value;
@@ -444,6 +521,10 @@ const handleOptionsChange = async (e, name) => { debugger;
         <li class="nav-item" role="presentation">
           <button onClick={() => handleTabClick('contact-tab-pane')} class={`nav-link ${active === 'contact-tab-pane' ? 'active' : ''}`} id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
             <i class="bi bi-check2-circle"></i> Scheme Characteristics </button>
+        </li>
+        <li class="nav-item mx-2" role="presentation">
+          <button onClick={() => handleTabClick('list-tab-pane')} class={`nav-link mx-2 ${active === 'list-tab-pane' ? 'active' : ''}`} id="list-tab" data-bs-toggle="tab" data-bs-target="#list-tab-pane" type="button" role="tab" aria-controls="list-tab-pane" aria-selected="false">
+          <i class="bi bi-list"></i> Scheme List </button>
         </li>
       </ul>
       <div class="tab-content my-3" id="myTabContent">
@@ -507,7 +588,14 @@ const handleOptionsChange = async (e, name) => { debugger;
             </div> */}
             <div className="col-md-4 mb-2">
               <label for="inputEmail4" className="form-label lbl-font lbl-color">Max Slab</label>
-              <input type="number" className="form-control removespecialchar" placeholder="Enter Max Slab"/>
+              <Select
+                    //defaultValue={selectedOptions}
+                    //isMulti
+                    options={[{ value: 'Yes', label: 'Fixed' }, { value: 'Part', label: 'Part' }]}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    onChange={(e) => handleOptionsChange(e, 'schemeFeeType')}
+                  />
             </div>
             
             <div className="col-md-4 mb-2">
@@ -518,21 +606,27 @@ const handleOptionsChange = async (e, name) => { debugger;
               <label for="inputEmail4" className="form-label lbl-font lbl-color">Scheme Code</label>
               <input type="text" class="form-control removespecialchar" placeholder="Enter Scheme Code" onChange={(e) => handleSchemeCode(e)}/>
             </div>
-              <div className="col-md-4 mb-2">
-                  <Form.Group className="mb-3 instituteApproveRejectForm">
-                  <div className="">
-                    <span className="form-label lbl-font lbl-color">Scheme Fee Type</span>
-                    <Select
-                      //defaultValue={selectedOptions}
-                      //isMulti
-                      options={[{ value: 'Fixed', label: 'Fixed' }, { value: 'Part', label: 'Part' }]}
-                      className="basic-multi-select"
-                      classNamePrefix="select"
-                      onChange={(e) => handleOptionsChange(e, 'schemeFeeType')}
-                    />
-                  </div>
-                  </Form.Group>
+            <div className="col-md-4 mb-2">
+              <Form.Group className="mb-3 instituteApproveRejectForm">
+                <div className="">
+                  <span className="form-label lbl-font lbl-color">Scheme Fee Type</span>
+                  <Select
+                    //defaultValue={selectedOptions}
+                    //isMulti
+                    options={[{ value: 'Fixed', label: 'Fixed' }, { value: 'Part', label: 'Part' }]}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    onChange={(e) => handleOptionsChange(e, 'schemeFeeType')}
+                  />
                 </div>
+              </Form.Group>
+            </div>
+            <div className='row'>
+                <div className="col-md-12 mb-2 mt-2 text-end">
+                  <a onClick={(e) => handleNxtPrv(e, 'profile-tab-pane')} className="btn btn-success cus-btn">
+                  <i class="bi bi-arrow-right"></i> Submit </a>
+                </div>
+              </div>
             <div className='separateComp row'>
               <div className="col-md-12 mb-2 mt-2">
                 <h4 className="page-title txt-red">
@@ -1069,6 +1163,28 @@ const handleOptionsChange = async (e, name) => { debugger;
             </div>
           </form>
         </div>
+        <div className={`tab-pane fade ${active === 'list-tab-pane' ? 'show active' : ''}`} id="list-tab-pane" role="tabpanel" aria-labelledby="list-tab" tabindex="0">
+          <div className='row'>
+              <div className='col-lg-12'>
+                <div className='allSchemeList'>
+                  <Row>
+                    <Col lg={12}>
+                      <Row className='listStyle'>
+                        <h5>Fixed Fee List</h5>
+                        <Aggridcomp  comp={'schemeFixedList'}/>
+                      </Row>
+                    </Col>
+                    <Col lg={12}>
+                      <Row className='listStyle'>
+                        <h5>Component Fee List</h5>
+                        <Aggridcomp  comp={'schemeCompList'}/>
+                      </Row>
+                    </Col>
+                  </Row>
+                </div>
+              </div>
+          </div>
+        </div>
         <div className={`tab-pane fade ${active === 'profile-tab-pane' ? 'show active' : ''}`} id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
           <div className="row">
             {
@@ -1382,11 +1498,11 @@ const handleOptionsChange = async (e, name) => { debugger;
                         </div>
                       </div>
                     </div>
-                    <div className='col-lg-12 calcBtn'>
+                    {/* <div className='col-lg-12 calcBtn'>
                       <a className="btn btn-success cus-btn" onClick={(e) => handleCalc(e)}>
                         <i class="bi bi-send-check"></i> Calculate 
                       </a>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               )
@@ -1397,214 +1513,260 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <form className="row">
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Department </label>
-                      <label htmlFor="toDate" className="form-label w-100 mb-0"> {formData.department} </label>
+                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {formData.department} </span>
                     </div>
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Sub Department </label> 
+                      <div className='selectedValBox'>
                       {
                         formData.subDepartment.map((value, index) => {
                           return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {value.label} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {value.label} </span>
                           )
                         })
                       }
+                      </div>
                     </div>
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
                       <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scheme Name </label>
-                      <label htmlFor="toDate" className="form-label w-100 mb-0"> {formData.schemeName} </label>
+                      <div className='selectedValBox'>
+                      <span htmlFor="toDate" className="form-label w-100 mb-0"> { formData.schemeName } </span>
+                      </div>
                     </div>
                     <p className="viewmore mb-0 text-danger" onClick={()=> setShowMore(true)} style={{ display: showMore ? 'none' : 'block' }} > <i class="bi bi-arrows-angle-expand"></i> View More </p>
                     <div className={`viewmore-wrap row ${showMore ? 'show' : '' }`}>
                       <h6 style={{marginTop: '1rem'}}><b><u>Institute Component</u></b></h6>
                     <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Ownership </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.instituteOwnership.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Category </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.instituteCategory.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Type </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.instituteType.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> University Type </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.universityType.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> University </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.university.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Name </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.instituteText.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <h6 style={{marginTop: '1rem'}}><b><u>Course Component</u></b></h6>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Stream </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.stream.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Course Type </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.courseType.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Medium of Instruction </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.medium.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Course </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.course.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <h6 style={{marginTop: '1rem'}}><b><u>Socio Economic Components</u></b></h6>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Religion </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.religion.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Community </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.community.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Caste </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.caste.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Gender </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.gender.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Income </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.income.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <h6 style={{marginTop: '1rem'}}><b><u>Maintance Component</u></b></h6>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Residential Status </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.residentalStatus.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Disability Status </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.disabilityStatus.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
                       </div>
                       <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                         <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Disability Category </label>
+                        <div className='selectedValBox'>
                         {
                           filterFormData.disabilityCategory.map((val,i) => {
                             return (
-                              <label htmlFor="toDate" className="form-label w-100 mb-0"> {val} </label>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
                             )
                           })
                         }
+                        </div>
+                      </div>
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-1">
+                        <p className='enterFee' onClick={handleEnterFeeCta}>Enter Fee Details</p>
                       </div>
                       <p className="lessmore mb-0 text-danger" onClick={()=> setShowMore(false)} > <i class="bi bi-arrows-angle-contract"></i> View Less </p>
                     </div>
                   </form>
                 </div>
               </div>
-              <div className="row">
+             {
+              enterFeeDetails && (
+                <>
+                   <div className="row">
                 <div className="col-lg-12">
                   <div class="card">
                     <div class="card-body">
@@ -1807,7 +1969,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                                   </tr>
                                 </>
                               )
-                             }
+                            }
                             <tr>
                               {
                                 feeType && (
@@ -1835,14 +1997,16 @@ const handleOptionsChange = async (e, name) => { debugger;
                       </div>
                     </div>
                   </div>
-                </div> {/* <div className="col-lg-6"> Filter </div>
-                <div className="col-lg-6"> Filter </div> */}
+                </div>
               </div>
+                </>
+              )
+             }
               <div className="col-md-4 mb-2 mt-2">
                 <a className="btn btn-success cus-btn" onClick={(e) => handleNxtPrv(e, 'contact-tab-pane')}>
-                <i class="bi bi-arrow-right"></i> Next </a>
+                Save <i class="bi bi-arrow-right"></i> </a>
                 <a  className="btn btn-success cus-btn" onClick={(e) => handleNxtPrv(e, 'home-tab-pane')}>
-                <i class="bi bi-arrow-left"></i> Prev </a>
+                Save & Proceed <i class="bi bi-arrow-right"></i>  </a>
               </div>
             </div>
           </div>
@@ -2006,7 +2170,7 @@ const handleOptionsChange = async (e, name) => { debugger;
               <div class="col-md-12 mb-2 mt-2">
                 <a  className="btn btn-success cus-btn" onClick={(e) => handleNxtPrv(e, 'profile-tab-pane')}>
                 <i class="bi bi-arrow-left"></i> Prev </a>
-                <a href="#" class="btn btn-success cus-btn">
+                <a class="btn btn-success cus-btn" onClick={(e) => handleCreateScheme(e)}>
                 <i class="bi bi-send-check"></i> Submit </a>
               </div>
             </form>
@@ -2016,6 +2180,24 @@ const handleOptionsChange = async (e, name) => { debugger;
     </div>
   </div>
 </div> 
+      {
+        schemeRegisteredState &&
+        <div className='text-center appliedSchemeScreen'>
+          <Popup isOpen={isOpen} closePopup={closePopup} comp='studentView'>
+            <h5>SCHEME REGISTERED SUCCESSFULLY</h5>
+            <p onClick={closePopup} className='okClick'>Ok</p>
+          </Popup>
+        </div>
+      }
+      {
+        schemeRegisteredErrState &&
+        <div className='text-center appliedSchemeScreen'>
+          <Popup isOpen={isOpen} closePopup={closePopup} comp='studentView'>
+            <h5>SCHEME REGISTERED FAILED</h5>
+            <p onClick={closePopup} className='okClick'>Ok</p>
+          </Popup>
+        </div>
+      }
   </>
 )} 
 export default SchemeRegistration

@@ -15,7 +15,7 @@ const StudentViewDetail = (props) => {
   const [getOtpScreen, setGetOtpScreen] = useState(false);
   const openPopup = () => setIsOpen(true);
   const closePopup = (e, args) => {
-    if(args === 'consentDeclaration'){
+    if(args === 'consentDeclaration') {
       setGetOtpScreen(false);
     }
     else {
