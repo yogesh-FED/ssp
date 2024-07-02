@@ -1889,8 +1889,11 @@ const SchemeRegistration = () => {
                       <div className="alert alert-success py-1">
                         <form className="row">
                           <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Department </label>
-                            <span htmlFor="toDate" className="form-label w-100 mb-0"> {formData.department} </span>
+                          <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Department </label>
+                          <div className='selectedValBox'>
+                          <span htmlFor="toDate" className="form-label w-100 mb-0"> {formData.department} </span>
+                          </div>
+                            
                           </div>
                           <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
                             <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Sub Department </label>
