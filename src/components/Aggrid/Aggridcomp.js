@@ -10,6 +10,7 @@ import { Card, ListGroup, Container, Row, Col, Form } from 'react-bootstrap';
 import TrackIcon from '../../assets/icons/trackIcon.png';
 import view from '../../assets/icons/eye.png';
 import { PropaneSharp } from '@mui/icons-material';
+import SchemeListDetails from '../SchemeListDetails';
 
 const Aggridcomp = (props) => {
   const [gridApi, setGridApi] = useState(null);
@@ -224,7 +225,7 @@ const Aggridcomp = (props) => {
           ?
           <Popup isOpen={isOpen} closePopup={closePopup}>
             <Col lg={12}>
-              <h5>Scheme Details</h5>
+              <SchemeListDetails />
             </Col>
           </Popup>
           :

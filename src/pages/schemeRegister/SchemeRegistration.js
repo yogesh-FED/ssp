@@ -210,7 +210,6 @@ const SchemeRegistration = () => {
       label: val.label || val.display_text || val.course_name || val.university_name || val.ownership || val.course_type || val.income_range || val.department_name || val.institute_type || val.subdepartment_name || val.community_name || val.caste_name || val.stream_name || val.university_type || val.institute_category || val.disability_name || val.institution_name,
     }));
   }
-
   const univOptions = generateOptions(univ);
   const courseTypOption = generateOptions(courseTyp);
   const incomeOptions = generateOptions(income);
@@ -784,13 +783,17 @@ const SchemeRegistration = () => {
                     </Form.Group>
                   </div> */}
 
-                  <div class="row" >
-                    <div class="align-self-end ml-auto">
-                      <button class="position-relative top-100 start-100 translate-middle btn text-white " style={{ background: "#331F8E" }} type="submit" onClick={saveFormData}>Submit</button>
+                  <div className="row">
+                    <div className="col-md-8"></div> {/* Empty column to push the button to the right */}
+                    <div className="col-md-4 d-flex justify-content-end mb-2 mt-2">
+                      <button
+                        className="btn btn-success custom-button text-white"
+                        type="submit"
+                        style={{ background: "#331F8E" }}
+                      >
+                        Submit
+                      </button>
                     </div>
-                    {/* <a onClick={(e) => handleNxtPrv(e, 'profile-tab-pane')} className="btn btn-success cus-btn">
-                          <i class="bi bi-arrow-right"></i> Next </a>
-                      </div> */}
                   </div>
 
 
@@ -1537,8 +1540,20 @@ const SchemeRegistration = () => {
                                         </div> */}
 
                     <div class="row" >
-                      <div class="align-self-end ml-auto">
-                        <button class="position-relative top-100 start-100 translate-middle btn text-white" style={{ background: "#331F8E" }} type="submit" onClick={(e) => handleNxtPrv(e, 'profile-tab-pane')} >saveFormData</button>
+                      {/* <div className="col-md-4 mb-2 mt-2">
+                        <button class="btn btn-success cus-btn text-white" style={{ background: "#331F8E",padding: "10px 40px" }} 
+                        type="submit" onClick={(e) => handleNxtPrv(e, 'profile-tab-pane')} >Next</button>
+                      </div> */}
+
+                      <div className="col-md-4 mb-2 mt-2">
+                        <button
+                          className="btn btn-success custom-button text-white"
+                          type="submit"
+                          style={{ background: "#331F8E" }}
+                          onClick={(e) => handleNxtPrv(e, 'profile-tab-pane')}
+                        >
+                          Next
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -1553,7 +1568,6 @@ const SchemeRegistration = () => {
                       <Row>
                         <Col lg={12}>
                           <Row className='listStyle'>
-                            <h5>Fixed Fee List</h5>
                             <Aggridcomp comp={'schemeFixedList'} />
                           </Row>
                         </Col>
@@ -1586,10 +1600,10 @@ const SchemeRegistration = () => {
                                       formData.instituteCategory.map((value, index) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="instCt" onClick={(e) => handleCheckBox(e, 'instituteCategory')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`instCt_${index}`}  onClick={(e) => handleCheckBox(e, 'instituteCategory')}
                                               checked={filterFormData.instituteCategory.includes(value.label)}
                                             />
-                                            <label class="form-check-label" for="instCt"> {
+                                            <label class="form-check-label" for={`instCt_${index}`}> {
                                               value.label} </label>
                                           </div>
                                         )
@@ -1602,9 +1616,9 @@ const SchemeRegistration = () => {
                                       formData.instituteOwnership.map((value, index) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="instOwn" onClick={(e) => handleCheckBox(e, 'instituteOwnership')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`instOwn_${index}`} onClick={(e) => handleCheckBox(e, 'instituteOwnership')}
                                               checked={filterFormData.instituteOwnership.includes(value.label)} />
-                                            <label class="form-check-label" for="instOwn"> {value.label} </label>
+                                            <label class="form-check-label" for={`instOwn_${index}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1616,9 +1630,9 @@ const SchemeRegistration = () => {
                                       formData.instituteType.map((value, index) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="instTy" onClick={(e) => handleCheckBox(e, 'instituteType')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`instTy_${index}`} onClick={(e) => handleCheckBox(e, 'instituteType')}
                                               checked={filterFormData.instituteType.includes(value.label)} />
-                                            <label class="form-check-label" for="instTy"> {value.label} </label>
+                                            <label class="form-check-label" for={`instTy_${index}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1630,9 +1644,9 @@ const SchemeRegistration = () => {
                                       formData.universityType.map((value, index) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="univTy" onClick={(e) => handleCheckBox(e, 'universityType')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`univTy_${index}`} onClick={(e) => handleCheckBox(e, 'universityType')}
                                               checked={filterFormData.universityType.includes(value.label)} />
-                                            <label class="form-check-label" for="univTy"> {value.label} </label>
+                                            <label class="form-check-label" for={`univTy_${index}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1644,9 +1658,9 @@ const SchemeRegistration = () => {
                                       formData.university.map((value, index) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="univ" onClick={(e) => handleCheckBox(e, 'university')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`univ_${index}`} onClick={(e) => handleCheckBox(e, 'university')}
                                               checked={filterFormData.university.includes(value.label)} />
-                                            <label class="form-check-label" for="univ"> {value.label} </label>
+                                            <label class="form-check-label" for={`univ_${index}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1658,9 +1672,9 @@ const SchemeRegistration = () => {
                                       formData.instituteText.map((value, index) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="instName" onClick={(e) => handleCheckBox(e, 'instituteText')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`instName_${index}`} onClick={(e) => handleCheckBox(e, 'instituteText')}
                                               checked={filterFormData.instituteText.includes(value.label)} />
-                                            <label class="form-check-label" for="instName"> {value.label} </label>
+                                            <label class="form-check-label" for={`instName_${index}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1692,9 +1706,9 @@ const SchemeRegistration = () => {
                                       formData.stream.map((value, i) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="stream" onClick={(e) => handleCheckBox(e, 'stream')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`stream_${i}`} onClick={(e) => handleCheckBox(e, 'stream')}
                                               checked={filterFormData.stream.includes(value.label)} />
-                                            <label class="form-check-label" for="stream"> {value.label} </label>
+                                            <label class="form-check-label" for={`stream_${i}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1706,9 +1720,9 @@ const SchemeRegistration = () => {
                                       formData.courseType.map((value, i) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="courseTy" onClick={(e) => handleCheckBox(e, 'courseType')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`courseTy_${i}`} onClick={(e) => handleCheckBox(e, 'courseType')}
                                               checked={filterFormData.courseType.includes(value.label)} />
-                                            <label class="form-check-label" for="courseTy"> {value.label} </label>
+                                            <label class="form-check-label" for={`courseTy_${i}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1720,9 +1734,9 @@ const SchemeRegistration = () => {
                                       formData.medium.map((value, i) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="medium" onClick={(e) => handleCheckBox(e, 'medium')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`medium_${i}`} onClick={(e) => handleCheckBox(e, 'medium')}
                                               checked={filterFormData.medium.includes(value.label)} />
-                                            <label class="form-check-label" for="medium"> {value.label} </label>
+                                            <label class="form-check-label" for={`medium_${i}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1734,9 +1748,9 @@ const SchemeRegistration = () => {
                                       formData.course.map((value, i) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="course" onClick={(e) => handleCheckBox(e, 'course')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`course_${i}`} onClick={(e) => handleCheckBox(e, 'course')}
                                               checked={filterFormData.course.includes(value.label)} />
-                                            <label class="form-check-label" for="course"> {value.label} </label>
+                                            <label class="form-check-label" for={`course_${i}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1757,9 +1771,9 @@ const SchemeRegistration = () => {
                                       formData.religion.map((value, i) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="religion" onClick={(e) => handleCheckBox(e, 'religion')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`religion_${i}`} onClick={(e) => handleCheckBox(e, 'religion')}
                                               checked={filterFormData.religion.includes(value.label)} />
-                                            <label class="form-check-label" for="religion"> {value.label} </label>
+                                            <label class="form-check-label" for={`religion_${i}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1771,9 +1785,9 @@ const SchemeRegistration = () => {
                                       formData.community.map((value, i) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="community" onClick={(e) => handleCheckBox(e, 'community')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`community_${i}`} onClick={(e) => handleCheckBox(e, 'community')}
                                               checked={filterFormData.community.includes(value.label)} />
-                                            <label class="form-check-label" for="religion"> {value.label} </label>
+                                            <label class="form-check-label" for={`community_${i}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1785,9 +1799,9 @@ const SchemeRegistration = () => {
                                       formData.caste.map((value, i) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="caste" onClick={(e) => handleCheckBox(e, 'caste')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`caste_${i}`} onClick={(e) => handleCheckBox(e, 'caste')}
                                               checked={filterFormData.caste.includes(value.label)} />
-                                            <label class="form-check-label" for="caste"> {value.label} </label>
+                                            <label class="form-check-label" for={`caste_${i}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1799,9 +1813,9 @@ const SchemeRegistration = () => {
                                       formData.gender.map((value, i) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="gender" onClick={(e) => handleCheckBox(e, 'gender')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`gender_${i}`} onClick={(e) => handleCheckBox(e, 'gender')}
                                               checked={filterFormData.gender.includes(value.label)} />
-                                            <label class="form-check-label" for="gender"> {value.label} </label>
+                                            <label class="form-check-label" for={`gender_${i}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1813,9 +1827,9 @@ const SchemeRegistration = () => {
                                       formData.income.map((value, i) => {
                                         return (
                                           <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value={value.label} id="income" onClick={(e) => handleCheckBox(e, 'income')}
+                                            <input class="form-check-input" type="checkbox" value={value.label} id={`income_${i}`} onClick={(e) => handleCheckBox(e, 'income')}
                                               checked={filterFormData.income.includes(value.label)} />
-                                            <label class="form-check-label" for="income"> {value.label} </label>
+                                            <label class="form-check-label" for={`income_${i}`}> {value.label} </label>
                                           </div>
                                         )
                                       })
@@ -1889,15 +1903,14 @@ const SchemeRegistration = () => {
                       <div className="alert alert-success py-1">
                         <form className="row">
                           <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                          <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Department </label>
-                          <div className='selectedValBox'>
+                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Department </label>
+                          <div className='selectedValBox' data-category='Department'>
                           <span htmlFor="toDate" className="form-label w-100 mb-0"> {formData.department} </span>
                           </div>
-                            
                           </div>
                           <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
                             <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Sub Department </label>
-                            <div className='selectedValBox'>
+                            <div className='selectedValBox' data-category='SubDepartment'>
                               {
                                 formData.subDepartment.map((value, index) => {
                                   return (
@@ -1909,7 +1922,7 @@ const SchemeRegistration = () => {
                           </div>
                           <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
                             <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scheme Name </label>
-                            <div className='selectedValBox'>
+                            <div className='selectedValBox' data-category='Scheme Name'>
                               <span htmlFor="toDate" className="form-label w-100 mb-0"> {formData.schemeName} </span>
                             </div>
                           </div>
@@ -1918,7 +1931,7 @@ const SchemeRegistration = () => {
                             <h6 style={{ marginTop: '1rem' }}><b><u>Institute Component</u></b></h6>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Ownership </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox' data-category='Institute Ownership'>
                                 {
                                   filterFormData.instituteOwnership.map((val, i) => {
                                     return (
@@ -1930,7 +1943,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Category </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox'  data-category='Institute Category'>
                                 {
                                   filterFormData.instituteCategory.map((val, i) => {
                                     return (
@@ -1942,7 +1955,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Type </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox' data-category='Institute Type'>
                                 {
                                   filterFormData.instituteType.map((val, i) => {
                                     return (
@@ -1954,7 +1967,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> University Type </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox' data-category='University Type'>
                                 {
                                   filterFormData.universityType.map((val, i) => {
                                     return (
@@ -1966,7 +1979,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> University </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox' data-category='University'>
                                 {
                                   filterFormData.university.map((val, i) => {
                                     return (
@@ -1978,7 +1991,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Name </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox'  data-category='Institute Name'>
                                 {
                                   filterFormData.instituteText.map((val, i) => {
                                     return (
@@ -1991,7 +2004,7 @@ const SchemeRegistration = () => {
                             <h6 style={{ marginTop: '1rem' }}><b><u>Course Component</u></b></h6>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Stream </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox'  data-category='Stream'>
                                 {
                                   filterFormData.stream.map((val, i) => {
                                     return (
@@ -2003,7 +2016,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Course Type </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox' data-category='Course Type'>
                                 {
                                   filterFormData.courseType.map((val, i) => {
                                     return (
@@ -2015,7 +2028,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Medium of Instruction </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox'  data-category='Medium'>
                                 {
                                   filterFormData.medium.map((val, i) => {
                                     return (
@@ -2027,7 +2040,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Course </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox' data-category='Course'>
                                 {
                                   filterFormData.course.map((val, i) => {
                                     return (
@@ -2040,7 +2053,7 @@ const SchemeRegistration = () => {
                             <h6 style={{ marginTop: '1rem' }}><b><u>Socio Economic Components</u></b></h6>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Religion </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox' data-category='Religion'>
                                 {
                                   filterFormData.religion.map((val, i) => {
                                     return (
@@ -2052,7 +2065,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Community </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox' data-category='Community'>
                                 {
                                   filterFormData.community.map((val, i) => {
                                     return (
@@ -2064,7 +2077,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Caste </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox'  data-category='Caste'>
                                 {
                                   filterFormData.caste.map((val, i) => {
                                     return (
@@ -2076,7 +2089,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Gender </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox' data-category='Gender'>
                                 {
                                   filterFormData.gender.map((val, i) => {
                                     return (
@@ -2088,7 +2101,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Income </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox'  data-category='Income'>
                                 {
                                   filterFormData.income.map((val, i) => {
                                     return (
@@ -2101,7 +2114,7 @@ const SchemeRegistration = () => {
                             <h6 style={{ marginTop: '1rem' }}><b><u>Maintance Component</u></b></h6>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Residential Status </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox'  data-category='Residential Status'>
                                 {
                                   filterFormData.residentalStatus.map((val, i) => {
                                     return (
@@ -2113,7 +2126,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Disability Status </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox'  data-category='Disablitity Status'>
                                 {
                                   filterFormData.disabilityStatus.map((val, i) => {
                                     return (
@@ -2125,7 +2138,7 @@ const SchemeRegistration = () => {
                             </div>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
                               <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Disability Category </label>
-                              <div className='selectedValBox'>
+                              <div className='selectedValBox' data-category='Disability Category'>
                                 {
                                   filterFormData.disabilityCategory.map((val, i) => {
                                     return (
@@ -2394,64 +2407,259 @@ const SchemeRegistration = () => {
               </div>
               <div className={`tab-pane fade ${active === 'contact-tab-pane' ? 'show active' : ''}`} id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
                 <div className="col-lg-12 mb-2">
-                  <div className="alert alert-success py-1">
-                    <form className="row">
-                      <div class="col-md-12 mb-2 mt-2">
-                        <h4 class="page-title txt-red">
-                          <i class="bi bi-file-earmark-text"></i> Scheme Details
-                        </h4>
+                      <div className="alert alert-success py-1">
+                        <form className="row">
+                          <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Department </label>
+                          <div className='selectedValBox'>
+                          <span htmlFor="toDate" className="form-label w-100 mb-0"> {formData.department} </span>
+                          </div>
+                          </div>
+                          <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
+                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Sub Department </label>
+                            <div className='selectedValBox'>
+                              {
+                                formData.subDepartment.map((value, index) => {
+                                  return (
+                                    <span htmlFor="toDate" className="form-label w-100 mb-0"> {value.label} </span>
+                                  )
+                                })
+                              }
+                            </div>
+                          </div>
+                          <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
+                            <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scheme Name </label>
+                            <div className='selectedValBox'>
+                              <span htmlFor="toDate" className="form-label w-100 mb-0"> {formData.schemeName} </span>
+                            </div>
+                          </div>
+                          <p className="viewmore mb-0 text-danger" onClick={() => setShowMore(true)} style={{ display: showMore ? 'none' : 'block' }} > <i class="bi bi-arrows-angle-expand"></i> View More </p>
+                          <div className={`viewmore-wrap row ${showMore ? 'show' : ''}`}>
+                            <h6 style={{ marginTop: '1rem' }}><b><u>Institute Component</u></b></h6>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Ownership </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.instituteOwnership.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Category </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.instituteCategory.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Type </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.instituteType.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> University Type </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.universityType.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> University </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.university.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Name </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.instituteText.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <h6 style={{ marginTop: '1rem' }}><b><u>Course Component</u></b></h6>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Stream </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.stream.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Course Type </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.courseType.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Medium of Instruction </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.medium.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Course </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.course.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <h6 style={{ marginTop: '1rem' }}><b><u>Socio Economic Components</u></b></h6>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Religion </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.religion.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Community </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.community.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Caste </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.caste.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Gender </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.gender.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Income </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.income.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <h6 style={{ marginTop: '1rem' }}><b><u>Maintance Component</u></b></h6>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Residential Status </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.residentalStatus.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Disability Status </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.disabilityStatus.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
+                              <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Disability Category </label>
+                              <div className='selectedValBox'>
+                                {
+                                  filterFormData.disabilityCategory.map((val, i) => {
+                                    return (
+                                      <span htmlFor="toDate" className="form-label w-100 mb-0"> {val + ','} </span>
+                                    )
+                                  })
+                                }
+                              </div>
+                            </div>
+                            <p className="lessmore mb-0 text-danger" onClick={() => setShowMore(false)} > <i class="bi bi-arrows-angle-contract"></i> View Less </p>
+                          </div>
+                        </form>
                       </div>
-                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Department </label>
-                        <label htmlFor="toDate" className="form-label w-100 mb-0"> Department A </label>
-                      </div>
-                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
-                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Sub Department </label>
-                        <label htmlFor="toDate" className="form-label w-100 mb-0"> Sub Department A </label>
-                      </div>
-                      <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1 ps-0">
-                        <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Scheme Name </label>
-                        <label htmlFor="toDate" className="form-label w-100 mb-0"> Scheme Name A </label>
-                      </div>
-                      <p className="viewmore mb-0 text-danger" onClick={() => setShowMore(true)} style={{ display: showMore ? 'none' : 'block' }} > <i class="bi bi-arrows-angle-expand"></i> View More </p>
-                      <div className={`viewmore-wrap row ${showMore ? 'show' : ''}`}>
-                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                          <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Category </label>
-                          <label htmlFor="toDate" className="form-label w-100 mb-0"> Institute Category A </label>
-                        </div>
-                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                          <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Type </label>
-                          <label htmlFor="toDate" className="form-label w-100 mb-0"> Institute Type A </label>
-                        </div>
-                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                          <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Institute Name </label>
-                          <label htmlFor="toDate" className="form-label w-100 mb-0"> Institute Name A </label>
-                        </div>
-                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                          <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Community </label>
-                          <label htmlFor="toDate" className="form-label w-100 mb-0"> Community A </label>
-                        </div>
-                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                          <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Caste </label>
-                          <label htmlFor="toDate" className="form-label w-100 mb-0"> Caste A </label>
-                        </div>
-                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                          <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Student Category </label>
-                          <label htmlFor="toDate" className="form-label w-100 mb-0"> Student Category A </label>
-                        </div>
-                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                          <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Stream </label>
-                          <label htmlFor="toDate" className="form-label w-100 mb-0"> Stream A </label>
-                        </div>
-                        <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 mb-1">
-                          <label htmlFor="toDate" className="form-label lbl-color w-100 mb-0"> Course </label>
-                          <label htmlFor="toDate" className="form-label w-100 mb-0"> Course A </label>
-                        </div>
-                        <p className="lessmore mb-0 text-danger" onClick={() => setShowMore(false)} > <i class="bi bi-arrows-angle-contract"></i> View Less </p>
-                      </div>
-                    </form>
-                  </div>
-                </div>
+                    </div>
                 <div className="row">
                   <div class="col-md-12 mb-2 mt-2">
                     <h4 class="page-title">
