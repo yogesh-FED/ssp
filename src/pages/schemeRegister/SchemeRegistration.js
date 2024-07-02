@@ -2497,7 +2497,7 @@ const SchemeRegistration = () => {
                     </div>
                   </div>
                 </div>
-                <div className="row-wrap">
+                {/* <div className="row-wrap">
                   <form className="row">
                     <div className="col-md-12 mb-2 mt-3">
                       <h4 className="page-title">
@@ -2552,7 +2552,7 @@ const SchemeRegistration = () => {
                         <i class="bi bi-send-check"></i> Submit </a>
                     </div>
                   </form>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
