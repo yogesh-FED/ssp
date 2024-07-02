@@ -1188,14 +1188,7 @@ const handleOptionsChange = async (e, name) => { debugger;
                   <Row>
                     <Col lg={12}>
                       <Row className='listStyle'>
-                        <h5>Fixed Fee List</h5>
                         <Aggridcomp  comp={'schemeFixedList'}/>
-                      </Row>
-                    </Col>
-                    <Col lg={12}>
-                      <Row className='listStyle'>
-                        <h5>Component Fee List</h5>
-                        <Aggridcomp  comp={'schemeCompList'}/>
                       </Row>
                     </Col>
                   </Row>

@@ -37,7 +37,8 @@ const Aggridcomp = (props) => {
     {
       Scheme_Name : 'Central Scheme Created 1',
       Scheme_amount: 10000,
-      Freezed: 'No'
+      Freezed: 'No',
+      FeeType: 'Fixed'
     }
   ] 
   : 
@@ -148,10 +149,11 @@ const Aggridcomp = (props) => {
   const columnDefs = props.comp === 'schemeFixedList'
   ?
   [
-    { field: 'Scheme_Name', width: 200,},
-    { field: 'Scheme_amount', width: 200,},
-    { field: 'Freezed', width: 200,},
-    { field: 'Action', cellRenderer: ViewBtn, width: 100}
+    { field: 'Scheme_Name',},
+    { field: 'Scheme_amount',},
+    { field: 'Freezed',},
+    { field: 'FeeType',},
+    { field: 'Action', cellRenderer: ViewBtn}
   ]
   :
   [
